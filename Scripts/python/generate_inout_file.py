@@ -36,7 +36,7 @@ for index in range(len(file_list_v)):
 	
 	# number of frames
 	total_frames = int(cap.get(7))
-	print(loc, total_frames, sep='\tframes=')
+	print(index+1, total_frames, sep='\tframes=')
 	
 	# calculate batch number
 	curr_batch_num = math.ceil(total_frames/batch_size)
