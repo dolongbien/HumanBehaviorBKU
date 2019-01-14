@@ -40,6 +40,7 @@ for index in range(len(file_list_v)):
 	
 	# calculate batch number
 	curr_batch_num = math.ceil(total_frames/batch_size)
+	max_batch_num = batch_num
 	if curr_batch_num >= max_batch_num:
 		batch_num = curr_batch_num
 	else:
