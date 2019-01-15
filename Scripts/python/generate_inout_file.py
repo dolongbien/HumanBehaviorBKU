@@ -50,7 +50,7 @@ for index in range(len(file_list_v)):
 	counter = 0   
 
 	# generate file
-	while (counter < total_frames-interval_v):
+	while (counter <= total_frames-interval_v):
 		f_input.write('input/Shoplifting/' + loc + ' ' + str(counter) + ' ' + str(0))
 		f_input.write('\n')
 		f_output.write('output/Shoplifting/' + loc[:-4] + '/' + str(counter).zfill(6) )
