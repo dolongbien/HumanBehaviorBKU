@@ -7,8 +7,8 @@ close all
 % default settings for computing C3D features, i.e., we compute C3D features for
 % every 16 frames and obtain the features from fc6.
  
-C3D_Path='G:\My Drive\C3D\C3D-v1.0\examples\c3d_feature_extraction\output\Normal26Video';
-C3D_Path_Seg='G:\My Drive\C3D\C3D-v1.0\examples\c3d_feature_extraction\output\Normal26Video64segment/Avg';
+C3D_Path='G:\My Drive\HumanBehaviors\Shoplifting\Shoplifting';
+C3D_Path_Seg='G:\My Drive\HumanBehaviors\Shoplifting_64Seg_txt\';
 
  
 if ~exist(C3D_Path_Seg,'dir')
@@ -27,6 +27,9 @@ for ifolder=1:length(All_Folder)
     
     
     AllFiles=dir([Folder_Path,'/*.fc6-1']);
+    if length(AllFiles) == 0
+        continue
+    end
     Feature_vect=zeros(length(AllFiles),4096);
      for ifile=1:length(AllFiles)
           FilePath=[Folder_Path,'/', AllFiles(ifile).name];  
@@ -42,8 +45,11 @@ for ifolder=1:length(All_Folder)
       
       % Write C3D features in text file to load in
       % Training_AnomalyDetector_public ( You can directly use .mat format if you want).
-      
-       fid1=fopen([C3D_Path_Seg,'/',All_Folder(ifolder).name,subcript],'w'); 
+       txt_file_name = [C3D_Path_Seg,'/',All_Folder(ifolder).name,subcript];
+       if exist(txt_file_name, 'file')
+           continue
+       end
+       fid1=fopen(txt_file_name,'w');
        if ~isempty(find(sum(Feature_vect,2)==0))
              error('??')
        end
@@ -113,7 +119,7 @@ for ifolder=1:length(All_Folder)
              error('??')
       end
       
- % save 32 segment features in text file ( You can directly save and load .mat file in python as well).
+ % save 64 segment features in text file ( You can directly save and load .mat file in python as well).
  
      for ii=1:size(Segments_Features,1)
          feat_text=Segments_Features(ii,:);%(Feature_vect(ii,:));
