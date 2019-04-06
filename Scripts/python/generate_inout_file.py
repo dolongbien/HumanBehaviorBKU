@@ -1,3 +1,4 @@
+%cd /content/gdrive/My\ Drive/C3D/C3D-v1.0/examples/c3d_feature_extraction/input/Traning_Normal_Part1_Video
 import os, os.path
 import cv2
 import glob
@@ -11,7 +12,7 @@ interval_v = 16
 
 cmd1 = 'time GLOG_logtosterr=1 ../../build/tools/extract_image_features.bin prototxt/c3d_sport1m_feature_extractor_video.prototxt conv3d_deepnetA_sport1m_iter_1900000'
 
-cmd2 = 'prototxt/output_list_video_prefix.txt fc6-1	'
+cmd2 = 'prototxt/output_list_video_prefix.txt fc6-1'
 
 gpu_id = 0
 batch_size = 50
@@ -29,9 +30,9 @@ for index in range(len(file_list_v)):
 	cap=cv2.VideoCapture(loc)
 	
 	# generate .sh file
-	sh_out.write('rm -rf output/Shoplifting/' + loc[:-4])
+	sh_out.write('rm -rf output/Traning_Normal_Part1_FC/' + loc[:-4])
 	sh_out.write('\n')
-	sh_out.write('mkdir -p output/Shoplifting/' + loc[:-4])
+	sh_out.write('mkdir -p output/Traning_Normal_Part1_FC/' + loc[:-4])
 	sh_out.write('\n')
 	
 	# number of frames
@@ -51,9 +52,9 @@ for index in range(len(file_list_v)):
 
 	# generate file
 	while (counter <= total_frames-interval_v):
-		f_input.write('input/Shoplifting/' + loc + ' ' + str(counter) + ' ' + str(0))
+		f_input.write('input/Traning_Normal_Part1_Video/' + loc + ' ' + str(counter) + ' ' + str(0))
 		f_input.write('\n')
-		f_output.write('output/Shoplifting/' + loc[:-4] + '/' + str(counter).zfill(6) )
+		f_output.write('output/Traning_Normal_Part1_FC/' + loc[:-4] + '/' + str(counter).zfill(6) )
 		f_output.write('\n')
 		counter = counter + interval_v
 
