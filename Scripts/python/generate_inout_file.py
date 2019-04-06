@@ -11,7 +11,7 @@ interval_v = 16
 
 cmd1 = 'time GLOG_logtosterr=1 ../../build/tools/extract_image_features.bin prototxt/c3d_sport1m_feature_extractor_video.prototxt conv3d_deepnetA_sport1m_iter_1900000'
 
-cmd2 = 'prototxt/output_list_video_prefix.txt fc6-1 prob	'
+cmd2 = 'prototxt/output_list_video_prefix.txt fc6-1	'
 
 gpu_id = 0
 batch_size = 50
