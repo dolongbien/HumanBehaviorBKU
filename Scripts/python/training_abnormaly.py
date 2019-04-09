@@ -8,8 +8,8 @@ print("Starting training...")
 
 AllClassPath='/content/gdrive/My Drive/Code/Train'
 # AllClassPath contains C3D features (.txt file)  of each video. Each text file contains 32 features, each of 4096 dimension
-output_dir='/content/gdrive/My Drive/Code/Final398388_FinalNoBurglary_OriginLoss/'
-loss_dir = '/content/gdrive/My Drive/Code/Final398388_FinalNoBurglary_OriginLoss/Loss'
+output_dir='/content/gdrive/My Drive/Code/Trained_13Actions/'
+loss_dir = '/content/gdrive/My Drive/Code/Trained_13Actions/Loss'
 # Output_dir is the directory where you want to save trained weights
 weights_path = output_dir + 'weights.mat'
 # weights.mat are the model weights that you will get after (or during) that training
