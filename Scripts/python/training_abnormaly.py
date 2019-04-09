@@ -43,7 +43,7 @@ for it_num in range(num_iters):
     total_iterations += 1
     # PLOT THE LOSS
     plt.plot(loss_graph, label='loss')
-    plt.title('Ranking Loss')
+    plt.title('MIL Ranking Loss')
     plt.legend()
     plt.xlabel('Number of iteration')
     plt.ylabel('Loss')
