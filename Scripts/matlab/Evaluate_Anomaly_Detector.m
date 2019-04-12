@@ -116,5 +116,9 @@ prec=tp./(fp+tp);
 AUC1 = trapz(fpr ,rec );
 % You can also use the following codes
 [X,Y,T,AUC] = perfcurve(All_GT,All_Detect,1);
-
+% LABELS, SCORES, POSITIVE CLASS LABEL
+[X2,Y2,T2,AUC2] = perfcurve(All_GT,All_Detect,1, 'tvals', [0.5; 0.8]);
+% missrate = 1-Y2
+[X3,Y3,T3,AUC3] = perfcurve(All_GT,All_Detect,1, 'xcrit', 'fnr');
+save BKU AUC X Y
  
