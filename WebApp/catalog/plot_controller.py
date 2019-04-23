@@ -101,13 +101,13 @@ def load_dataset_One_Video_Features(Test_Video_Path):
     return  AllFeatures
 
 def get_score():
-    Model_dir = '/Users/dath/Documents/Repository/AnomalyDetectionCVPR2018/'
+    Model_dir = 'catalog/static/model/'
     weights_path = Model_dir + 'weights_L1L2.mat'
     model_path = Model_dir + 'model.json'
     model = load_model(model_path)
     load_weights(model, weights_path)
 
-    video_path = '/Users/dath/Documents/Repository/DemoDjango/django-locallibrary-tutorial/catalog/static/media/Shoplifting028_x264.mp4'
+    video_path = 'catalog/static/media/Shoplifting028_x264.mp4'
 
     cap = cv2.VideoCapture(video_path)
     #Total_frames = cap.get(cv2.CV_CAP_PROP_FRAME_COUNT)
