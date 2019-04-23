@@ -44,16 +44,19 @@
              </ul> -->
     </div>
     <div class='col-sm-6'>
-        <div class='plot'>
+        <div class="svg">
 
         </div>
     </div>
     <!-- <p>X: {{x}}</p>
     <p>Scores: {{scores}}</p> -->
 
-    <svg>
-        
-    </svg>
+    <div id="controls">
+        <form action="">
+            <button type="button" class="btn btn-primary" id="play-pause">Play</button>
+            <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
+        </form>
+    </div>
 
     <script>
         const x = {{x}};

@@ -1,16 +1,9 @@
 
-const dataset = scores.map( (score) => {
-    console.log(score.id);
-    return {'x': score.id, 'score': score}
-})
-
-
-
-function plot(numberOfFrame){
+function plotScore(numberOfFrame){
 
     var margin = {top: 50, right: 50, bottom: 50, left: 50}
-        , width = window.innerWidth - margin.left - margin.right 
-        , height = window.innerHeight - margin.top - margin.bottom;
+        , width = 500 - margin.left - margin.right 
+        , height = 300 - margin.top - margin.bottom;
 
     var xScale = d3.scaleLinear()
         .domain([0, numberOfFrame - 1])
@@ -22,10 +15,12 @@ function plot(numberOfFrame){
 
     var line = d3.line()
         .x((d, i) => { return xScale(i); })
-        .y((d) => { return yScale(d.score); })
+        .y((d) => { return yScale(d); })
         .curve(d3.curveMonotoneX);
+    
+    d3.select(".svg").html('');
 
-    var svg = d3.select("svg")
+    var svg = d3.select(".svg").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -41,7 +36,7 @@ function plot(numberOfFrame){
         .call(d3.axisLeft(yScale));
     
     svg.append("path")
-        .datum(dataset)
+        .datum(scores)
         .attr("class", "line")
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -51,28 +46,39 @@ function plot(numberOfFrame){
         .attr("d", line);
 }
 
-$('button.plot').click(function() {
-    let totalFrame = scores.length;
-    print(totalFrame)
-    plot(totalFrame);
-});
-
-
 let numberFrame = 0;
 let frameRate = 29.97;
 const video = VideoFrame({
     id : 'video',
     frameRate,
-    callback : function(frame) {
-        console.log(numberFrame);
-        numberFrame = frame;
+    callback : function(numberFrame) {
         if (numberFrame % 25 == 1){
-            plot(numberFrame);
+            plotScore(numberFrame);
         }
     }
 });
 
-console.log(video)
+$('#plot-score').click(function() {
+    let nFrame = scores.length;
+    plotScore(nFrame);
+});
+
+
+$('#play-pause').click(function(){
+    ChangeButtonText();
+});
+
+function ChangeButtonText(){
+  if(video.video.paused){
+        video.video.play();
+        video.listen('frame');
+        $("#play-pause").html('Pause');
+    }else{
+        video.video.pause();
+        video.stopListen();
+        $("#play-pause").html('Play');
+    }
+  }
 
 
 // video.on('playing', (event) => {
@@ -87,11 +93,5 @@ console.log(video)
 //     }
 //     // console.log($('video').seekToNextFrame())
 // })
-
-
-
-$('video').on('durationchange', (event) => {
-  console.log('Not sure why, but the duration of the video has changed.');
-});
 
 // $( "button.plot" ).html( "Next Step..." )
