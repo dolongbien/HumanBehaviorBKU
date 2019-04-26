@@ -106,7 +106,7 @@ def get_score():
     model = load_model(model_path)
     load_weights(model, weights_path)
 
-    video_path = 'catalog/static/media/Shoplifting028_x264.mp4'
+    video_path = 'catalog/static/media/RoadAccidents011_x264.mp4'
 
     cap = cv2.VideoCapture(video_path)
     #Total_frames = cap.get(cv2.CV_CAP_PROP_FRAME_COUNT)
