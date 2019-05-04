@@ -8,10 +8,11 @@ from django.http import HttpResponse
 # Create your views here.
 
 from .models import Book, Author, BookInstance, Genre
-from .plot_controller import get_score, get_abs
+from .plot_controller import get_score
 
 import json
 
+import glob
 
 def index(request):
     """View function for home page of site."""
@@ -20,10 +21,9 @@ def index(request):
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
 
-    x, scores = get_score()
+    x, scores = get_score('catalog/static/media/RoadAccidents011_x264.mp4')
     x = json.dumps(x.tolist())
     scores = json.dumps(scores.tolist())
-    # print(type(x))
 
     # Render the HTML template index.html with the data in the context variable.
     
@@ -39,6 +39,43 @@ def index(request):
 
 from django.views import generic
 
+class VideoListView(generic.TemplateView):
+    paginate_by = 10
+    template_name = 'catalog/video_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        video_list = glob.glob('catalog/static/media/*.mp4')
+        for i, value in enumerate(video_list):
+            title = value[21:-4]
+            video = {'url': '/catalog/video/' + title, 'title': title}
+            video_list[i] = video
+        context['video_list'] = video_list
+        return context
+
+
+class VideoDetailView(generic.TemplateView):
+    template_name = 'catalog/video_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        title = context['video_title']
+        context['video'] = {'url': 'media/{}.mp4'.format(title), 'title': title}
+        x, scores = get_score('catalog/static/media/{}.mp4'.format(title))
+        x = json.dumps(x.tolist())
+        scores = json.dumps(scores.tolist())
+        context['x'] = x 
+        context['scores'] = scores
+        return context
+    
+    # def dis
+
+    pass
+
+
+class SettingsView(generic.ListView):
+    pass
 
 class BookListView(generic.ListView):
     """Generic class-based view for a list of books."""

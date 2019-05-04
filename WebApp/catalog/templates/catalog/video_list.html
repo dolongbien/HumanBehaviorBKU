@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Video List</h1>
+
+    {% if video_list %}
+    <ul>
+
+      {% for video in video_list %}
+      <li>
+        <a href="{{ video.url }}">{{ video.title }}</a>
+      </li>
+      {% endfor %}
+
+    </ul>
+
+    {% else %}
+      <p>There are no videos in the server.</p>
+    {% endif %}       
+{% endblock %}
+

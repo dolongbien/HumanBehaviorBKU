@@ -80,18 +80,3 @@ function ChangeButtonText(){
     }
   }
 
-
-// video.on('playing', (event) => {
-//     $('button.plot').trigger('click');
-//     setTimeout({}, frameRate);
-//     if(!video.paused){
-//         console.log('continue');
-//         video.trigger('click');
-//     }
-//     else{
-//         console.log('paused');
-//     }
-//     // console.log($('video').seekToNextFrame())
-// })
-
-// $( "button.plot" ).html( "Next Step..." )

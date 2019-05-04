@@ -99,18 +99,19 @@ def load_dataset_One_Video_Features(Test_Video_Path):
 
     return  AllFeatures
 
-def get_score():
+def get_score(video_path):
     Model_dir = 'catalog/static/model/'
     weights_path = Model_dir + 'weights_L1L2.mat'
     model_path = Model_dir + 'model.json'
     model = load_model(model_path)
     load_weights(model, weights_path)
+    print(video_path)
 
-    video_path = 'catalog/static/media/RoadAccidents011_x264.mp4'
+    # video_path = 'catalog/static/media/RoadAccidents011_x264.mp4'
 
     cap = cv2.VideoCapture(video_path)
     #Total_frames = cap.get(cv2.CV_CAP_PROP_FRAME_COUNT)
-    print(cv2)
+    # print(cv2)
     Total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     total_segments = np.linspace(1, Total_frames, num=33)
     total_segments = total_segments.round()
@@ -144,46 +145,10 @@ def get_score():
 
     print ("Anomaly Prediction")
     x = np.linspace(1, Total_frames, Total_frames)
-    print(x)
     scores = Frames_Score
     scores1=scores.reshape((scores.shape[1],))
     scores1 = savitzky_golay(scores1, 101, 3)
-    plt.close()
-    break_pt=min(scores1.shape[0], x.shape[0])
-    # plt.axis([0, Total_frames, 0, 1])
-    # i=0;
-    # while True:
-    #     flag, frame = cap.read()
-    #     if flag:
-    #         i = i + 1
-    #         # cv2.imshow('video', frame)
-    #         # jj=i%25
-    #         # if jj==1:
-    #         #     plt.plot(x[:i], scores1[:i], color='r', linewidth=3)
-    #             # plt.draw()
-    #             # plt.pause(0.000000000000000000000001)
-
-    #         pos_frame = cap.get(cv2.CAP_PROP_POS_FRAMES)
-    #         print (str(pos_frame) + " frames")
-    #     else:
-    #         # The next frame is not ready, so we try to read it again
-    #         cap.set(cv2.CAP_PROP_POS_FRAMES, pos_frame - 1)
-    #         print("frame is not ready")
-    #         # It is better to wait for a while for the next frame to be ready
-    #         cv2.waitKey(1000)
-
-    #     if cv2.waitKey(10) == 27:
-    #         break
-    #     if cap.get(cv2.CAP_PROP_POS_FRAMES)== break_pt:
-    #         #cap.get(cv2.CAP_PROP_FRAME_COUNT):
-    #         # If the number of captured frames is equal to the total number of frames,
-    #         # we stop
-    #         break
+    # print(scores1)
     return x, scores1
 
-x, scores = get_score()
-
-# print(len(x))
-
-def get_abs():
-    return 3
+get_score('catalog/static/media/RoadAccidents011_x264.mp4')

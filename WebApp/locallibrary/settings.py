@@ -143,6 +143,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
 
+# The absolute path to the directory of media root. Not sure if deployment?
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# The URL to use when referring to media files
+# MEDIA_URL = '/media/'
+
 
 # Static file serving.
 # http://whitenoise.evans.io/en/stable/django.html#django-middleware
