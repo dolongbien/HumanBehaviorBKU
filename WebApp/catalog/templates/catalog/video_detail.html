@@ -7,11 +7,18 @@
 
 
 <div class='container'>
-    <div class='col-sm-4 border-right' style="border-right: solid 1px">
+    <div class='col-sm-4 border-right'>
         <video controls id='video'>
             {% load staticfiles%}
             <source src="{% static video.url %}" type="video/mp4">
         </video>
+
+        <!-- <div id="controls"> -->
+            <form action="">
+                <button type="button" class="btn btn-primary" id="play-pause">Play</button>
+                <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
+            </form>
+        <!-- </div> -->
     </div>
     <div class='col-sm-8'>
         <div class="svg">
@@ -19,18 +26,13 @@
         </div>
     </div>
 
-    <div id="controls">
-        <form action="">
-            <button type="button" class="btn btn-primary" id="play-pause">Play</button>
-            <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
-        </form>
-    </div>
-
-    <script>
-        const x = {{x}};
-        const scores = {{scores}};
-    </script>
 </div>
+
+
+<script>
+    const x = {{x}};
+    const scores = {{scores}};
+</script>
 
 {% endblock %}
 

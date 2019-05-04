@@ -1,12 +1,13 @@
 
 function plotScore(numberOfFrame){
+    var totalFrame = scores.length;
 
     var margin = {top: 50, right: 50, bottom: 50, left: 50}
         , width = 500 - margin.left - margin.right 
         , height = 300 - margin.top - margin.bottom;
 
     var xScale = d3.scaleLinear()
-        .domain([0, numberOfFrame - 1])
+        .domain([0, totalFrame - 1])
         .range([0, width]);
 
     var yScale = d3.scaleLinear()
@@ -36,7 +37,7 @@ function plotScore(numberOfFrame){
         .call(d3.axisLeft(yScale));
     
     svg.append("path")
-        .datum(scores)
+        .datum(scores.slice(1, numberOfFrame))
         .attr("class", "line")
         .attr("fill", "none")
         .attr("stroke", "steelblue")
