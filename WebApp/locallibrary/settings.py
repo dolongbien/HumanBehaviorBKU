@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.sites',
+    # 'cms',
+    # 'menus',
+    # 'treebeard',
+    # 'djangocms_video',
     # Add our new application 
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
 ]
@@ -144,9 +149,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # The absolute path to the directory of media root. Not sure if deployment?
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # The URL to use when referring to media files
-# MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 
 # Static file serving.

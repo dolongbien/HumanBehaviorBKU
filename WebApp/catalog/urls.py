@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('videos/', views.VideoListView.as_view(), name='videos'),
     path('video/<str:video_title>', views.VideoDetailView.as_view(), name='video-detail'),
+    path('video-upload', views.simple_upload, name='video-upload'),
     path('settings', views.SettingsView.as_view(), name='settings'),
     path('books/', views.BookListView.as_view(), name='books'),
     path('book/<int:pk>', views.BookDetailView.as_view(), name='book-detail'),

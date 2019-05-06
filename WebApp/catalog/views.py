@@ -5,14 +5,16 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from django.http import HttpResponse
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 from .models import Book, Author, BookInstance, Genre
-from .plot_controller import get_score
 
 import json
-
 import glob
+
+from c3d.extract_feature import load_npy, extract_feature_video
+from .plot_controller import get_score
 
 def index(request):
     """View function for home page of site."""
@@ -20,10 +22,6 @@ def index(request):
     # Number of visits to this view, as counted in the session variable.
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
-
-    x, scores = get_score('catalog/static/media/RoadAccidents011_x264.mp4')
-    x = json.dumps(x.tolist())
-    scores = json.dumps(scores.tolist())
 
     # Render the HTML template index.html with the data in the context variable.
     
@@ -33,7 +31,6 @@ def index(request):
         context={'num_books': '/num_books', 'num_instances': 'num_instances',
                  'num_instances_available': 'num_instances_available', 'num_authors': 'num_authors',
                  'num_visits': num_visits,
-                 'x': x, 'scores': scores,
                  }
     )
 
@@ -46,9 +43,9 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        video_list = glob.glob('catalog/static/media/*.mp4')
+        video_list = sorted(glob.glob('media/*.mp4'))
         for i, value in enumerate(video_list):
-            title = value[21:-4]
+            title = value[6:-4]
             video = {'url': '/catalog/video/' + title, 'title': title}
             video_list[i] = video
         context['video_list'] = video_list
@@ -61,17 +58,37 @@ class VideoDetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         title = context['video_title']
-        context['video'] = {'url': 'media/{}.mp4'.format(title), 'title': title}
-        x, scores = get_score('catalog/static/media/{}.mp4'.format(title))
-        x = json.dumps(x.tolist())
-        scores = json.dumps(scores.tolist())
-        context['x'] = x 
+        context['video'] = {'url': '/media/{}.mp4'.format(title), 'title': title}
+
+        # get scores by feature file txt
+        
+        # x, scores = get_score('media/{}.mp4'.format(title))
+        # scores = json.dumps(scores.tolist())
+
+        # get score by extracture from c3d keras
+        
+        predictions = load_npy('media/{}.npy'.format(title))
+        print('PREDICTIONS', predictions)
+        scores = json.dumps(predictions.tolist())
+        
         context['scores'] = scores
         return context
-    
-    # def dis
 
-    pass
+
+def simple_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+
+        extract_feature_video(uploaded_file_url[1:]) # uploaded_file_url has template '/media/file_base.mp4' => 'media/file_base.mp4'
+
+        return render(request, 'catalog/video_upload.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+
+    return render(request, 'catalog/video_upload.html')
 
 
 class SettingsView(generic.ListView):

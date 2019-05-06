@@ -4,13 +4,10 @@
 
 <h1>Name: {{ video.title }}</h1>
 
-
-
 <div class='container'>
     <div class='col-sm-4 border-right'>
         <video controls id='video'>
-            {% load staticfiles%}
-            <source src="{% static video.url %}" type="video/mp4">
+            <source src="{{ video.url }}" type="video/mp4">
         </video>
 
         <!-- <div id="controls"> -->
@@ -30,7 +27,6 @@
 
 
 <script>
-    const x = {{x}};
     const scores = {{scores}};
 </script>
 

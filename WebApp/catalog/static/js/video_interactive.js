@@ -37,7 +37,7 @@ function plotScore(numberOfFrame){
         .call(d3.axisLeft(yScale));
     
     svg.append("path")
-        .datum(scores.slice(1, numberOfFrame))
+        .datum(scores.slice(0, numberOfFrame))
         .attr("class", "line")
         .attr("fill", "none")
         .attr("stroke", "steelblue")

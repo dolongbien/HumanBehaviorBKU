@@ -6,6 +6,10 @@ from keras.models import model_from_json
 import numpy as np
 import numpy.matlib
 
+from keras import Sequential
+from keras.layers import Dense, Dropout
+from keras.regularizers import l2
+
 import os, sys
 from os import listdir
 
@@ -17,8 +21,18 @@ import cv2
 seed = 7
 np.random.seed(seed)
 
+
+def classifier_model():
+    model = Sequential()
+    model.add(Dense(512, input_dim=4096, kernel_initializer='glorot_normal', kernel_regularizer=l2(0.001), activation='relu'))
+    model.add(Dropout(0.6))
+    model.add(Dense(32, kernel_initializer='glorot_normal', kernel_regularizer=l2(0.001)))
+    model.add(Dropout(0.6))
+    model.add(Dense(1, kernel_initializer='glorot_normal', kernel_regularizer=l2(0.001), activation='sigmoid'))
+    return model
+
 def load_model(json_path):
-    model = model_from_json(open(json_path).read())
+    model = classifier_model()
     return model
 
 def load_weights(model, weight_path):
@@ -100,7 +114,7 @@ def load_dataset_One_Video_Features(Test_Video_Path):
     return  AllFeatures
 
 def get_score(video_path):
-    Model_dir = 'catalog/static/model/'
+    Model_dir = 'c3d/trained_models/'
     weights_path = Model_dir + 'weights_L1L2.mat'
     model_path = Model_dir + 'model.json'
     model = load_model(model_path)
@@ -151,4 +165,4 @@ def get_score(video_path):
     # print(scores1)
     return x, scores1
 
-get_score('catalog/static/media/RoadAccidents011_x264.mp4')
+# get_score('media/RoadAccidents011_x264.mp4')
