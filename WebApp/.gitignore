@@ -92,3 +92,5 @@ db.sqlite3
 
 
 staticfiles/
+
+c3d/trained_models/c3d_sports1m.h5

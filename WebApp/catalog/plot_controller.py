@@ -115,7 +115,7 @@ def load_dataset_One_Video_Features(Test_Video_Path):
 
 def get_score(video_path):
     Model_dir = 'c3d/trained_models/'
-    weights_path = Model_dir + 'weights_L1L2.mat'
+    weights_path = Model_dir + 'weightsAnomalyL1L2_10000_roadaccidents2.mat'
     model_path = Model_dir + 'model.json'
     model = load_model(model_path)
     load_weights(model, weights_path)
