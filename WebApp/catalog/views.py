@@ -1,15 +1,18 @@
 from django.shortcuts import render
-
-from io import BytesIO
-from matplotlib.figure import Figure                      
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.files.storage import FileSystemStorage
+from django.views import View
+from django.conf import settings
+from celery import shared_task
+from celery_progress.backend import ProgressRecorder
+import time
 # Create your views here.
 
-from .models import Book, Author, BookInstance, Genre
+from django.views import generic
+from .models import Video
+from .forms import VideoForm
 
+import os
 import json
 import glob
 
@@ -34,8 +37,6 @@ def index(request):
                  }
     )
 
-from django.views import generic
-
 class VideoListView(generic.TemplateView):
     paginate_by = 10
     template_name = 'catalog/video_list.html'
@@ -43,7 +44,7 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        video_list = sorted(glob.glob('media/*.mp4'))
+        video_list = sorted(glob.glob('media/videos/*.mp4'))
         for i, value in enumerate(video_list):
             title = value[6:-4]
             video = {'url': '/catalog/video/' + title, 'title': title}
@@ -58,7 +59,7 @@ class VideoDetailView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         title = context['video_title']
-        context['video'] = {'url': '/media/{}.mp4'.format(title), 'title': title}
+        context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
 
         # get scores by feature file txt
         
@@ -67,164 +68,72 @@ class VideoDetailView(generic.TemplateView):
 
         # get score by extracture from c3d keras
         
-        predictions = load_npy('media/{}.npy'.format(title))
+        predictions = load_npy('media/feature/{}.npy'.format(title))
         print('PREDICTIONS', predictions)
         scores = json.dumps(predictions.tolist())
         
         context['scores'] = scores
         return context
 
+class VideoUploadView(View):
+    def get(self, request):
+        videos_list = Video.objects.all()
+        return render(self.request, 'catalog/video_upload.html', {'videos': videos_list})
 
-def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-
-        extract_feature_video(uploaded_file_url[1:]) # uploaded_file_url has template '/media/file_base.mp4' => 'media/file_base.mp4'
-
-        return render(request, 'catalog/video_upload.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-
-    return render(request, 'catalog/video_upload.html')
-
-
-class SettingsView(generic.ListView):
-    pass
-
-class BookListView(generic.ListView):
-    """Generic class-based view for a list of books."""
-    model = Book
-    paginate_by = 10
-
-
-class BookDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
-    model = Book
-
-
-class AuthorListView(generic.ListView):
-    """Generic class-based list view for a list of authors."""
-    model = Author
-    paginate_by = 10
-
-
-class AuthorDetailView(generic.DetailView):
-    """Generic class-based detail view for an author."""
-    model = Author
-
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
-    """Generic class-based view listing books on loan to current user."""
-    model = BookInstance
-    template_name = 'catalog/bookinstance_list_borrowed_user.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
-
-
-# Added as part of challenge!
-from django.contrib.auth.mixins import PermissionRequiredMixin
-
-
-class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
-    """Generic class-based view listing all books on loan. Only visible to users with can_mark_returned permission."""
-    model = BookInstance
-    permission_required = 'catalog.can_mark_returned'
-    template_name = 'catalog/bookinstance_list_borrowed_all.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return BookInstance.objects.filter(status__exact='o').order_by('due_back')
-
-
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-import datetime
-from django.contrib.auth.decorators import permission_required
-
-# from .forms import RenewBookForm
-from catalog.forms import RenewBookForm
-
-
-@permission_required('catalog.can_mark_returned')
-def renew_book_librarian(request, pk):
-    """View function for renewing a specific BookInstance by librarian."""
-    book_instance = get_object_or_404(BookInstance, pk=pk)
-
-    # If this is a POST request then process the Form data
-    if request.method == 'POST':
-
-        # Create a form instance and populate it with data from the request (binding):
-        form = RenewBookForm(request.POST)
-
-        # Check if the form is valid:
+    def post(self, request):
+        time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
+        form = VideoForm(self.request.POST, self.request.FILES)
         if form.is_valid():
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            book_instance.due_back = form.cleaned_data['renewal_date']
-            book_instance.save()
+            video = form.save()
+            data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url}
+            if os.path.splitext(video.file.name)[1] == '.mp4':
+                extract_feature_video('media/' + video.file.name).delay()
+        else:
+            data = {'is_valid': False}
+        return JsonResponse(data)
 
-            # redirect to a new URL:
-            return HttpResponseRedirect(reverse('all-borrowed'))
+class SettingsView(View):
+    def get(self, request):
+        # videos_list = Video.objects.all()
+        return render(self.request, 'catalog/settings.html')
 
-    # If this is a GET (or any other method) create the default form
-    else:
-        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
-
-    context = {
-        'form': form,
-        'book_instance': book_instance,
-    }
-
-    return render(request, 'catalog/book_renew_librarian.html', context)
-
-
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Author
-
-
-class AuthorCreate(PermissionRequiredMixin, CreateView):
-    model = Author
-    fields = '__all__'
-    initial = {'date_of_death': '05/01/2018'}
-    permission_required = 'catalog.can_mark_returned'
+    def post(self, request):
+        # time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
+        # form = VideoForm(self.request.POST, self.request.FILES)
+        # if form.is_valid():
+        #     video = form.save()
+        #     data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url}
+        # else:
+        #     data = {'is_valid': False}
+        # return JsonResponse(data)
+        pass
 
 
-class AuthorUpdate(PermissionRequiredMixin, UpdateView):
-    model = Author
-    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-    permission_required = 'catalog.can_mark_returned'
+# def get_progress(request, task_id):
+#     result = AsyncResult(task_id)
+#     response_data = {
+#         'state': result.state,
+#         'details': result.info,
+#     }
+#     return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+from celery import shared_task, current_task, task, Celery
+from celery.result import AsyncResult
+from celery_progress.backend import Progress
+import time
 
 
-class AuthorDelete(PermissionRequiredMixin, DeleteView):
-    model = Author
-    success_url = reverse_lazy('authors')
-    permission_required = 'catalog.can_mark_returned'
+app = Celery('catalog', broker='redis:///0')
 
+@app.task
+def my_task(seconds):
+    print('SEF', seconds)
+    """ Get some rest, asynchronously, and update the state all the time """
+    for i in range(100):
+        time.sleep(0.1)
+        current_task.update_state(state='PROGRESS',
+            meta={'current': i, 'total': 100})
 
-# Classes created for the forms challenge
-class BookCreate(PermissionRequiredMixin, CreateView):
-    model = Book
-    fields = '__all__'
-    permission_required = 'catalog.can_mark_returned'
-
-
-class BookUpdate(PermissionRequiredMixin, UpdateView):
-    model = Book
-    fields = '__all__'
-    permission_required = 'catalog.can_mark_returned'
-
-
-class BookDelete(PermissionRequiredMixin, DeleteView):
-    model = Book
-    success_url = reverse_lazy('books')
-    permission_required = 'catalog.can_mark_returned'
+def progress_view(request):
+    result = my_task.delay(10)
+    return render(request, 'catalog/progress.html', context={'task_id': result.task_id})

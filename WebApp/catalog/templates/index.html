@@ -1,58 +1,9 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
+{% block videos_content %}
 <h1>Detect Anomaly Traffic</h1>
 
 <p>Welcome to <em>DetectAnomalyTraffic</em></p>
-
-<!-- <h2>UML Models</h2>
-<p>An UML diagram of the site's Django model structure is shown below. </p> -->
-<!-- 
-<div>
-{% load static %}
-<img src="{% static 'images/local_library_model_uml.png' %}" alt="My image" style="width:555px;height:540px;"/>
-</div>   -->
-
-<!-- 
-<h2>Dynamic content</h2>
-
-<p>The library has the following record counts:</p>
-<ul>
-<li><strong>Books:</strong> {{ num_books }}</li>
-<li><strong>Copies:</strong> {{ num_instances }}</li>
-<li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-<li><strong>Authors:</strong> {{ num_authors }}</li>
-</ul> -->
-
-<div class='container'>
-    <div class='col-sm-4 border-right' style="border-right: solid 1px">
-        <video controls id='video'>
-            <source src="{% static 'media/RoadAccidents011_x264.mp4' %}" type="video/mp4">
-        </video>
-    </div>
-    <div class='col-sm-8'>
-        <div class="svg">
-
-        </div>
-    </div>
-    <!-- <p>X: {{x}}</p>
-    <p>Scores: {{scores}}</p> -->
-
-    <div id="controls">
-        <form action="">
-            <button type="button" class="btn btn-primary" id="play-pause">Play</button>
-            <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
-        </form>
-    </div>
-
-    <script>
-        const x = {{x}};
-        const scores = {{scores}};
-        // console.log('script test tmp');
-        // console.log(typeof x);
-    </script>
-</div>
-
 
 You have visited this page {{ num_visits }} times.
 

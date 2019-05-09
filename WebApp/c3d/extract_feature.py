@@ -2,8 +2,9 @@ import os
 from .c3d import *
 from .classifier import *
 from .utils.visualization_util import *
+from celery import task
 
-
+@task
 def extract_feature_video(video_path):
 
     video_name = os.path.basename(video_path).split('.')[0]

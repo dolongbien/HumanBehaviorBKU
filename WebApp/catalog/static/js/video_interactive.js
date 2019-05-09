@@ -66,11 +66,7 @@ $('#plot-score').click(function() {
 
 
 $('#play-pause').click(function(){
-    ChangeButtonText();
-});
-
-function ChangeButtonText(){
-  if(video.video.paused){
+    if(video.video.paused){
         video.video.play();
         video.listen('frame');
         $("#play-pause").html('Pause');
@@ -79,5 +75,4 @@ function ChangeButtonText(){
         video.stopListen();
         $("#play-pause").html('Play');
     }
-  }
-
+});

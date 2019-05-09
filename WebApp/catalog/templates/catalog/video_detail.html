@@ -1,34 +1,37 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
+{% load static %}
 
-<h1>Name: {{ video.title }}</h1>
+{% block title %}Video {{ video.title }}{% endblock %}
 
-<div class='container'>
-    <div class='col-sm-4 border-right'>
-        <video controls id='video'>
-            <source src="{{ video.url }}" type="video/mp4">
-        </video>
+{% block videos_content %}
 
-        <!-- <div id="controls"> -->
+    <div class='container'>
+        <div class='col-sm-4 border-right'>
+            <video controls id='video'>
+                <source src="{{ video.url }}" type="video/mp4">
+            </video>
+
             <form action="">
                 <button type="button" class="btn btn-primary" id="play-pause">Play</button>
                 <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
             </form>
-        <!-- </div> -->
-    </div>
-    <div class='col-sm-8'>
-        <div class="svg">
-
         </div>
+        <div class='col-sm-8'>
+            <div class="svg">
+
+            </div>
+        </div>
+
     </div>
-
-</div>
-
-
-<script>
-    const scores = {{scores}};
-</script>
 
 {% endblock %}
 
+{% block javascript %}
+    <script>
+        const scores = {{scores}};
+    </script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://rawgit.com/allensarkisyan/VideoFrame/master/VideoFrame.min.js"></script>
+    <script src="/static/js/video_interactive.js"></script>
+{% endblock %}

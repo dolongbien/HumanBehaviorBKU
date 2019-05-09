@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block videos_content %}
+    <h3>Upload New Weight</h3>
+    <div class="well text-muted text-center" style="padding-top: 2rem; padding-bottom: 2rem;">
+        <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
+        <h3>Drop Weights Here to Upload</h3>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <button type="button" class="btn btn-primary js-upload-weights">
+        <span class="glyphicon glyphicon-cloud-upload"></span> Upload Weights
+        </button>
+        <input id="fileupload" type="file" name="file" multiple
+            style="display: none;"
+            data-url="{% url 'catalog:video-upload' %}"
+            data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+    </div>
+    <h3>Select Weight To Demo</h3>
+    <div class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios">
+        <label class="custom-control-label" for="defaultGroupExample1">weightL1L2.mat</label>
+    </div>
+    
+    <!-- Group of default radios - option 2 -->
+    <div class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" checked>
+        <label class="custom-control-label" for="defaultGroupExample2">weightsAnomalyL1L2_10000_roadaccidents2.mat</label>
+    </div>
+    
+    <!-- Group of default radios - option 3 -->
+    <div class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios">
+        <label class="custom-control-label" for="defaultGroupExample3">weightsAnomalyL1L2_10000.mat</label>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

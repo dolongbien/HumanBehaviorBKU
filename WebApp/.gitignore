@@ -90,7 +90,6 @@ local_settings.py
 db.sqlite3
 
 
-
-staticfiles/
+media/
 
 c3d/trained_models/c3d_sports1m.h5

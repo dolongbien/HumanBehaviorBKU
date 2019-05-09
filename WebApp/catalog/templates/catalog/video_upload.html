@@ -1,25 +1,76 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
 
+{% load static %}
 
-<h1>Video Uploader</h1>
-<form enctype="multipart/form-data" method="POST" action="">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="file" name="myfile">
-<input type="submit" value="Upload"/>
-</form>
+{% block title %}Upload Video{% endblock %}
 
-{% if uploaded_file_url %}
-<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+{% block videos_content %}
+  <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
+    <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
+    <h3>Drop Videos Here to Upload</h3>
+  </div>
+  <div style="margin-bottom: 20px;">
+    <button type="button" class="btn btn-primary js-upload-videos">
+      <span class="glyphicon glyphicon-cloud-upload"></span> Upload Videos
+    </button>
+    <button type="button" class="btn btn-primary js-extract-feature">
+      <span class="glyphicon glyphicon-cloud-upload"></span> Extract Feature
+    </button>  
+    <input id="fileupload" type="file" name="file" multiple
+           style="display: none;"
+           data-url="{% url 'catalog:video-upload' %}"
+           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+  </div>
 
-<video width='400' controls>
-    <source src='{{ uploaded_file_url }}' type='video/mp4'>
-    Your browser does not support the video tag.
-</video>
-{% endif %}
+  <table id="gallery" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Videos</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for video in videos %}
+        <tr>
+          <td><a href="{{ video.file.url }}">{{ video.file.name }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
+  <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Uploading...</h4>
+        </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
 
+{% block javascript %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
 
+  {# VIDEO PAGE SCRIPTS #}
+  <script src="{% static 'js/upload.js' %}"></script>
+  <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+  <script>
+    // var progress = {% if progress %} {{progress}} {%else%} 0 {% endif %};
+
+    // JQuery
+    var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+    $(function () {
+      console.log('ECESCEC');
+      CeleryProgressBar.initProgressBar(progressUrl);
+    });
+  </script>
 {% endblock %}
