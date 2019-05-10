@@ -45,7 +45,7 @@ def extract_feature_video(video_path):
 
     predictions = extrapolate(predictions, num_frames)
 
-    np.save('media/{}'.format(video_name), predictions)
+    np.save('media/features/{}'.format(video_name), predictions)
 
     # save_path = os.path.join(cfg.output_folder, video_name + '.gif')
     # visualize predictions

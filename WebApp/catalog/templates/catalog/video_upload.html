@@ -6,6 +6,14 @@
 {% block title %}Upload Video{% endblock %}
 
 {% block videos_content %}
+
+  <form method="post" action="{% url 'catalog:clear_database' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <button type="submit" class="btn btn-danger pull-right">
+      <span class="glyphicon glyphicon-trash"></span> Clear Database
+    </button>
+  </form>
   <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
     <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
     <h3>Drop Videos Here to Upload</h3>
@@ -32,7 +40,7 @@
     <tbody>
       {% for video in videos %}
         <tr>
-          <td><a href="{{ video.file.url }}">{{ video.file.name }}</a></td>
+          <td><a href="/catalog/video/{{video.file.basename}}">{{ video.file.name }}</a></td>
         </tr>
       {% endfor %}
     </tbody>
@@ -67,7 +75,6 @@
     // var progress = {% if progress %} {{progress}} {%else%} 0 {% endif %};
 
     // JQuery
-    var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
     $(function () {
       console.log('ECESCEC');
       CeleryProgressBar.initProgressBar(progressUrl);

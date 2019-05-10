@@ -1,0 +1,63 @@
+/**
+ * This is the UNL UCBerkeley Calendar main css file.
+ * @package UNL_UCBCN_Manager
+ * Using markup reference classes organized by fantasai (mozilla foundation)
+ * Last changes by Alvin.W
+ */
+ 
+/**
+ * Suggested order:
+ * display
+ * list-style
+ * position
+ * float
+ * clear
+ * width
+ * height
+ * margin
+ * padding
+ * border
+ * background
+ * color
+ * font
+ * text-decoration
+ * text-align
+ * vertical-align
+ * white-space
+ * other text
+ * content
+ */
+ 
+/**
+   TOC:
+   Body
+   Random HTML Styles
+   Forms
+   General Structure
+   Navigation
+   Quotations
+   Comments and Other Asides
+   Emphasis
+   Computers - General
+   Code
+   Examples and Figures
+   Q and A (FAQ)
+   Tables
+   Meta
+*/
+
+@import url("../css/frontend_default.css");
+
+
+
+/* month view calendar */
+#fixed #main_right { overflow:visible; } /* otherwise cuts off large popup nav */
+.month_cal table.wp-calendar td { border-collapse:collapse; height:12.3em; overflow:visible; background-color:#FAFAFA;}
+.month_cal table.wp-calendar td.prev,
+.month_cal table.wp-calendar td.next { color:#434343; background-color:#F3F3F3; }
+
+#subscribe-ics {display:block; padding:3px; }
+#subscribe-ics-wrap input { margin:4px 0; }
+#subscribe-ics-wrap { padding:0 6px; }
+#subscribe-ics-wrap a { display:block; padding-bottom:3px;  }
+#subscribe li#eventrss a { display:block; }

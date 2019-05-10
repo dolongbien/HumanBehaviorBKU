@@ -129,6 +129,7 @@ def get_score(video_path):
     Total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     total_segments = np.linspace(1, Total_frames, num=33)
     total_segments = total_segments.round()
+    print(video_path)
     FeaturePath=(video_path)
     FeaturePath = FeaturePath[0:-4]
     FeaturePath = FeaturePath+ '_C.txt'

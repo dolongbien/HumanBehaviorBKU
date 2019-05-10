@@ -11,4 +11,5 @@ urlpatterns = [
     path('video-upload', views.VideoUploadView.as_view(), name='video-upload'),
     path('settings', views.SettingsView.as_view(), name='settings'),
     path('progress', views.progress_view, name='progress'),
+    url(r'^clear/$', views.clear_database, name='clear_database'),
 ]

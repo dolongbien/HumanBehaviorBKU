@@ -1,0 +1,77 @@
+﻿/* Print Stylesheet for Main and Secondary Pages */
+* {
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	color: #000;
+}
+
+body	{
+	font-family: Georgia, "Times New Roman", Times, serif;
+	line-height: 2em;
+	font-size: 1.2em;
+	position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+/* Hidden Elements */
+
+.sIFR-replaced object, h1, label, #ucf4_search_and_links, #navigation, #secondary_navigation, #footer_navigation, #sub_header_content, .sifrd sIFR-replaced, #sub_header_image, #weather, #secondary_content, #centerpiece, #colleges {
+	display: none;
+}
+
+/* Main Content */
+#main_content {
+	width: 85%;
+}
+#main_content2 {
+	width: 85%;
+}
+
+/*Header*/
+
+span	{
+	margin: 0px;
+	padding: 0px;
+}
+
+.wrapper	{
+	border-top: 2px solid #F9BF19;
+	position: relative;
+	top: -4px;
+}
+
+#sub_header	{
+	background: none;
+}
+
+#sub_header h2	{
+	font-size: 200%;
+}
+
+#main_content h3, #main_content2 h3	{
+	font-size: 150%;
+}
+
+.spotlight, #campus_events, #news	{
+	float: none;
+	width: 100%;
+	background-image: none;
+}
+
+html {
+	background: none;
+}
+
+#footer p { display: none;}
+
+/*Prints URL in paranthesis after link*/
+#main_content a:after ,
+#content a:after      ,
+#main_content2 a:after,
+#content a:after      ,
+.more a:after         {content: " (" attr(href) ") "; font-size: 90%;}
+
+#home_content a:after {content: " (" attr(href) ") "; font-size: 90%; color: #660000;}
+#home_content a {color: black;}

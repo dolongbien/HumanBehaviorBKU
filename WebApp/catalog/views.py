@@ -44,12 +44,13 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        video_list = sorted(glob.glob('media/videos/*.mp4'))
-        for i, value in enumerate(video_list):
-            title = value[6:-4]
+        video_gifs = sorted(glob.glob('media/gifs/*.gif'))
+        print(video_gifs)
+        for i, value in enumerate(video_gifs):
+            title = os.path.basename(value)[:-4]
             video = {'url': '/catalog/video/' + title, 'title': title}
-            video_list[i] = video
-        context['video_list'] = video_list
+            video_gifs[i] = video
+        context['video_gifs'] = video_gifs
         return context
 
 
@@ -61,23 +62,36 @@ class VideoDetailView(generic.TemplateView):
         title = context['video_title']
         context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
 
+        filename_npy = 'media/features/{}.npy'.format(title)
+        filename_mp4 = 'media/videos/{}.mp4'.format(title)
         # get scores by feature file txt
         
-        # x, scores = get_score('media/{}.mp4'.format(title))
+        # x, scores = get_score(filename_mp4)
         # scores = json.dumps(scores.tolist())
+        # context['scores'] = scores
 
         # get score by extracture from c3d keras
-        
-        predictions = load_npy('media/feature/{}.npy'.format(title))
-        print('PREDICTIONS', predictions)
-        scores = json.dumps(predictions.tolist())
-        
-        context['scores'] = scores
+        print(os.path.exists(filename_npy))
+        if os.path.exists(filename_npy):
+            predictions = load_npy(filename_npy)
+            scores = json.dumps(predictions.tolist())
+            
+            context['scores'] = scores
+        else:
+            if os.path.exists(filename_mp4):
+                extract_feature_video(filename_mp4)
+                predictions = load_npy(filename_npy)
+                scores = json.dumps(predictions.tolist())
+                context['scores'] = scores
+            else:
+                context['message'] = 'File {}.mp4 not found!'.format(title)
         return context
 
 class VideoUploadView(View):
     def get(self, request):
         videos_list = Video.objects.all()
+        for video in videos_list:
+            video.file.basename = video.file.name[7:-4]
         return render(self.request, 'catalog/video_upload.html', {'videos': videos_list})
 
     def post(self, request):
@@ -87,7 +101,7 @@ class VideoUploadView(View):
             video = form.save()
             data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url}
             if os.path.splitext(video.file.name)[1] == '.mp4':
-                extract_feature_video('media/' + video.file.name).delay()
+                extract_feature_video('media/' + video.file.name)
         else:
             data = {'is_valid': False}
         return JsonResponse(data)
@@ -108,14 +122,20 @@ class SettingsView(View):
         # return JsonResponse(data)
         pass
 
+def clear_database(request):
+    for photo in Photo.objects.all():
+        photo.file.delete()
+        photo.delete()
+    return redirect(request.POST.get('next'))
 
-# def get_progress(request, task_id):
-#     result = AsyncResult(task_id)
-#     response_data = {
-#         'state': result.state,
-#         'details': result.info,
-#     }
-#     return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+def get_progress(request, task_id):
+    result = AsyncResult(task_id)
+    response_data = {
+        'state': result.state,
+        'details': result.info,
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 from celery import shared_task, current_task, task, Celery
 from celery.result import AsyncResult

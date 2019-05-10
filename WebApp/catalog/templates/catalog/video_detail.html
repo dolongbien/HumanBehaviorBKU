@@ -18,12 +18,9 @@
             </form>
         </div>
         <div class='col-sm-8'>
-            <div class="svg">
-
-            </div>
+            <div id="curve_chart" style="width: 800px; height: 400px"></div>
         </div>
 
-    </div>
 
 {% endblock %}
 
@@ -31,7 +28,7 @@
     <script>
         const scores = {{scores}};
     </script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://rawgit.com/allensarkisyan/VideoFrame/master/VideoFrame.min.js"></script>
+    <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
     <script src="/static/js/video_interactive.js"></script>
 {% endblock %}

@@ -6,7 +6,7 @@
     <small> {% block title %}{% endblock %}</small>
   </h2>
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-md-3">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -29,9 +29,33 @@
       </div>
     </div>
     <div class="col-md-9">
-      {% block videos_content %}
-      {% endblock %}
+
     </div>
+  </div> -->
+
+<!--   
+<div class="row hide-for-small">
+
+  <div class="nav-bar twelve columns">
+
+    <a class="navigation" href="{% url 'home' %}">HOME</a>
+
+    <a class="navigation" href="{% url 'catalog:videos' %}"><font color="red">VIDEOS DEMO</font></a>
+
+    <a class="navigation" href="#">UPLOAD VIDEOS</a>
+
+    <a class="navigation" href="#">DATASET</a>    
+
+    <a class="navigation" href="#">RESULT</a>
+
+    <a class="navigation" href="#">ABOUT</a>
+
+    <a class="navigation" href="#">CONTACT</a>
+        
   </div>
 
+</div> 
+-->
+  {% block videos_content %}
+  {% endblock %} 
 {% endblock %}

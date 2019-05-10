@@ -4,12 +4,15 @@
 
 {% block videos_content %}
 
-    {% if video_list %}
-    <ul>
+    {% if video_gifs %}
+    <ul class='center'>
 
-      {% for video in video_list %}
-      <li>
-        <a href="{{ video.url }}">{{ video.title }}</a>
+      {% for video in video_gifs %}
+      <li class="list">
+    		{% load static %} 
+    		<img src="/media/gifs/{{ video.title }}.gif" alt="Bk" width="320" height="240" style="margin-top:50px; margin-bottom:10px">
+    		<br>
+        <a href="{{ video.url }}" style="padding-left:80px">{{ video.title }}</a>
       </li>
       {% endfor %}
 
@@ -17,6 +20,6 @@
 
     {% else %}
       <p>There are no videos in the server.</p>
-    {% endif %}       
+    {% endif %}
 {% endblock %}
 

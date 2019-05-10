@@ -1,0 +1,330 @@
+﻿/* Home content specific style */
+#home_content p{
+}
+
+#home_content{
+/*	width: 80%; */
+	width: 980px;
+/*  Mobile
+	width: 785px; */
+	font-size: 70%;
+	margin-left:auto;
+	margin-right: auto;
+/*	margin: 0 auto 0 auto; */
+	font-family: Georgia, serif;
+}
+
+#home_content h2{
+	font-family: arial, sans-serif;
+	font-size: 110%;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 1em;
+}
+
+#home_content a {
+	color: #660000;
+	text-decoration:none;
+	border-bottom: 1px solid #CCC;
+}
+	#home_content a:hover {
+		color: #e50606;
+		text-decoration:none;
+		border-bottom: 1px solid #e50606;
+	}
+
+#content_end{
+	clear: both;
+	margin-bottom: 2em;
+}
+
+/*Centerpiece */
+#centerpiece{
+	margin-bottom: 1.4em;
+	text-align: center;
+}
+
+/*Left Column*/
+.spotlight{
+	line-height: 1.25em;
+	width: 36%;
+	float: left;
+	padding-right: 15px;
+}
+.spotlight h2{
+	color: #e26906;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: helvetica, arial, sans-serif;
+}
+.spotlight .more{
+	clear: both;
+	font-family: Helvetica, sans-serif;
+	border-bottom: 0;
+}
+.spotlight img {
+	padding-bottom: 10px;
+}
+#home_content .spotlight .strategic_ad .spotlight_title a {
+	color: #000;
+	text-decoration:none;
+	border-bottom: 1px solid #CCC;
+	font-family: Georgia, serif;
+}
+	#home_content  .strategic_ad .spotlight_title a:hover {
+		color: #e50606;
+		border-bottom: 1px solid #e50606;
+	}
+	#home_content  .strategic_ad .spotlight_title a:visited {
+		color: #000;
+		border-bottom: 1px solid #CCC;
+	}
+		#home_content  .strategic_ad .spotlight_title a:visited:hover {
+			color: #e50606;
+			border-bottom: 1px solid #e50606;
+		}
+
+/*Center Column*/
+
+
+#news{
+	line-height: 1.25em;
+	width: 29%;
+	padding-left: 15px;
+	padding-right: 15px;
+	float: left;
+	background-image: url("http://www.ucf.edu/img/dot_bg.png");
+	background-position: top left;
+	background-repeat: repeat-y;
+}
+	#news h2{
+		color: #1a1a1a;
+		text-transform: uppercase;
+		font-weight: bold;
+		font-family: helvetica, arial, sans serif;
+	}
+	#news dl{
+		padding: 0; margin: 0;
+	}
+		#news dl dt{
+			clear: both;
+			padding-bottom: 15px;
+			margin: 0;
+		}
+			#news dl dt a{
+				text-decoration: none;
+				border-bottom: 1px solid #CCC;
+				color: #000000;
+				font-family: Georgia, serif;
+			}
+			#news dl dt a:hover {
+				color: #e50506;
+				border-bottom: 1px solid #e50506;
+			}
+			#news dl dt a:visited {
+				color: #000;
+				border-bottom: 1px solid #CCC;
+			}
+				#news dl dt a:visited:hover {
+					color: #e50506;
+					border-bottom: 1px solid #e50506;
+				}
+			#news dl dt img{
+				float: left;
+				margin-right: 5px;
+				margin-bottom: 15px;
+			}
+		#news dl dd{
+			padding: 0; margin: 0;
+			margin-bottom: 1em;
+		}
+	#news .more{
+		clear: both;
+		font-family: Helvetica, sans-serif;
+	}
+
+/*Right Column*/
+#campus_events{
+	line-height: 1.25em;
+	background-image: url("http://www.ucf.edu/img/dot_bg.png");
+	background-position: top left;
+	background-repeat: repeat-y;
+	width: 27%;
+	padding-left: 15px;
+	float: left;
+}
+	#campus_events h2{
+		color: #b38c0b;
+		text-transform: uppercase;
+		font-weight: bold;
+		font-family: helvetica, arial, sans serif;
+	}
+	#campus_events .more{
+		clear: both;
+		font-family: Helvetica, sans-serif;
+	}
+
+
+/******************************************************************************\
+    Events Calendar
+\******************************************************************************/
+.events { color:#000000; font-family:Verdana, sans-serif; }
+.events h4 { margin:0 0 .6em 0; color:#1A1A1A; font-family:helvetica, arial, sans-serif; font-weight:bold; text-transform:uppercase; }
+.events table { border-collapse:collapse;  }
+.events th { border:0; margin:0; padding:0 0 4px 0; vertical-align:top; min-width:35px; text-align:center;      }
+.events tr.alt { background:#fffdf4; }
+.events td { vertical-align:top; border:0; margin:0; padding:4px; border-top:1px solid #f9dd8c }
+.events td .details { display:none; } 
+.events td {}
+.events a.url,
+.events a.url:visited {color: #000; border:0; text-decoration: none;}
+.events a.url:hover {text-decoration: underline; border:0; color: #990000;}
+.events .location { display:block; text-transform:uppercase; font-size:75%;}
+.events .location a {color:#363636; text-decoration: none; border:0; }
+.events .location a:hover {text-decoration: underline; border:0; }
+.events abbr {font-size:80%; display:block; border:0;}
+.events .more a{border-bottom: 1px solid #ccc; color: #600; text-decoration: none;}
+.events .more a:hover{color: #e50606; border-bottom: 1px solid #e50606;}
+.events .more {}
+.events .feeds { height:20px; padding-top:2px; }
+.events .feeds a { margin-right:4px; display:block; float:left; background-repeat:no-repeat; height:16px; overflow:hidden; text-indent:-500px; border:0; }
+.events .icsformat { background-image:url("/img/ics.gif"); width:35px; height:16px;}
+.events .rssformat { background-image:url("/img/rss.png"); width:44px; }
+
+
+/*Weather Div*/
+#weather{
+	text-align: center;
+	font-size: 1.44em;
+}
+#weather-text{
+	font-weight: bold;
+}
+#weather-icon {
+	vertical-align: middle;
+	height: 32px;
+	width: 32px;
+}
+
+/*Seasonal and Strategic Ads Divs*/
+.strategic_ad, .seasonal{
+	margin-bottom: 1.5em;
+	clear: both;
+}
+
+.strategic_ad img, .seasonal img{
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 1.5em;
+}
+#home_content .strategic_ad a, #home_content .seasonal a{
+	color: #333333;
+	font-family: arial, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: 0;
+}
+	#home_content .strategic_ad a:hover, #home_content .seasonal a:hover{
+		color: #E50606;
+		border-bottom: 1px solid #E50606;
+	}
+	#home_content .strategic_ad a:visited, #home_content .seasonal a:visited{
+		color: #333;
+		border: 0;
+	}
+		#home_content .strategic_ad a:visited:hover, #home_content .seasonal a:visited:hover{
+			color: #E50606;
+			border-bottom: 1px solid #E50606;
+		}
+.strategic_ad h3, .seasonal h3{
+	margin: 0; padding: 0;
+	font-size: 1em;
+}
+.strategic_ad p, .seasonal p{
+	font-size: 1em;
+}
+.strategic_ad div.first p, .seasonal div.first p{
+	margin-top: 0;
+	padding-top: 0;
+}
+.strategic_ad div.last, .seasonal div.last{
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+.strategic_ad p.read_more, .seasonal p.read_more{
+	margin-top: 0;
+}
+
+/*RSS Link*/
+#home_content > .rss{
+	background-image: url("http://www.ucf.edu/img/rss.png");
+	background-repeat: no-repeat;
+	background-position: top left;
+	height: 16px;
+	width: 44px;
+	display: block;
+	border-bottom:0;
+}
+.rss span.text{
+	display: none;
+}
+
+/*Colleges Listing*/
+#colleges{
+	display: table;
+	width: 100%;
+	background-color: #ffefb3;
+	font-size: 70%;
+	font-family: Helvetica, sans-serif;
+	padding: .5em 0;
+}
+
+#colleges div.wrapper{
+	width: 784px;
+	margin: 0 auto;
+}
+
+#colleges h2{
+	text-transform: uppercase;
+	font-size: 100%;
+	font-family: Verdana, sans-serif;
+	padding: 0;
+	margin: 1em 0;
+	margin-right: 20px;
+	font-weight: bold;
+	float: left;
+}
+
+#colleges ul{
+	width: 85%;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+
+#colleges ul li{
+	float: left;
+	list-style-type: none;
+	border-left: 1px solid black;
+	padding: 0 4px 0 4px;
+	margin-bottom: 5px;
+}
+
+#colleges .colleges_end{
+	padding: 0; margin: 0;
+	height: 0px;
+	display: none;
+	clear: both;
+}
+#colleges ul li.first{
+	border-left: none;
+	padding: 0 6px 0 0;
+}
+
+#colleges ul li a{
+	text-decoration: none;
+	color: black;
+}
+#colleges ul li a:hover{
+	text-decoration: underline;
+}
