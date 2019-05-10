@@ -25,8 +25,6 @@ def index(request):
     # Number of visits to this view, as counted in the session variable.
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
-
-    # Render the HTML template index.html with the data in the context variable.
     
     return render(
         request,
@@ -66,11 +64,38 @@ class VideoDetailView(generic.TemplateView):
         filename_mp4 = 'media/videos/{}.mp4'.format(title)
         # get scores by feature file txt
         
-        # x, scores = get_score(filename_mp4)
-        # scores = json.dumps(scores.tolist())
-        # context['scores'] = scores
+        x, scores = get_score(filename_mp4)
+        scores = json.dumps(scores.tolist())
+        context['scores'] = scores
 
         # get score by extracture from c3d keras
+        # print(os.path.exists(filename_npy))
+        # if os.path.exists(filename_npy):
+        #     predictions = load_npy(filename_npy)
+        #     scores = json.dumps(predictions.tolist())
+            
+        #     context['scores'] = scores
+        # else:
+        #     if os.path.exists(filename_mp4):
+        #         extract_feature_video(filename_mp4)
+        #         predictions = load_npy(filename_npy)
+        #         scores = json.dumps(predictions.tolist())
+        #         context['scores'] = scores
+        #     else:
+        #         context['message'] = 'File {}.mp4 not found!'.format(title)
+        return context
+
+class C3dNewView(generic.TemplateView):
+    template_name = 'catalog/video_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        title = context['video_title']
+        context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
+
+        filename_npy = 'media/features/{}.npy'.format(title)
+        filename_mp4 = 'media/videos/{}.mp4'.format(title)
+        
         print(os.path.exists(filename_npy))
         if os.path.exists(filename_npy):
             predictions = load_npy(filename_npy)
@@ -85,7 +110,7 @@ class VideoDetailView(generic.TemplateView):
                 context['scores'] = scores
             else:
                 context['message'] = 'File {}.mp4 not found!'.format(title)
-        return context
+        return context        
 
 class VideoUploadView(View):
     def get(self, request):

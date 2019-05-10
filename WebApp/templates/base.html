@@ -1,4 +1,6 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -7,26 +9,13 @@
     <title>{% block title %}Traffic Abnormal Detection{% endblock %}</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
-		<link rel="icon" type="image/ico" href="https://upload.wikimedia.org/wikipedia/vi/thumb/c/cd/Logo-hcmut.svg/1004px-Logo-hcmut.svg.png">
-		<link href="/static/css/global.css" rel="stylesheet" type="text/css" media="all">
-		<link href="/static/css/header_bar.css" rel="stylesheet" type="text/css" media="screen">
-		<link href="/static/css/home.css" rel="stylesheet" type="text/css" media="screen">
-		<link href="/static/css/print.css" rel="stylesheet" type="text/css" media="print">
-		<link href="/static/css/mobile.css" rel="stylesheet" type="text/css" media="handheld">
-    <link href="/static/css/style.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="/static/css/social_foundicons.css">
-
-    <link rel="stylesheet" href="/static/css/general_enclosed_foundicons.css">  
-
-    <link rel="stylesheet" href="/static/css/general_foundicons.css"> 
-
-    <link rel="stylesheet" href="/static/css/accessibility_foundicons.css"> 
-
-    <link rel="stylesheet" href="/static/css/foundation.min.css">
-
-    <link rel="stylesheet" href="/static/css/app.css">
+		<link rel="icon" type="image/ico" href="{% static 'Logo-hcmut.svg.png'}">
+    <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
     
-    
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		
 		<style>
 			body {font-family: "Lato", sans-serif;}
 
@@ -79,29 +68,20 @@
 			}
       .page-header {
         margin-top: 0;
-      }
+			}
     </style>
   </head>
   <body>
-    {% include 'includes/header.html' %}
+		{% include 'includes/header.html' %}
+		
     <div class="container">
       {% block content %}
       {% endblock %}
     </div>
-    <script src="/static/js/jquery-3.1.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-		<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
-    {% include 'includes/footer.html' %}
+		{% include 'includes/footer.html' %}
+		
     {% block javascript %}
     {% endblock %}
-
-    <script>
-        function expand(param)
-        {
-          param.style.display=(param.style.display=="none")?"":"none";
-        }
-      </script>
   </body>
 </html>

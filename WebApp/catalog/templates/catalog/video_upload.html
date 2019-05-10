@@ -7,13 +7,13 @@
 
 {% block videos_content %}
 
-  <form method="post" action="{% url 'catalog:clear_database' %}">
+  <!-- <form method="post" action="{% url 'catalog:clear_database' %}">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ request.path }}">
     <button type="submit" class="btn btn-danger pull-right">
       <span class="glyphicon glyphicon-trash"></span> Clear Database
     </button>
-  </form>
+  </form> -->
   <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
     <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
     <h3>Drop Videos Here to Upload</h3>
@@ -22,9 +22,9 @@
     <button type="button" class="btn btn-primary js-upload-videos">
       <span class="glyphicon glyphicon-cloud-upload"></span> Upload Videos
     </button>
-    <button type="button" class="btn btn-primary js-extract-feature">
+    <!-- <button type="button" class="btn btn-primary js-extract-feature">
       <span class="glyphicon glyphicon-cloud-upload"></span> Extract Feature
-    </button>  
+    </button>   -->
     <input id="fileupload" type="file" name="file" multiple
            style="display: none;"
            data-url="{% url 'catalog:video-upload' %}"
@@ -34,13 +34,13 @@
   <table id="gallery" class="table table-bordered">
     <thead>
       <tr>
-        <th>Videos</th>
+        <th>Videos Uploaded</th>
       </tr>
     </thead>
     <tbody>
       {% for video in videos %}
         <tr>
-          <td><a href="/catalog/video/{{video.file.basename}}">{{ video.file.name }}</a></td>
+          <td><a href="/catalog/c3d-new/{{video.file.basename}}">{{ video.file.name }}</a></td>
         </tr>
       {% endfor %}
     </tbody>

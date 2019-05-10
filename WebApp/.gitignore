@@ -90,6 +90,8 @@ local_settings.py
 db.sqlite3
 
 
-media/
+# media/features/
+# media/gifs/
+# media/videos/
 
 c3d/trained_models/c3d_sports1m.h5
