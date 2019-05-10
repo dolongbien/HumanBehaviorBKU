@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
-    path('home', TemplateView.as_view(template_name='home.html'), name='home'),
+    # path('home', TemplateView.as_view(template_name='home.html'), name='home'),
     path('catalog/', include('catalog.urls', namespace='catalog')),
     path('celery-progress/', include('celery_progress.urls', namespace='celery_progress')),
 ]

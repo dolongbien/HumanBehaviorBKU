@@ -5,7 +5,6 @@
 {% block videos_content %}
 
     {% if video_gifs %}
-    <ul class='center'>
 
       {% for video in video_gifs %}
       <li class="list">
@@ -15,8 +14,6 @@
         <a href="{{ video.url }}" style="padding-left:80px">{{ video.title }}</a>
       </li>
       {% endfor %}
-
-    </ul>
 
     {% else %}
       <p>There are no videos in the server.</p>
