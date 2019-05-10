@@ -132,6 +132,7 @@ def get_score(video_path):
     print(video_path)
     FeaturePath=(video_path)
     FeaturePath = FeaturePath[0:-4]
+    FeaturePath = FeaturePath.replace('videos', 'features')
     FeaturePath = FeaturePath+ '_C.txt'
     inputs = load_dataset_One_Video_Features(FeaturePath)
     #inputs = np.reshape(inputs, (32, 4096))
