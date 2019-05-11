@@ -48,20 +48,36 @@ function drawChart(nFrame) {
         title: 'Anormaly Score',
         curveType: 'function',
         // width: 500,
-        // height: 400,
-        vAxis: {
-            maxValue: 1.0
-        },
+        // height: 400,,
         hAxis: {
-            title: 'Frame number'
-          },
+            title: 'Frame number',
+            viewWindowMode: 'explicit',
+            viewWindow: {
+                min:0,
+                max:scores.length
+            }
+        },
         vAxis: {
-        title: 'Score (0-1)'
+            title: 'Score (0-1)',
+            viewWindowMode: 'explicit',
+            viewWindow: {
+                min:0.0,
+                max:1.0
+            },
+            ticks: [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
         },
         annotations: {
             stem: {
                 color: annotationColor
             },
+            textStyle: {
+                bold: true,
+                italic: true,
+                // The color of the text.
+                color: '#871b47',
+                // The color of the text outline.
+                opacity: 0.8
+              },
             style: 'line',
                     
         },
@@ -102,56 +118,6 @@ function drawChart(nFrame) {
     chart.draw(data, options);
     }
 
-function plotScore(numberOfFrame){
-    var totalFrame = scores.length;
-
-    var margin = {top: 50, right: 50, bottom: 50, left: 50}
-        , width = 500 - margin.left - margin.right 
-        , height = 300 - margin.top - margin.bottom;
-
-    var xScale = d3.scaleLinear()
-        .domain([0, totalFrame - 1])
-        .range([0, width]);
-
-    var yScale = d3.scaleLinear()
-        .domain([0, 1])
-        .range([height, 0]);
-
-    var line = d3.line()
-        .x((d, i) => { return xScale(i); })
-        .y((d) => { return yScale(d); })
-        .curve(d3.curveMonotoneX);
-    // Thresold line
-    var thresold = d3.line()
-        
-    d3.select(".svg").html('');
-
-    var svg = d3.select(".svg").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale));
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(d3.axisLeft(yScale));
-    
-    svg.append("path")
-        .datum(scores.slice(1, numberOfFrame))
-        .attr("class", "line")
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("d", line);
-}
-
 let numberFrame = 0;
 let frameRate = 29.97;
 const video = VideoFrame({
@@ -186,3 +152,50 @@ function ChangeButtonText(){
         $("#play-pause").html('Play');
     }
   }
+  function plotScore(numberOfFrame){
+    var totalFrame = scores.length;
+
+    var margin = {top: 50, right: 50, bottom: 50, left: 50}
+        , width = 500 - margin.left - margin.right 
+        , height = 300 - margin.top - margin.bottom;
+
+    var xScale = d3.scaleLinear()
+        .domain([0, totalFrame - 1])
+        .range([0, width]);
+
+    var yScale = d3.scaleLinear()
+        .domain([0, 1])
+        .range([height, 0]);
+
+    var line = d3.line()
+        .x((d, i) => { return xScale(i); })
+        .y((d) => { return yScale(d); })
+        .curve(d3.curveMonotoneX);
+    
+    d3.select(".svg").html('');
+
+    var svg = d3.select(".svg").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xScale));
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(yScale));
+    
+    svg.append("path")
+        .datum(scores.slice(1, numberOfFrame))
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("d", line);
+}
