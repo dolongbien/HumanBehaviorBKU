@@ -7,6 +7,8 @@ app_name = 'catalog'
 urlpatterns = [
     path('', views.index, name='index'),
     path('videos/', views.VideoListView.as_view(), name='videos'),
+    # parameter at video detail <str:video_title>, it WORKS EVEN for invalid video string title
+    # video_title parameter can be invoked in corresponding VIEW later then 
     path('video/<str:video_title>', views.VideoDetailView.as_view(), name='video-detail'),
     path('c3d-new/<str:video_title>', views.C3dNewView.as_view(), name='c3d-new'),
     path('video-upload', views.VideoUploadView.as_view(), name='video-upload'),

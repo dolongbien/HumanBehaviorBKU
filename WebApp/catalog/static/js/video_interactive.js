@@ -2,18 +2,22 @@
 google.charts.load('current', {packages: ['corechart', 'line']});
 // google.charts.setOnLoadCallback(drawChart);
 const thresold = 0.5;
+const starting_frm = annotation[0][0]
+const ending_frm = annotation[0][1]
+
+console.log(annotation)
 var annotationColor = '#ff00ff';
 
 function toPair(arr) {
     var rv = [];
     for (var i = 0; i < arr.length; ++i){
-        if(i==120){
+        if(i==starting_frm){
             rv.push([i+1, thresold, arr[i], 0, 'Starting frame ' + i.toString(), 'Starting abnormal interval. Frame ' + i.toString()]);
         }
-        else if (i==180){
+        else if (i==ending_frm){
             rv.push([i+1, thresold, arr[i], 0,'Ending frame ' + i.toString(), 'Ending abnormal interval. Frame ' + i.toString()]);
         }
-        else if(i>120 && i < 180){
+        else if(i>starting_frm && i < ending_frm){
             rv.push([i+1, thresold, arr[i], 1.0, null, null]);
         }
         else rv.push([i+1, thresold, arr[i], 0, null, null]);
@@ -64,7 +68,7 @@ function drawChart(nFrame) {
                 min:0.0,
                 max:1.0
             },
-            ticks: [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]
+            ticks: [0.0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         },
         annotations: {
             stem: {
@@ -74,7 +78,7 @@ function drawChart(nFrame) {
                 bold: true,
                 italic: true,
                 // The color of the text.
-                color: '#871b47',
+                color: '#494545',
                 // The color of the text outline.
                 opacity: 0.8
               },
@@ -108,13 +112,6 @@ function drawChart(nFrame) {
     };
     var chartDiv = document.getElementById('curve_chart');
     var chart = new google.visualization.LineChart(chartDiv);
-    // google.visualization.events.addListener(chart, 'ready', function () {
-    //     Array.prototype.forEach.call(chartDiv.getElementsByTagName('rect'), function(rect) {
-    //       if (rect.getAttribute('fill') === annotationColor) {
-    //         rect.setAttribute('width', '8');
-    //       }
-    //     });
-    //   });
     chart.draw(data, options);
     }
 

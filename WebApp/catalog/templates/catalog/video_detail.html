@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 
-{% load static %}
+{% load static %} 
+{% comment %} use the files in the static folder in this template. {% endcomment %}
 
 {% block title %}Video {{ video.title }}{% endblock %}
 
@@ -20,13 +21,19 @@
         <div class='col-sm-8'>
             <div id="curve_chart" style="width: 800px; height: 400px"></div>
         </div>
-
+        <div class='col-sm-8'>
+            <div id="video_infor">
+            Video information
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block javascript %}
     <script>
         const scores = {{scores}};
+        const annotation = {{annotation}};
     </script>
     <script src="https://rawgit.com/allensarkisyan/VideoFrame/master/VideoFrame.min.js"></script>
     <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>

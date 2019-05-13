@@ -6,8 +6,11 @@ from django.conf import settings
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 import time
-# Create your views here.
-
+import scipy.io
+# A view function, or view for short, 
+# is simply a Python function that takes a Web request and returns a Web response. 
+# This response can be the HTML contents of a Web page, or a redirect, or a 404 error,
+# or an XML document, or an image . . . or anything, really.
 from django.views import generic
 from .models import Video
 from .forms import VideoForm
@@ -18,6 +21,7 @@ import glob
 
 from c3d.extract_feature import load_npy, extract_feature_video
 from .plot_controller import get_score
+from .utils import load_annotation
 
 def index(request):
     """View function for home page of site."""
@@ -25,6 +29,8 @@ def index(request):
     # Number of visits to this view, as counted in the session variable.
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
+
+    # Render the HTML template index.html with the data in the context variable.
     
     return render(
         request,
@@ -36,7 +42,6 @@ def index(request):
     )
 
 class VideoListView(generic.TemplateView):
-    paginate_by = 10
     template_name = 'catalog/video_list.html'
 
     def get_context_data(self, **kwargs):
@@ -57,32 +62,40 @@ class VideoDetailView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        title = context['video_title']
+        title = context['video_title'] # title from URL
+        print(title)
         context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
 
         filename_npy = 'media/features/{}.npy'.format(title)
         filename_mp4 = 'media/videos/{}.mp4'.format(title)
+
+        # Temporal annotation
+        annotation_path = 'media/videos/{}.mat'.format(title)
+        temporal_array = load_annotation(annotation_path)
+        print(type(temporal_array))
+        context['annotation'] = json.dumps(temporal_array.tolist())
+        # Abnormal SCORE
         # get scores by feature file txt
         
-        x, scores = get_score(filename_mp4)
-        scores = json.dumps(scores.tolist())
-        context['scores'] = scores
+        # x, scores = get_score(filename_mp4)
+        # scores = json.dumps(scores.tolist())
+        # context['scores'] = scores
 
         # get score by extracture from c3d keras
         # print(os.path.exists(filename_npy))
-        # if os.path.exists(filename_npy):
-        #     predictions = load_npy(filename_npy)
-        #     scores = json.dumps(predictions.tolist())
+        if os.path.exists(filename_npy):
+            predictions = load_npy(filename_npy)
+            scores = json.dumps(predictions.tolist())
             
-        #     context['scores'] = scores
-        # else:
-        #     if os.path.exists(filename_mp4):
-        #         extract_feature_video(filename_mp4)
-        #         predictions = load_npy(filename_npy)
-        #         scores = json.dumps(predictions.tolist())
-        #         context['scores'] = scores
-        #     else:
-        #         context['message'] = 'File {}.mp4 not found!'.format(title)
+            context['scores'] = scores
+        else:
+            if os.path.exists(filename_mp4):
+                extract_feature_video(filename_mp4)
+                predictions = load_npy(filename_npy)
+                scores = json.dumps(predictions.tolist())
+                context['scores'] = scores
+            else:
+                context['message'] = 'File {}.mp4 not found!'.format(title)
         return context
 
 class C3dNewView(generic.TemplateView):
@@ -110,7 +123,7 @@ class C3dNewView(generic.TemplateView):
                 context['scores'] = scores
             else:
                 context['message'] = 'File {}.mp4 not found!'.format(title)
-        return context        
+        return context
 
 class VideoUploadView(View):
     def get(self, request):
