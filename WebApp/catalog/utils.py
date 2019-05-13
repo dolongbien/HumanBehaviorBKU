@@ -17,7 +17,7 @@ def load_annotation(file_path):
         anno = anno[0][0][1] # annotation value
         return anno
     else:
-        return [[0,0]]
+        return np.array([[0,0]])
 
 def main():
     anno = load_annotation('media/videos/RoadAccidents002_x264.mat')
