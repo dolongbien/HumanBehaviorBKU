@@ -92,7 +92,7 @@ db.sqlite3
 
 media/features/
 media/gifs/
-media/videos/
+#media/videos/
 catalog/migrations
 
 c3d/trained_models/c3d_sports1m.h5
