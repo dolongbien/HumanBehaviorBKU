@@ -10,7 +10,7 @@
       {% for video in video_gifs %}
       <li class="list">
     		{% load static %} 
-    		<img src="/media/gifs/{{ video.title }}.gif" alt="Bk" width="320" height="240" style="margin-top:50px; margin-bottom:10px">
+    		<img src="/media/gifs/abnormal/{{ video.title }}.gif" alt= {{video.title}} style="margin-top:50px; margin-bottom:10px">
     		<br>
         <a href="{{ video.url }}" style="padding-left:80px">{{ video.title }}</a>
       </li>

@@ -17,19 +17,19 @@ all_videos = glob.glob(video_path + '/*.mp4')
 print(video_path,gif_folder, sep="\n")
 
 def __draw_label(img, text, pos, bg_color):
-    font_face = cv2.FONT_HERSHEY_SIMPLEX
+    font_face = cv2.FONT_HERSHEY_DUPLEX
     scale = 0.6
     color = (0, 0, 0)
     thickness = cv2.FILLED
     margin = 2
 
     txt_size = cv2.getTextSize(text, font_face, scale, thickness)
-
-    end_x = pos[0] + txt_size[0][0] + margin
-    end_y = pos[1] - txt_size[0][1] - margin -3
     
-    cv2.rectangle(img, pos, (end_x, end_y), bg_color, thickness)
-    cv2.putText(img, text, (pos[0],pos[1]-2), font_face, scale, color, 1, cv2.LINE_AA)
+    end_x = pos[0] + txt_size[0][0] + margin
+    end_y = pos[1] - txt_size[0][1] - margin - 5
+    
+    cv2.rectangle(img, (pos[0],pos[1]+3), (end_x, end_y), bg_color, thickness)
+    cv2.putText(img, text, (pos[0],pos[1]-3), font_face, scale, color, 1, cv2.LINE_AA)
 
 for video_file in all_videos:
 
@@ -53,7 +53,7 @@ for video_file in all_videos:
                 print('\r{:6.2f}%({}/{})'.format(100*(i+1)/nFrames, i+1, nFrames), end='')
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frame = cv2.resize(frame, (320, 240))
-                __draw_label(frame, 'Frame number: ' + str(int(i)), (20,20), (255,255,255))
+                __draw_label(frame, 'Frame No = ' + str(int(i)), (10,35), (255,255,255))
                 writer.append_data(frame)
             else:
                 pass

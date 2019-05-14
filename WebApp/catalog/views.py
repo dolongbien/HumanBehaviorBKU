@@ -47,10 +47,10 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        video_gifs = sorted(glob.glob('media/gifs/*.gif'))
+        video_gifs = sorted(glob.glob('media/gifs/abnormal/*.gif'))
         for i, value in enumerate(video_gifs):
             title = os.path.basename(value)[:-4]
-            video = {'url': '/catalog/video/anormaly/' + title, 'title': title}
+            video = {'url': '/catalog/video/abnormal/' + title, 'title': title}
             video_gifs[i] = video
         context['video_gifs'] = video_gifs
         return context
@@ -63,14 +63,14 @@ class VideoDetailView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         title = context['video_title'] # title from URL
         print(title)
-        context['video'] = {'url': '/media/videos/anormaly/{}.mp4'.format(title), 'title': title}
+        context['video'] = {'url': '/media/videos/abnormal/{}.mp4'.format(title), 'title': title}
 
         filename_npy = 'media/features/{}.npy'.format(title)
-        context['video'] = {'url': '/media/videos/anormaly/{}.mp4'.format(title), 'title': title}
-        filename_mp4 = 'media/videos/anormaly/{}.mp4'.format(title)
+        context['video'] = {'url': '/media/videos/abnormal/{}.mp4'.format(title), 'title': title}
+        filename_mp4 = 'media/videos/abnormal/{}.mp4'.format(title)
 
         # Temporal annotation
-        annotation_path = 'media/videos/anormaly/{}.mat'.format(title)
+        annotation_path = 'media/videos/abnormal/{}.mat'.format(title)
         temporal_array = load_annotation(annotation_path)
         print(annotation_path)
         context['annotation'] = json.dumps(temporal_array.tolist())
