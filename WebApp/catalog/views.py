@@ -48,10 +48,9 @@ class VideoListView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         video_gifs = sorted(glob.glob('media/gifs/*.gif'))
-        print(video_gifs)
         for i, value in enumerate(video_gifs):
             title = os.path.basename(value)[:-4]
-            video = {'url': '/catalog/video/' + title, 'title': title}
+            video = {'url': '/catalog/video/anormaly/' + title, 'title': title}
             video_gifs[i] = video
         context['video_gifs'] = video_gifs
         return context
@@ -64,38 +63,39 @@ class VideoDetailView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         title = context['video_title'] # title from URL
         print(title)
-        context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
+        context['video'] = {'url': '/media/videos/anormaly/{}.mp4'.format(title), 'title': title}
 
         filename_npy = 'media/features/{}.npy'.format(title)
-        filename_mp4 = 'media/videos/{}.mp4'.format(title)
+        context['video'] = {'url': '/media/videos/anormaly/{}.mp4'.format(title), 'title': title}
+        filename_mp4 = 'media/videos/anormaly/{}.mp4'.format(title)
 
         # Temporal annotation
-        annotation_path = 'media/videos/{}.mat'.format(title)
+        annotation_path = 'media/videos/anormaly/{}.mat'.format(title)
         temporal_array = load_annotation(annotation_path)
-        print(type(temporal_array))
+        print(annotation_path)
         context['annotation'] = json.dumps(temporal_array.tolist())
         # Abnormal SCORE
         # get scores by feature file txt
         
-        # x, scores = get_score(filename_mp4)
-        # scores = json.dumps(scores.tolist())
-        # context['scores'] = scores
+        x, scores = get_score(filename_mp4)
+        scores = json.dumps(scores.tolist())
+        context['scores'] = scores
 
         # get score by extracture from c3d keras
         # print(os.path.exists(filename_npy))
-        if os.path.exists(filename_npy):
-            predictions = load_npy(filename_npy)
-            scores = json.dumps(predictions.tolist())
+        # if os.path.exists(filename_npy):
+        #     predictions = load_npy(filename_npy)
+        #     scores = json.dumps(predictions.tolist())
             
-            context['scores'] = scores
-        else:
-            if os.path.exists(filename_mp4):
-                extract_feature_video(filename_mp4)
-                predictions = load_npy(filename_npy)
-                scores = json.dumps(predictions.tolist())
-                context['scores'] = scores
-            else:
-                context['message'] = 'File {}.mp4 not found!'.format(title)
+        #     context['scores'] = scores
+        # else:
+        #     if os.path.exists(filename_mp4):
+        #         extract_feature_video(filename_mp4)
+        #         predictions = load_npy(filename_npy)
+        #         scores = json.dumps(predictions.tolist())
+        #         context['scores'] = scores
+        #     else:
+        #         context['message'] = 'File {}.mp4 not found!'.format(title)
         return context
 
 class C3dNewView(generic.TemplateView):
@@ -109,7 +109,6 @@ class C3dNewView(generic.TemplateView):
         filename_npy = 'media/features/{}.npy'.format(title)
         filename_mp4 = 'media/videos/{}.mp4'.format(title)
         
-        print(os.path.exists(filename_npy))
         if os.path.exists(filename_npy):
             predictions = load_npy(filename_npy)
             scores = json.dumps(predictions.tolist())

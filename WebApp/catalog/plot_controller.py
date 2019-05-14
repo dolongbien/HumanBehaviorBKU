@@ -5,14 +5,14 @@ from scipy.io import loadmat, savemat
 from keras.models import model_from_json
 import numpy as np
 import numpy.matlib
-
-from keras import Sequential
+from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.regularizers import l2
-
+from keras.models import model_from_json
 import os, sys
 from os import listdir
-
+from keras import backend as K # to clear session each time reloading
+import tensorflow as tf
 import matplotlib as pl 
 pl.use('Agg')
 import matplotlib.pyplot as plt
@@ -32,6 +32,8 @@ def classifier_model():
     return model
 
 def load_model(json_path):
+    global graph
+    graph = tf.get_default_graph()
     model = classifier_model()
     return model
 
@@ -114,6 +116,7 @@ def load_dataset_One_Video_Features(Test_Video_Path):
     return  AllFeatures
 
 def get_score(video_path):
+    K.clear_session()
     Model_dir = 'c3d/trained_models/'
     weights_path = Model_dir + 'weightsAnomalyL1L2_10000_roadaccidents2.mat'
     model_path = Model_dir + 'model.json'
@@ -129,10 +132,10 @@ def get_score(video_path):
     Total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     total_segments = np.linspace(1, Total_frames, num=33)
     total_segments = total_segments.round()
-    print(video_path)
+    print("Video path == " + video_path)
     FeaturePath=(video_path)
     FeaturePath = FeaturePath[0:-4]
-    FeaturePath = FeaturePath.replace('videos', 'features')
+    FeaturePath = FeaturePath.replace('videos/anormaly', 'features')
     FeaturePath = FeaturePath+ '_C.txt'
     inputs = load_dataset_One_Video_Features(FeaturePath)
     #inputs = np.reshape(inputs, (32, 4096))
@@ -167,4 +170,5 @@ def get_score(video_path):
     # print(scores1)
     return x, scores1
 
-# get_score('media/RoadAccidents011_x264.mp4')
+#x, score = get_score('media/videos/anormaly/RoadAccidents002_x264.mp4')
+#print(score)
