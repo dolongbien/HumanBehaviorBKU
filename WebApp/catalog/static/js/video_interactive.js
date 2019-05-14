@@ -90,7 +90,7 @@ function drawChart(nFrame) {
             0: {
                 // set options for the first data series
                 lineWidth: 1,
-                areaOpacity: 0.2,
+                areaOpacity: 0.1,
                 color: 'blue',
                 type: 'area'
             },
@@ -103,8 +103,8 @@ function drawChart(nFrame) {
             },
             2: {
                 // set options for the third data series
-                lineWidth: 1,
-                areaOpacity: 0.2,
+                lineWidth: 2,
+                areaOpacity: 0.3,
                 color: '#00D717',
                 type: 'area'
             }

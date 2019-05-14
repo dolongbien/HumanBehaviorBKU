@@ -5,7 +5,8 @@ from keras.layers import Dense, Dropout
 from keras.regularizers import l2
 
 import c3d.configuration as cfg
-
+from catalog.utils import conv_dict
+from catalog.utils import load_weights
 
 def classifier_model():
     model = Sequential()
@@ -20,35 +21,6 @@ def classifier_model():
 def build_classifier_model():
     model = classifier_model()
     model = load_weights(model, cfg.classifier_model_weigts)
-    return model
-
-
-def conv_dict(dict2):
-    dict = {}
-    for i in range(len(dict2)):
-        if str(i) in dict2:
-            if dict2[str(i)].shape == (0, 0):
-                dict[str(i)] = dict2[str(i)]
-            else:
-                weights = dict2[str(i)][0]
-                weights2 = []
-                for weight in weights:
-                    if weight.shape in [(1, x) for x in range(0, 5000)]:
-                        weights2.append(weight[0])
-                    else:
-                        weights2.append(weight)
-                dict[str(i)] = weights2
-    return dict
-
-
-def load_weights(model, weights_file):
-    dict2 = sio.loadmat(weights_file)
-    dict = conv_dict(dict2)
-    i = 0
-    for layer in model.layers:
-        weights = dict[str(i)]
-        layer.set_weights(weights)
-        i += 1
     return model
 
 if __name__ == '__main__':
