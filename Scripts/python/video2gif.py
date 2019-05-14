@@ -9,15 +9,16 @@ import cv2
 import imageio
 import glob
 import sys
+import os.path
 
 video_path = sys.argv[1] # video file input folder
 gif_folder = sys.argv[2] # gif output folder
 all_videos = glob.glob(video_path + '/*.mp4')
-
+print(video_path,gif_folder, sep="\n")
 
 def __draw_label(img, text, pos, bg_color):
     font_face = cv2.FONT_HERSHEY_SIMPLEX
-    scale = 0.5
+    scale = 0.6
     color = (0, 0, 0)
     thickness = cv2.FILLED
     margin = 2
@@ -31,9 +32,13 @@ def __draw_label(img, text, pos, bg_color):
     cv2.putText(img, text, (pos[0],pos[1]-2), font_face, scale, color, 1, cv2.LINE_AA)
 
 for video_file in all_videos:
-    #video_file = 'Shoplifting028_x264.mp4'
-    gif_file = video_file[:-3] + 'gif'
 
+    video_name = os.path.basename(video_file)
+    gif_name = video_name[:-3] + 'gif'
+    print("VIDEO NAME and GIF NAME")
+    print(video_name, gif_name, sep="\n")
+    gif_file = gif_folder + '/' + gif_name
+    
     cap = cv2.VideoCapture(video_file)
     nFrames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -44,7 +49,6 @@ for video_file in all_videos:
         print('video to gif started...')
         for i in range(nFrames):
             ret, frame = cap.read()
-            print(i)
             if ret and i % 8 == 0:
                 print('\r{:6.2f}%({}/{})'.format(100*(i+1)/nFrames, i+1, nFrames), end='')
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
