@@ -17,7 +17,13 @@
 		<script src="{% static 'js/bootstrap.min.js' %}"></script>
 		
 		<style>
-			body {font-family: "Lato", sans-serif;}
+			body, html {
+				font-family: "Lato", sans-serif;
+				margin: 0;
+				width: 100%;
+    		height: 100%;
+				-webkit-font-smoothing: antialiased;
+				}
 
 			.tablink {
 			  background-color: #292c2f;
@@ -70,6 +76,10 @@
         margin-top: 0;
 			}
     </style>
+		{% comment %} CSS for video_list.html {% endcomment %}
+		{% block videolistcss %}
+		
+		{% endblock videolistcss %}
   </head>
   <body>
 		{% include 'includes/header.html' %}
