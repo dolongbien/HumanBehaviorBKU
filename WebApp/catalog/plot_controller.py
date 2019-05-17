@@ -15,6 +15,9 @@ from .utils import savitzky_golay
 from .utils import conv_dict
 from .utils import load_one_video_features
 from .utils import load_weights
+from .config import * # all config variables (weight, segment, other options, ...)
+
+
 seed = 7
 np.random.seed(seed)
 
@@ -37,30 +40,30 @@ def load_model(json_path):
 def get_score(video_path):
 
     K.clear_session()
-    Model_dir = 'c3d/trained_models/'
-    weights_path = Model_dir + 'weightsAnomalyL1L2_10000_roadaccidents2.mat'
-    model_path = Model_dir + 'model.json'
+    weights_path = model_dir + weight_name
+    model_path = model_dir + model_name
     model = load_model(model_path)
     load_weights(model, weights_path)
 
     cap = cv2.VideoCapture(video_path)
 
     Total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-    total_segments = np.linspace(1, Total_frames, num=33)
+    total_segments = np.linspace(1, Total_frames, num=(no_segment+1))
     total_segments = total_segments.round()
     print("Video path == " + video_path)
 
     FeaturePath=(video_path)
     FeaturePath = FeaturePath[0:-4]
-    FeaturePath = FeaturePath.replace('videos/anormaly', 'features')
-    FeaturePath = FeaturePath+ '_C.txt'
+    FeaturePath = FeaturePath.replace('videos/normal', 'features')
+    FeaturePath = FeaturePath.replace('videos/abnormal', 'features')
+    FeaturePath = FeaturePath+ feature_alias
 
     inputs = load_one_video_features(FeaturePath)
     predictions = model.predict_on_batch(inputs)
 
     Frames_Score = []
     count = -1
-    for iv in range(0, 32):
+    for iv in range(0, no_segment):
         F_Score = np.matlib.repmat(predictions[iv],1,(int(total_segments[iv+1])-int(total_segments[iv])))
         count = count + 1
         if count == 0:
