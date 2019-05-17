@@ -26,6 +26,7 @@
       <span class="glyphicon glyphicon-cloud-upload"></span> Extract Feature
     </button>   -->
     <input id="fileupload" type="file" name="file" multiple
+           accept="video/*,image/gif"
            style="display: none;"
            data-url="{% url 'catalog:video-upload' %}"
            data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
