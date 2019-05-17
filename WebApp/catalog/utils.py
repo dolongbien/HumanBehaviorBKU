@@ -15,10 +15,10 @@ def load_annotation(file_path):
     if os.path.exists(file_path):
         mat = scipy.io.loadmat(file_name=file_path)
         anno = mat['Annotation_file']
-        anno = anno[0][0][1] # annotation value
+        anno = anno[0][0][1] # annotation value     
         return anno
     else:
-        return np.array([[0,0]])
+        return np.array([[0,0],[0,0]])
 
 
 def savitzky_golay(y, window_size, order, deriv=0, rate=1):

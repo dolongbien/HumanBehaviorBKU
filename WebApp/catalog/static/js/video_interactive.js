@@ -1,26 +1,43 @@
 
 google.charts.load('current', {packages: ['corechart', 'line']});
-// google.charts.setOnLoadCallback(drawChart);
-const thresold = 0.5;
-const starting_frm = annotation[0][0]
-const ending_frm = annotation[0][1]
 
-console.log(annotation)
+const thresold = 0.5;
+
+ // assume we only have 2 abnormalous events in video
+const starting_01 = annotation[0][0]; // first temporal annotation
+const ending_01 = annotation[0][1];
+
+starting_02 = -1; // second temporal annotation
+ending_02 = -1;
+if(annotation.length==2){
+    starting_02 = annotation[1][0]; 
+    ending_02 = annotation[1][1];
+}
+
+
 var annotationColor = '#ff00ff';
 
 function toPair(arr) {
     var rv = [];
     for (var i = 0; i < arr.length; ++i){
-        if(i==starting_frm){
-            rv.push([i+1, thresold, arr[i], 0, 'Starting frame ' + i.toString(), 'Starting abnormal interval. Frame ' + i.toString()]);
+        if (starting_01==ending_01){ // FORs NORMAL video, no temporal annotation!
+            rv.push([i+1, thresold, arr[i], 0, null,null]);
         }
-        else if (i==ending_frm){
-            rv.push([i+1, thresold, arr[i], 0,'Ending frame ' + i.toString(), 'Ending abnormal interval. Frame ' + i.toString()]);
+        else{ // FOR ABNORMAL video
+            if(i==starting_01 || i==starting_02){
+                rv.push([i+1, thresold, arr[i], 0, 'Starting frame ' + i.toString(), 'Starting abnormal interval. Frame ' + i.toString()]);
+            }
+            else if (i==ending_01 || i==ending_02){
+                rv.push([i+1, thresold, arr[i], 0,'Ending frame ' + i.toString(), 'Ending abnormal interval. Frame ' + i.toString()]);
+            }
+            else if(i>starting_01 && i < ending_01){
+                rv.push([i+1, thresold, arr[i], 1.0, null, null]);
+            }
+            else if(i>starting_02 && i < ending_02){
+                rv.push([i+1, thresold, arr[i], 1.0, null, null]);
+            }
+            else rv.push([i+1, thresold, arr[i], 0, null, null]);
         }
-        else if(i>starting_frm && i < ending_frm){
-            rv.push([i+1, thresold, arr[i], 1.0, null, null]);
-        }
-        else rv.push([i+1, thresold, arr[i], 0, null, null]);
     }
       
     return rv;
