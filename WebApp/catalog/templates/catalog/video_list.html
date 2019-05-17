@@ -140,14 +140,15 @@
   <fieldset>
 	{% comment %} <legend>Switch video list</legend>* {% endcomment %}
 	<div class="toggle">
-		<input type="radio" name="sizeBy" value="weight" id="sizeWeight" checked="checked" />
-		<label for="sizeWeight">Road Accident Video (Abnormal)</label>
-		<input type="radio" name="sizeBy" value="dimensions" id="sizeDimensions" />
-		<label for="sizeDimensions">Normal Video</label>
+		<input type="radio" name="sizeBy" value="weight" id="roadAccident" checked="checked" />
+		<label for="roadAccident">Road Accident Video (Abnormal)</label>
+		<input type="radio" name="sizeBy" value="dimensions" id="normalVideos" />
+		<label for="normalVideos">Normal Video</label>
 	</div>
   </fieldset>
-    {% if video_gifs %}
-      {% for video in video_gifs %}
+  <div class='video-abnormal-list'>
+    {% if abnormal_gifs %}
+      {% for video in abnormal_gifs %}
       <li class="list">
     		{% load static %} 
     		<img src="/media/gifs/abnormal/{{ video.title }}.gif" alt= {{video.title}} style="margin-top:50px; margin-bottom:10px">
@@ -159,5 +160,37 @@
     {% else %}
       <p>There are no videos in the server.</p>
     {% endif %}
+  </div>
+
+  <div class='video-normal-list' style="display: none">
+    {% if normal_gifs %}
+      {% for video in normal_gifs %}
+      <li class="list">
+        {% load static %} 
+        <img src="/media/gifs/normal/{{ video.title }}.gif" alt= {{video.title}} style="margin-top:50px; margin-bottom:10px">
+        <br>
+        <a href="{{ video.url }}" style="padding-left:80px">{{ video.title }}</a>
+      </li>
+      {% endfor %}
+
+    {% else %}
+      <p>There are no videos in the server.</p>
+    {% endif %}
+  </div>
 {% endblock %}
 
+{% block javascript %}
+  <script type="text/javascript">
+    $('#roadAccident').change(function () {
+      $('.video-abnormal-list').css('display', 'block');
+      $('.video-normal-list').css('display', 'none');
+    });
+
+    $('#normalVideos').change(function () {
+      $('.video-abnormal-list').css('display', 'none');
+      $('.video-normal-list').css('display', 'block');
+
+    });
+  </script>
+
+{% endblock %}

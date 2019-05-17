@@ -47,12 +47,21 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        video_gifs = sorted(glob.glob('media/gifs/abnormal/*.gif'))
-        for i, value in enumerate(video_gifs):
+        abnormal_gifs = sorted(glob.glob('media/gifs/abnormal/*.gif'))
+        normal_gifs = sorted(glob.glob('media/gifs/normal/*.gif'))        
+        for i, value in enumerate(abnormal_gifs):
             title = os.path.basename(value)[:-4]
             video = {'url': '/catalog/video/abnormal/' + title, 'title': title}
-            video_gifs[i] = video
-        context['video_gifs'] = video_gifs
+            abnormal_gifs[i] = video
+        # normal gif list
+        for i, value in enumerate(normal_gifs):
+            title = os.path.basename(value)[:-4]
+            video = {'url': '/catalog/video/normal/' + title, 'title': title}
+            normal_gifs[i] = video
+
+        # update context
+        context['abnormal_gifs'] = abnormal_gifs
+        context['normal_gifs'] = normal_gifs
         return context
 
 
@@ -60,42 +69,23 @@ class VideoDetailView(generic.TemplateView):
     template_name = 'catalog/video_detail.html'
 
     def get_context_data(self, **kwargs):
+        
         context = super().get_context_data(**kwargs)
         title = context['video_title'] # title from URL
-        print(title)
-        context['video'] = {'url': '/media/videos/abnormal/{}.mp4'.format(title), 'title': title}
+        video_type = context['video_type']
 
-        filename_npy = 'media/features/{}.npy'.format(title)
-        context['video'] = {'url': '/media/videos/abnormal/{}.mp4'.format(title), 'title': title}
-        filename_mp4 = 'media/videos/abnormal/{}.mp4'.format(title)
+        context['video'] = {'url': '/media/videos/{}/{}.mp4'.format(video_type, title), 'title': title}
+        filename_mp4 = 'media/videos/{}/{}.mp4'.format(video_type, title)
 
         # Temporal annotation
-        annotation_path = 'media/videos/abnormal/{}.mat'.format(title)
+        annotation_path = 'media/videos/{}/{}.mat'.format(video_type, title)
         temporal_array = load_annotation(annotation_path)
-        print(annotation_path)
         context['annotation'] = json.dumps(temporal_array.tolist())
-        # Abnormal SCORE
-        # get scores by feature file txt
         
         x, scores = get_score(filename_mp4)
         scores = json.dumps(scores.tolist())
         context['scores'] = scores
 
-        # get score by extracture from c3d keras
-        # print(os.path.exists(filename_npy))
-        # if os.path.exists(filename_npy):
-        #     predictions = load_npy(filename_npy)
-        #     scores = json.dumps(predictions.tolist())
-            
-        #     context['scores'] = scores
-        # else:
-        #     if os.path.exists(filename_mp4):
-        #         extract_feature_video(filename_mp4)
-        #         predictions = load_npy(filename_npy)
-        #         scores = json.dumps(predictions.tolist())
-        #         context['scores'] = scores
-        #     else:
-        #         context['message'] = 'File {}.mp4 not found!'.format(title)
         return context
 
 class C3dNewView(generic.TemplateView):
