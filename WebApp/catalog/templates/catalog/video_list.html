@@ -62,6 +62,7 @@
   .toggle input + label {
     margin: 0;
     padding: 0.75rem 2rem;
+    font-family: "Lato", sans-serif;
     box-sizing: border-box;
     position: relative;
     display: inline-block;
@@ -137,6 +138,7 @@
   {% endblock videolistcss %}
   <!--This block overrides parent templates, that is base_generic.html-->
   {% block videos_content %}
+  
   <fieldset>
 	{% comment %} <legend>Switch video list</legend>* {% endcomment %}
 	<div class="toggle">
@@ -146,18 +148,16 @@
 		<label for="sizeDimensions">Normal Video</label>
 	</div>
   </fieldset>
-    {% if video_gifs %}
-      {% for video in video_gifs %}
-      <li class="list">
-    		{% load static %} 
-    		<img src="/media/gifs/abnormal/{{ video.title }}.gif" alt= {{video.title}} style="margin-top:50px; margin-bottom:10px">
-    		<br>
-        <a href="{{ video.url }}" style="padding-left:80px">{{ video.title }}</a>
-      </li>
-      {% endfor %}
+    {% include "abnormal_gif.html" %}
+    <script>
+    $(document).ready(function(){
 
-    {% else %}
-      <p>There are no videos in the server.</p>
-    {% endif %}
+    // Submit post on submit
+    $('.item_num').on('click', function(event){
+        event.preventDefault();
+        var item_num = $(this).attr('id');
+        update_item(item_num);
+    });
+    </script>
 {% endblock %}
 

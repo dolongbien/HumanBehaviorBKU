@@ -47,12 +47,21 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        video_gifs = sorted(glob.glob('media/gifs/abnormal/*.gif'))
-        for i, value in enumerate(video_gifs):
+        abnormal_gifs = sorted(glob.glob('media/gifs/abnormal/*.gif'))
+        normal_gifs = sorted(glob.glob('media/gifs/normal/*.gif'))        
+        for i, value in enumerate(abnormal_gifs):
             title = os.path.basename(value)[:-4]
             video = {'url': '/catalog/video/abnormal/' + title, 'title': title}
-            video_gifs[i] = video
-        context['video_gifs'] = video_gifs
+            abnormal_gifs[i] = video
+        # normal gif list
+        for i, value in enumerate(normal_gifs):
+            title = os.path.basename(value)[:-4]
+            video = {'url': '/catalog/video/normal/' + title, 'title': title}
+            normal_gifs[i] = video
+
+        # update context
+        context['abnormal_gifs'] = abnormal_gifs
+        context['normal_gifs'] = normal_gifs
         return context
 
 
