@@ -10,74 +10,74 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
 
-		<link rel="icon" type="image/ico" href="https://upload.wikimedia.org/wikipedia/vi/thumb/c/cd/Logo-hcmut.svg/1004px-Logo-hcmut.svg.png">
-		<!-- <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}"> -->
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+	<link rel="icon" type="image/ico" href="https://upload.wikimedia.org/wikipedia/vi/thumb/c/cd/Logo-hcmut.svg/1004px-Logo-hcmut.svg.png">
+    <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<link href="{% static 'css/bar.css' %}" rel="stylesheet" type="text/css">
 		
-		<style>
-			body, html {
-				font-family: "Lato", sans-serif;
-				margin: 0;
-				width: 100%;
-    		height: 100%;
-				-webkit-font-smoothing: antialiased;
-				}
-
-			.tablink {
-			  background-color: #292c2f;
-			  color: white;
-			  float: left;
-			  border: none;
-			  outline: none;
-			  cursor: pointer;
-			  padding: 14px 16px;
-			  font-size: 17px;
-			  width: 25%;
+	<style>
+		body, html {
+			font-family: "Lato", sans-serif;
+			margin: 0;
+			width: 100%;
+		height: 100%;
+			-webkit-font-smoothing: antialiased;
 			}
 
-			.tablink:hover {
-			  background-color: #777;
-			}
+		.tablink {
+		  background-color: #292c2f;
+		  color: white;
+		  float: left;
+		  border: none;
+		  outline: none;
+		  cursor: pointer;
+		  padding: 14px 16px;
+		  font-size: 17px;
+		  width: 25%;
+		}
 
-			/* Style the tab content */
-			.tabcontent {
-			  color: white;
-			  display: block;
-			  background: linear-gradient(to bottom, #4169E1 0%, #483D8B 100%);
-			  padding: 20px;
-			  text-align: left;
-			}
-			.div1 {
-				overflow:auto; // without overflow here, if the "Line 1" and "Line 2" is short then "Next elements" will display below "Line 2" and the image will cover the "Next elements" 
-			}
-			.img {
-				float: left;
-			}
-			.div2 {
-				padding-left: 20px;
-				float: left; // without float here, if "Line 1" and "Line 2" is long -> text will display both at right and bottom the image
-			} 
+		.tablink:hover {
+		  background-color: #777;
+		}
 
-			.list
-			{
-			   display:block;
-			   float:left;
-			   width:350px; // adjust
-			   heigh:150px; // adjust
-			   padding: 5px; //adjust
-			}
-			.padding-text {
-				/* padding-right: 270px;
-				padding-left: 270px; */
-			}
-      .page-header {
-        margin-top: 0;
-			}
-    </style>
+		/* Style the tab content */
+		.tabcontent {
+		  color: white;
+		  display: block;
+		  background: linear-gradient(to bottom, #4169E1 0%, #483D8B 100%);
+		  padding: 20px;
+		  text-align: left;
+		}
+		.div1 {
+			overflow:auto; // without overflow here, if the "Line 1" and "Line 2" is short then "Next elements" will display below "Line 2" and the image will cover the "Next elements" 
+		}
+		.img {
+			float: left;
+		}
+		.div2 {
+			padding-left: 20px;
+			float: left; // without float here, if "Line 1" and "Line 2" is long -> text will display both at right and bottom the image
+		} 
+
+		.list
+		{
+		   display:block;
+		   float:left;
+		   width:350px; // adjust
+		   heigh:150px; // adjust
+		   padding: 5px; //adjust
+		}
+		.padding-text {
+			/* padding-right: 270px;
+			padding-left: 270px; */
+		}
+  		.page-header {
+    		margin-top: 0;
+		}
+	</style>
 		{% comment %} CSS for video_list.html {% endcomment %}
 		{% block videolistcss %}
 		
@@ -86,7 +86,7 @@
   <body>
 		{% include 'includes/header.html' %}
 		
-    <div class="container">
+    <div>
       {% block content %}
       {% endblock %}
     </div>

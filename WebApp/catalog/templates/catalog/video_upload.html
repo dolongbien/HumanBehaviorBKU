@@ -6,7 +6,7 @@
 {% block title %}Upload Video{% endblock %}
 
 {% block videos_content %}
-
+  <div class="container">
   <!-- <form method="post" action="{% url 'catalog:clear_database' %}">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ request.path }}">
@@ -61,6 +61,7 @@
       </div>
     </div>
   </div>
+</div>
 {% endblock %}
 
 {% block javascript %}

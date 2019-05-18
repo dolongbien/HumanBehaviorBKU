@@ -137,6 +137,7 @@
   {% endblock videolistcss %}
   <!--This block overrides parent templates, that is base_generic.html-->
   {% block videos_content %}
+  <div class="container">
   <fieldset>
 	{% comment %} <legend>Switch video list</legend>* {% endcomment %}
 	<div class="toggle">
@@ -146,7 +147,7 @@
 		<label for="normalVideos">Normal Video</label>
 	</div>
   </fieldset>
-  <div class='video-abnormal-list'>
+  <div class='video-abnormal-list' style="padding-left: 60px">
     {% if abnormal_gifs %}
       {% for video in abnormal_gifs %}
       <li class="list">
@@ -162,7 +163,7 @@
     {% endif %}
   </div>
 
-  <div class='video-normal-list' style="display: none">
+  <div class='video-normal-list' style="display: none;padding-left: 60px">
     {% if normal_gifs %}
       {% for video in normal_gifs %}
       <li class="list">
@@ -177,6 +178,7 @@
       <p>There are no videos in the server.</p>
     {% endif %}
   </div>
+</div>
 {% endblock %}
 
 {% block javascript %}
