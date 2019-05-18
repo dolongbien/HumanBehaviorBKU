@@ -81,7 +81,6 @@ class VideoDetailView(generic.TemplateView):
         annotation_path = 'media/videos/{}/{}.mat'.format(video_type, title)
         temporal_array = load_annotation(annotation_path)
         context['annotation'] = json.dumps(temporal_array.tolist())
-        
         x, scores = get_score(filename_mp4)
         scores = json.dumps(scores.tolist())
         context['scores'] = scores
