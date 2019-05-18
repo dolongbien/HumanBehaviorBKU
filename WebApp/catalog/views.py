@@ -22,6 +22,7 @@ import glob
 from c3d.extract_feature import load_npy, extract_feature_video
 from .plot_controller import get_score
 from .utils import load_annotation
+from .config import * # all config variables (weight, segment, other options, ...)
 
 def index(request):
     """View function for home page of site."""
@@ -74,16 +75,22 @@ class VideoDetailView(generic.TemplateView):
         title = context['video_title'] # title from URL
         video_type = context['video_type']
 
-        context['video'] = {'url': '/media/videos/{}/{}.mp4'.format(video_type, title), 'title': title}
-        filename_mp4 = 'media/videos/{}/{}.mp4'.format(video_type, title)
+        video_path = 'media/videos/{}/{}.mp4'.format(video_type, title)
+        context['video'] = {'url': '/media/videos/{}/{}.mp4'.format(video_type, title), 'title': title, 'video_path': video_path}
 
         # Temporal annotation
         annotation_path = 'media/videos/{}/{}.mat'.format(video_type, title)
         temporal_array = load_annotation(annotation_path)
         context['annotation'] = json.dumps(temporal_array.tolist())
-        x, scores = get_score(filename_mp4)
+        x, scores = get_score(video_path)
         scores = json.dumps(scores.tolist())
         context['scores'] = scores
+
+        weight32_paths = sorted(glob.glob('c3d/trained_models/weights_32*'))
+        weight64_paths = sorted(glob.glob('c3d/trained_models/weights_64*'))
+        context['weight32_paths'] = weight32_paths
+        context['weight64_paths'] = weight64_paths
+        context['weight_default_path'] = weight_default_path
 
         return context
 
@@ -94,6 +101,8 @@ class C3dNewView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         title = context['video_title']
         context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
+        annotation_path = 'media/videos/abnormal/{}.mat'.format(title)
+        context['annotation'] = load_annotation(annotation_path)
 
         filename_npy = 'media/features/{}.npy'.format(title)
         filename_mp4 = 'media/videos/{}.mp4'.format(title)
@@ -130,6 +139,15 @@ class VideoUploadView(View):
                 extract_feature_video('media/' + video.file.name)
         else:
             data = {'is_valid': False}
+        return JsonResponse(data)
+
+class GetScoreView(View):
+    def post(self, request):
+        video_path = request.POST.get('video_path')
+        weights_path = request.POST.get('weights_path')
+        x, scores = get_score(video_path, weights_path)
+        scores = scores.tolist()
+        data = {'is_valid': True, 'scores': scores}
         return JsonResponse(data)
 
 class SettingsView(View):

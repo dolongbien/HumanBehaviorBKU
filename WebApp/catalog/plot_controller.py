@@ -37,10 +37,9 @@ def load_model(json_path):
 
 # Load Video
 
-def get_score(video_path):
+def get_score(video_path, weights_path = weight_default_path):
 
-    K.clear_session()
-    weights_path = model_dir + weight_name
+    # K.clear_session()
     model_path = model_dir + model_name
     model = load_model(model_path)
     load_weights(model, weights_path)
@@ -50,7 +49,6 @@ def get_score(video_path):
     Total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     total_segments = np.linspace(1, Total_frames, num=(no_segment+1))
     total_segments = total_segments.round()
-    print("Video path == " + video_path)
 
     FeaturePath=(video_path)
     FeaturePath = FeaturePath[0:-4]

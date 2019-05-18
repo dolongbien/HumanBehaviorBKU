@@ -12,6 +12,7 @@ urlpatterns = [
     path('video/<str:video_type>/<str:video_title>', views.VideoDetailView.as_view(), name='video-detail'),
     path('c3d-new/<str:video_title>', views.C3dNewView.as_view(), name='c3d-new'),
     path('video-upload', views.VideoUploadView.as_view(), name='video-upload'),
+    path('get-score', views.GetScoreView.as_view(), name='video-get-score'),
     path('settings', views.SettingsView.as_view(), name='settings'),
     path('progress', views.progress_view, name='progress'),
     url(r'^clear/$', views.clear_database, name='clear_database'),

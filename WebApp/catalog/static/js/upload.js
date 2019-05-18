@@ -38,7 +38,6 @@ $(function () {
 
 $(function() {
   $('.js-extract-feature').click(function() {
-    console.log('HELLO');
     var progress;
     $("#modal-progress").modal("show");
     for(progress = 0; progress <= 100; progress += 10){
