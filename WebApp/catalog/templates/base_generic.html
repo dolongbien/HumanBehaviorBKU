@@ -1,21 +1,6 @@
 {% extends 'base.html' %}
   
 {% block content %}
-
-  <div class="row hide-for-small">
-    <div class="nav-bar twelve columns list-group">
-      <a class="navigation" href="{% url 'catalog:index' %}" class="list-group-item{% if request.path == '/catalog/' %} active{% endif %}">HOME</a>
-      <a class="navigation" href="{% url 'catalog:videos' %}" class="list-group-item{% if request.path == '/catalog/videos/' %} active{% endif %}">VIDEOS DEMO</a>  
-      <a class="navigation" href="{% url 'catalog:video-upload' %}" class="list-group-item{% if request.path == '/catalog/video-upload' %} active{% endif %}">UPLOAD VIDEOS</a>  
-      <a class="navigation" href="#">DATASET</a>    
-      <a class="navigation" href="#">RESULT</a>  
-      <a class="navigation" href="#">ABOUT</a>
-      <a class="navigation" href="#">CONTACT</a>
-    </div>
-  </div>
-  
-  <hr>
-  <!--Defines a block that can be overridden by child templates, that is video_list.html-->
   {% block videos_content %}
   {% endblock %} 
 {% endblock %}

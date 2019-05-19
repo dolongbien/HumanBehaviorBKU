@@ -96,6 +96,13 @@ def load_weights(model, weight_path):
         i += 1
     return model
 
+def format_filesize(size, suffix='B'):
+    for unit in ['','K','M','G','T','P','E','Z']:
+        if abs(size) < 1024.0:
+            return "%3.1f%s%s" % (size, unit, suffix)
+        size /= 1024.0
+    return "%.1f%s%s" % (size, 'Yi', suffix)
+
 def main():
     anno = load_annotation('media/videos/RoadAccidents002_x264.mat')
     print(anno)

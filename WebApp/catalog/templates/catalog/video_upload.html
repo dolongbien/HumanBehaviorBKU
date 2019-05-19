@@ -6,14 +6,7 @@
 {% block title %}Upload Video{% endblock %}
 
 {% block videos_content %}
-  <div class="container">
-  <!-- <form method="post" action="{% url 'catalog:clear_database' %}">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ request.path }}">
-    <button type="submit" class="btn btn-danger pull-right">
-      <span class="glyphicon glyphicon-trash"></span> Clear Database
-    </button>
-  </form> -->
+<div class="container">
   <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
     <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
     <h3>Drop Videos Here to Upload</h3>
@@ -22,27 +15,45 @@
     <button type="button" class="btn btn-primary js-upload-videos">
       <span class="glyphicon glyphicon-cloud-upload"></span> Upload Videos
     </button>
+    <!-- <button type="reset" class="btn btn-warning cancel">
+      <span class="glyphicon glyphicon-ban-circle"></span>Cancel Upload
+    </button> -->
+    <button type="submit" class="btn btn-danger js-delete-all-video">
+      <span class="glyphicon glyphicon-trash"></span> Clear Database
+    </button>
     <!-- <button type="button" class="btn btn-primary js-extract-feature">
       <span class="glyphicon glyphicon-cloud-upload"></span> Extract Feature
     </button>   -->
-    <input id="fileupload" type="file" name="file" multiple
-           accept="video/*,image/gif"
-           style="display: none;"
-           data-url="{% url 'catalog:video-upload' %}"
-           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+    <input id="fileupload" type="file" name="file" multiple accept="video/*,image/gif" style="display: none;"
+      data-url="{% url 'catalog:video-upload' %}" data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
   </div>
 
-  <table id="gallery" class="table table-bordered">
+  <table id="gallery" class="table table-striped">
     <thead>
       <tr>
         <th>Videos Uploaded</th>
       </tr>
     </thead>
     <tbody>
+      {% csrf_token %}
       {% for video in videos %}
-        <tr>
-          <td><a href="/catalog/c3d-new/{{video.file.basename}}">{{ video.file.name }}</a></td>
-        </tr>
+      <tr>
+        <td>
+          <a href="/catalog/c3d-new/{{video.file.filename}}">{{ video.file.name }}</a>
+        </td>
+        <td>
+          <span>{{ video.filesize }}</span>
+        </td>
+        <!-- <td>
+              <p class="size">Processing...</p>
+              <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+          </td> -->
+        <td>
+          <button type="submit" class="btn btn-danger js-delete-videos pull-right" data-type='DELETE' data-url="{{video.file}}" data-id='{{video.id}}'>
+            <span class="glyphicon glyphicon-trash"></span> Delete
+          </button>
+        </td>
+      </tr>
       {% endfor %}
     </tbody>
   </table>
@@ -58,6 +69,9 @@
             <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -65,21 +79,12 @@
 {% endblock %}
 
 {% block javascript %}
-  {# JQUERY FILE UPLOAD SCRIPTS #}
-  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
-  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
-  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+{# JQUERY FILE UPLOAD SCRIPTS #}
+<script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
 
-  {# VIDEO PAGE SCRIPTS #}
-  <script src="{% static 'js/upload.js' %}"></script>
-  <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
-  <script>
-    // var progress = {% if progress %} {{progress}} {%else%} 0 {% endif %};
-
-    // JQuery
-    $(function () {
-      console.log('ECESCEC');
-      CeleryProgressBar.initProgressBar(progressUrl);
-    });
-  </script>
+{# VIDEO PAGE SCRIPTS #}
+<script src="{% static 'js/upload.js' %}"></script>
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
 {% endblock %}

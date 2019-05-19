@@ -1,33 +1,43 @@
-<div id="ucfhb" class=" preload" role="complementary" aria-label="University of Central Florida navbar">
-	<div id="ucfhb-inner" style="display: none;">
-		<div id="ucfhb-left">
-			<div id="ucfhb-logo">
-				<div id="logo-bk">
-					<img class="img" src="/static/images/cse.png" alt="Bk" width="280" height="40" style="margin: 5px;vertical-align:middle"/> 
-				</div>
-			</div>
-			<button id="ucfhb-mobile-toggle">Toggle Mobile Menu</button>
-		</div>
-		<div id="ucfhb-right">
-			<div id="ucfhb-signon">
-				<button id="ucfhb-signon-logo">UCF Sign In</button>
-				<div id="ucfhb-services">
-					<div>
-						<a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/IHPROD/EMPLOYEE/EMPL/?cmd=login">myUCF</a>
-						<a id="ucfhb-knightsmail" class="ucfhb-service" href="http://knightsemail.ucf.edu/">KnightsMail</a>
-						<a id="ucfhb-webcourses" class="ucfhb-service" href="https://webcourses.ucf.edu/">Webcourses</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<ul id="ucfhb-search-autocomplete" aria-hidden="true" aria-label="Search Results" role="listbox"></ul>
-	</div>
-</div>
-
 {% load static %}
 
-<div class="row hide-for-small">
-  <div class="header twelve columns">
-    <a href="http://www.hcmut.edu.vn/vi"><img src="{% static 'images/topbar_logo.png' %}" alt="Center for Research in Comptuer Vision" vspace="15px" style="margin-bottom: 10px;margin-top: -3px"></a><br>
+
+<div class="container">
+  <div class="header">
+    <a href="http://www.hcmut.edu.vn/vi"><img class='img-fluid' src="{% static 'images/topbar_logo.png' %}"
+        alt="Center for Research in Comptuer Vision" style="max-height: 120px;"></a><br>
   </div>
 </div>
+
+<nav class="navbar navbar-default" style="background-color: transparent;">
+  <div class="container">
+    <div class="navbar-header  {% if request.path == '/catalog/' %} active{% endif %}">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu"
+        aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'catalog:index' %}"
+        class="list-group-item">Anomaly Detection in Traffic</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-menu">
+      <ul class="nav navbar-nav">
+        <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
+          <a class="navigation" href="/catalog/videos/abnormal"
+            class="list-group-item">Videos Demo</a>
+        </li>
+        <li class="{% if request.path == '/catalog/video-upload' %} active{% endif %}">
+          <a class="navigation" href="{% url 'catalog:video-upload' %}"
+            class="list-group-item">Upload Videos</a>
+        </li>
+        <li>
+          <a class="navigation" href="#">About</a>
+        </li>
+        <li>
+          <a class="navigation" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

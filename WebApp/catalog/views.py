@@ -21,7 +21,7 @@ import glob
 
 from c3d.extract_feature import load_npy, extract_feature_video
 from .plot_controller import get_score
-from .utils import load_annotation
+from .utils import load_annotation, format_filesize
 from .config import * # all config variables (weight, segment, other options, ...)
 
 def index(request):
@@ -32,6 +32,7 @@ def index(request):
     request.session['num_visits'] = num_visits+1
 
     # Render the HTML template index.html with the data in the context variable.
+    print(request.path)
     
     return render(
         request,
@@ -48,21 +49,17 @@ class VideoListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        abnormal_gifs = sorted(glob.glob('media/gifs/abnormal/*.gif'))
-        normal_gifs = sorted(glob.glob('media/gifs/normal/*.gif'))        
-        for i, value in enumerate(abnormal_gifs):
+        action = context['video_action']
+
+        gifs = sorted(glob.glob('media/gifs/{}/*.gif'.format(action)))
+        for i, value in enumerate(gifs):
             title = os.path.basename(value)[:-4]
-            video = {'url': '/catalog/video/abnormal/' + title, 'title': title}
-            abnormal_gifs[i] = video
-        # normal gif list
-        for i, value in enumerate(normal_gifs):
-            title = os.path.basename(value)[:-4]
-            video = {'url': '/catalog/video/normal/' + title, 'title': title}
-            normal_gifs[i] = video
+            video = {'url': '/catalog/video/{}/'.format(action) + title, 'title': title}
+            gifs[i] = video
 
         # update context
-        context['abnormal_gifs'] = abnormal_gifs
-        context['normal_gifs'] = normal_gifs
+        context['gifs'] = gifs
+        context['action'] = action
         return context
 
 
@@ -124,19 +121,23 @@ class C3dNewView(generic.TemplateView):
 
 class VideoUploadView(View):
     def get(self, request):
-        videos_list = Video.objects.all()
+        # Order by descent of uploaded time
+        videos_list = Video.objects.order_by('-uploaded_at')
         for video in videos_list:
-            video.file.basename = video.file.name[7:-4]
+            video.file.filename = os.path.splitext(os.path.basename(video.file.name))[0]
         return render(self.request, 'catalog/video_upload.html', {'videos': videos_list})
 
     def post(self, request):
         time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
         form = VideoForm(self.request.POST, self.request.FILES)
         if form.is_valid():
+            print(form)
             video = form.save()
-            data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url}
-            if os.path.splitext(video.file.name)[1] == '.mp4':
-                extract_feature_video('media/' + video.file.name)
+            video.filesize = format_filesize(video.file.size)
+            video.save()
+            data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize}
+            # if os.path.splitext(video.file.name)[1] == '.mp4':
+            #     extract_feature_video('media/' + video.file.name)
         else:
             data = {'is_valid': False}
         return JsonResponse(data)
@@ -151,26 +152,21 @@ class GetScoreView(View):
         return JsonResponse(data)
 
 class SettingsView(View):
-    def get(self, request):
-        # videos_list = Video.objects.all()
-        return render(self.request, 'catalog/settings.html')
+    pass
 
+class DeleteVideoView(View):
     def post(self, request):
-        # time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
-        # form = VideoForm(self.request.POST, self.request.FILES)
-        # if form.is_valid():
-        #     video = form.save()
-        #     data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url}
-        # else:
-        #     data = {'is_valid': False}
-        # return JsonResponse(data)
-        pass
-
-def clear_database(request):
-    for photo in Photo.objects.all():
-        photo.file.delete()
-        photo.delete()
-    return redirect(request.POST.get('next'))
+        if request.POST.get('delete_all'):
+            Video.objects.all().delete()
+        else:
+            # file_names = request.POST.getlist('files[]')
+            ids = request.POST.getlist('ids[]')
+            for id in ids:
+                video = Video.objects.get(id = id)
+                video.file.delete()
+                video.delete()
+            
+        return JsonResponse({'success': True})
 
 
 def get_progress(request, task_id):
