@@ -8,7 +8,7 @@ from keras import backend as K
 @task
 def extract_feature_video(video_path):
 
-    K.clear_session()
+    # K.clear_session()
     video_name = os.path.basename(video_path).split('.')[0]
 
     # read video
@@ -36,6 +36,7 @@ def extract_feature_video(video_path):
         print("Processed clip : ", i)
 
     rgb_features = np.array(rgb_features)
+    print(rgb_features)
     
     # bag features
     rgb_feature_bag = interpolate(rgb_features, params.features_per_bag)

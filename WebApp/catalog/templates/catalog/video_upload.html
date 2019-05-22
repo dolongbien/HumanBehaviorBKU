@@ -7,9 +7,9 @@
 
 {% block videos_content %}
 <div class="container">
-  <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
-    <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
-    <h3>Drop Videos Here to Upload</h3>
+  <div class="well text-muted text-center" style="padding-top: 1rem; padding-bottom: 1rem;">
+    <span class="glyphicon glyphicon-arrow-down" style="font-size: 2rem;"></span>
+    <h4>Drop Videos Here to Upload</h4>
   </div>
   <div style="margin-bottom: 20px;">
     <button type="button" class="btn btn-primary js-upload-videos">
@@ -20,6 +20,9 @@
     </button> -->
     <button type="submit" class="btn btn-danger js-delete-all-video">
       <span class="glyphicon glyphicon-trash"></span> Clear Database
+    </button>
+    <button type="submit" class="btn btn-default btn-outline-secondary js-url-modal pull-right">
+      <span class="glyphicon glyphicon-link"></span> URLs Link
     </button>
     <!-- <button type="button" class="btn btn-primary js-extract-feature">
       <span class="glyphicon glyphicon-cloud-upload"></span> Extract Feature
@@ -32,6 +35,7 @@
     <thead>
       <tr>
         <th>Videos Uploaded</th>
+        <th>Size</th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +43,7 @@
       {% for video in videos %}
       <tr>
         <td>
-          <a href="/catalog/c3d-new/{{video.file.filename}}">{{ video.file.name }}</a>
+          <a href="/catalog/c3d-new/{{video.title}}">{{ video.title }}</a>
         </td>
         <td>
           <span>{{ video.filesize }}</span>
@@ -75,6 +79,32 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="model-urls" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><span class="glyphicon glyphicon-link"></span> Upload with URLs</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <input type="url" class="form-control left-inner-addon input-url" placeholder="url link or youtube..." aria-describedby="basic-addon1">
+              <input type="url" class="form-control left-inner-addon input-filename" placeholder="filename..." aria-describedby="basic-addon1">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary js-url-upload">
+              <i class="fa fa-spinner fa-spin" style="display: none"></i>
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
 

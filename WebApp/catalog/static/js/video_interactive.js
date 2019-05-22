@@ -134,13 +134,16 @@ $(function(){
     }
 
     let frameRate = 29.97;
+    let nFrame = scores.length;
     const video = VideoFrame({
         id : 'video',
         frameRate,
         callback : function(numberFrame) {
-            
             if (numberFrame % 25 == 1){
                 drawChart(numberFrame);
+            }
+            else if(numberFrame == nFrame){
+                drawChart(nFrame);
             }
         }
     });

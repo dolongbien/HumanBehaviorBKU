@@ -3,10 +3,8 @@ from django.http import HttpResponse, JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.views import View
 from django.conf import settings
-from celery import shared_task
-from celery_progress.backend import ProgressRecorder
+from django.core import files
 import time
-import scipy.io
 # A view function, or view for short, 
 # is simply a Python function that takes a Web request and returns a Web response. 
 # This response can be the HTML contents of a Web page, or a redirect, or a 404 error,
@@ -18,11 +16,13 @@ from .forms import VideoForm
 import os
 import json
 import glob
+import urllib.request
+import tempfile
 
 from c3d.extract_feature import load_npy, extract_feature_video
-from .plot_controller import get_score
-from .utils import load_annotation, format_filesize
-from .config import * # all config variables (weight, segment, other options, ...)
+from c3d.plot_controller import get_score
+from c3d.configuration import weight_default_path
+from catalog.utils.utils import load_annotation, format_filesize, url_downloadable, write_file
 
 def index(request):
     """View function for home page of site."""
@@ -99,7 +99,7 @@ class C3dNewView(generic.TemplateView):
         title = context['video_title']
         context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
         annotation_path = 'media/videos/abnormal/{}.mat'.format(title)
-        context['annotation'] = load_annotation(annotation_path)
+        context['annotation'] = json.dumps(load_annotation(annotation_path).tolist())
 
         filename_npy = 'media/features/{}.npy'.format(title)
         filename_mp4 = 'media/videos/{}.mp4'.format(title)
@@ -123,21 +123,40 @@ class VideoUploadView(View):
     def get(self, request):
         # Order by descent of uploaded time
         videos_list = Video.objects.order_by('-uploaded_at')
-        for video in videos_list:
-            video.file.filename = os.path.splitext(os.path.basename(video.file.name))[0]
         return render(self.request, 'catalog/video_upload.html', {'videos': videos_list})
 
     def post(self, request):
+        """
+        Post from form blue-upload or url.
+        """
         time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
+        url = request.POST.get('url')
+        filename = request.POST.get('filename')
+
         form = VideoForm(self.request.POST, self.request.FILES)
         if form.is_valid():
-            print(form)
             video = form.save()
             video.filesize = format_filesize(video.file.size)
+            video.title = os.path.splitext(os.path.basename(video.file.name))[0]
             video.save()
-            data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize}
+            data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
             # if os.path.splitext(video.file.name)[1] == '.mp4':
             #     extract_feature_video('media/' + video.file.name)
+        elif url:
+            response = urllib.request.urlopen(url)
+            meta_response = response.info()
+            # if 'youtube.com' in url:
+            #     pass
+            if 'video' in meta_response.get_content_type():
+                temp_video = tempfile.NamedTemporaryFile()
+                write_file(temp_video, response)
+
+                video = Video()
+                video.file.save(filename, files.File(temp_video))
+                video.filesize = format_filesize(video.file.size)
+                video.title = os.path.splitext(os.path.basename(video.file.name))[0]
+                video.save()
+                data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
         else:
             data = {'is_valid': False}
         return JsonResponse(data)

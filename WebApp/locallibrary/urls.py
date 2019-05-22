@@ -21,6 +21,7 @@ from django.views.generic import RedirectView, TemplateView
 urlpatterns = [
     # path('home', TemplateView.as_view(template_name='home.html'), name='home'),
     path('catalog/', include('catalog.urls', namespace='catalog')),
+    path('', RedirectView.as_view(url='/catalog/', permanent=True)),
     path('celery-progress/', include('celery_progress.urls', namespace='celery_progress')),
 ]
 

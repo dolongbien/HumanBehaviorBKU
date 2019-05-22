@@ -1,110 +1,111 @@
 {% extends "base_generic.html" %}
 
-{% load static %} 
+{% load static %}
 {% comment %} use the files in the static folder in this template. {% endcomment %}
 
 {% block title %}Video {{ video.title }}{% endblock %}
 
 {% block videos_content %}
 
-    <div class='container'>
-        <div class='col-sm-5 border-right'>
-            <video controls id='video' width="400" height="320">
-                <source src="{{ video.url }}" type="video/mp4">
-            </video>
+<div class='container'>
+    <div class='col-sm-5 border-right'>
+        <video controls id='video' width="400" height="320">
+            <source src="{{ video.url }}" type="video/mp4">
+        </video>
 
-            <form action="">
-                <button type="button" class="btn btn-primary" id="play-pause">Play</button>
-                <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
-            </form>
-        </div>
-        <div class='col-sm-7'>
-            <div id="curve_chart" style="height: 400px"></div>
-        </div>
+        <form action="">
+            <button type="button" class="btn btn-primary" id="play-pause">Play</button>
+            <button type="button" class="btn btn-primary" id="plot-score">Plot</button>
+        </form>
+    </div>
+    <div class='col-sm-7'>
+        <div id="curve_chart" style="height: 400px"></div>
+    </div>
 
-        <div class="row">
-            <div class='col-md-12'>
-                <div class='panel panel-default'>
-                    <div class='panel-heading'>
-                        <h3 class='panel-title'>Setting</h3>
-                    </div>
-                    <div class='list-group'>
-                        <form>
-                            {% csrf_token %}
-                            <p>Segment 32:</p>
-                            {% for weight_path in weight32_paths %}
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="weightName" value="{{weight_path}}" {% if weight_default_path == weight_path %} checked {% endif %}>
-                                    <label class="custom-control-label" for="{{weight_path}}">{{weight_path}}</label>
-                                </div>
-                            {% endfor %}
-                            <p>Segment 64:</p>
-                            {% for weight_path in weight64_paths %}
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="weightName" value="{{weight_path}}">
-                                    <label class="custom-control-label" for="{{weight_path}}">{{weight_path}}</label>
-                                </div>
-                            {% endfor %}					
-        
-                        </form>
-                    </div>
+    <div class="row">
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    <h3 class='panel-title'>Setting</h3>
+                </div>
+                <div class='list-group'>
+                    <form>
+                        {% csrf_token %}
+                        <p>Segment 32:</p>
+                        {% for weight_path in weight32_paths %}
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="weightName"
+                                value="{{weight_path}}" {% if weight_default_path == weight_path %} checked {% endif %}>
+                            <label class="custom-control-label" for="{{weight_path}}">{{weight_path}}</label>
+                        </div>
+                        {% endfor %}
+                        <p>Segment 64:</p>
+                        {% for weight_path in weight64_paths %}
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="weightName"
+                                value="{{weight_path}}">
+                            <label class="custom-control-label" for="{{weight_path}}">{{weight_path}}</label>
+                        </div>
+                        {% endfor %}
+
+                    </form>
                 </div>
             </div>
-    
         </div>
-        <!-- <div class='col-sm-8'>
+
+    </div>
+    <!-- <div class='col-sm-8'>
             <div id="video_infor">
             Video information
             </div>
         </div> -->
-    </div>
+</div>
 
-    <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog">
-          <div class="modal-content">
+<div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">
-                  <i class="fa fa-spinner fa-spin"></i> Getting Score...
+                <h4 class="modal-title">
+                    <i class="fa fa-spinner fa-spin"></i> Getting Score...
                 </h4>
             </div>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block javascript %}
-    <script>
-        let scores = {{scores}};
-        const annotation = {{annotation}};
-        console.log('{{weight_default_path}}');
-        $(function(){
-            $('input[type=radio][name=weightName').change(function(){
-                $("#modal-progress").modal("show");
-                $.ajax({
-                    type: 'POST',
-                    url: '/catalog/get-score',
-                    data: {
-                        weights_path: this.value,
-                        video_path: '{{video.video_path}}',
-                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    },
-                    success: function (data) {
-                        // console.log(data);
-                        // if (data.is_valid)
-                        scores = data.scores;
-                        console.log(scores);
-                        // alert(data);
-                    },
-                    complete: function(){
-                        $("#modal-progress").modal("hide");
-                    }
-                })
+<script>
+    let scores = {{ scores }};
+    const annotation = {{ annotation }};
+    console.log('{{weight_default_path}}');
+    $(function () {
+        $('input[type=radio][name=weightName').change(function () {
+            $("#modal-progress").modal("show");
+            $.ajax({
+                type: 'POST',
+                url: '/catalog/get-score',
+                data: {
+                    weights_path: this.value,
+                    video_path: '{{video.video_path}}',
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (data) {
+                    // console.log(data);
+                    // if (data.is_valid)
+                    scores = data.scores;
+                    console.log(scores);
+                    // alert(data);
+                },
+                complete: function () {
+                    $("#modal-progress").modal("hide");
+                }
             })
         })
-    </script>
-    <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
-    <script src="{% static 'js/VideoFrame.min.js' %}"></script>
-    <script src="{% static 'js/video_interactive.js' %}"></script>
+    })
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="{% static 'js/VideoFrame.min.js' %}"></script>
+<script src="{% static 'js/video_interactive.js' %}"></script>
 {% endblock %}
