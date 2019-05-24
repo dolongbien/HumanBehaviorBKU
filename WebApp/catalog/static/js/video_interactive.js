@@ -128,15 +128,24 @@ $(function(){
                 }
             }
         };
+        function selectHanlder() {
+            var selectedItem =  chart.getSelection()[0];
+            if (selectedItem) {
+                var frame = data.getValue(selectedItem.row, 0);
+                // console.log(selectedItem);
+                $('#video-player')[0].currentTime = frame/frameRate;
+            }
+        }
         var chartDiv = document.getElementById('curve_chart');
         var chart = new google.visualization.LineChart(chartDiv);
+        google.visualization.events.addListener(chart, 'select', selectHanlder);
         chart.draw(data, options);
     }
 
     let frameRate = 29.97;
     let nFrame = scores.length;
     const video = VideoFrame({
-        id : 'video',
+        id : 'video-player',
         frameRate,
         callback : function(numberFrame) {
             if (numberFrame % 25 == 1){
