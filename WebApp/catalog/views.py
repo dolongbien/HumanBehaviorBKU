@@ -18,10 +18,11 @@ import json
 import glob
 import urllib.request
 import tempfile
+from pytube import YouTube
 
 from c3d.extract_feature import load_npy, extract_feature_video
 from c3d.plot_controller import get_score
-from c3d.configuration import weight_default_path
+from c3d.configuration import weight_default_path, weight32_path, weight64_path
 from catalog.utils.utils import load_annotation, format_filesize, url_downloadable, write_file
 
 def index(request):
@@ -83,10 +84,8 @@ class VideoDetailView(generic.TemplateView):
         scores = json.dumps(scores.tolist())
         context['scores'] = scores
 
-        weight32_paths = sorted(glob.glob('c3d/trained_models/weights_32*'))
-        weight64_paths = sorted(glob.glob('c3d/trained_models/weights_64*'))
-        context['weight32_paths'] = weight32_paths
-        context['weight64_paths'] = weight64_paths
+        context['weight32_path'] = weight32_path
+        context['weight64_path'] = weight64_path
         context['weight_default_path'] = weight_default_path
 
         return context
@@ -97,12 +96,12 @@ class C3dNewView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         title = context['video_title']
-        context['video'] = {'url': '/media/videos/{}.mp4'.format(title), 'title': title}
+        context['video'] = {'url': '/media/videos/upload/{}.mp4'.format(title), 'title': title}
         annotation_path = 'media/videos/abnormal/{}.mat'.format(title)
         context['annotation'] = json.dumps(load_annotation(annotation_path).tolist())
 
         filename_npy = 'media/features/{}.npy'.format(title)
-        filename_mp4 = 'media/videos/{}.mp4'.format(title)
+        filename_mp4 = 'media/videos/upload/{}.mp4'.format(title)
         
         if os.path.exists(filename_npy):
             predictions = load_npy(filename_npy)
@@ -145,8 +144,19 @@ class VideoUploadView(View):
         elif url:
             response = urllib.request.urlopen(url)
             meta_response = response.info()
-            # if 'youtube.com' in url:
-            #     pass
+            if 'youtube.com' in url:
+                yt = YouTube(url)
+                if filename == '':
+                    filename = yt.title 
+                print
+                print(yt.title )
+                video = Video()
+                video.file.name = 'videos/upload/'+ filename + '.mp4'
+                yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download('media/videos/upload/', filename)
+                video.filesize = format_filesize(video.file.size)
+                video.title = os.path.splitext(os.path.basename(video.file.name))[0]
+                video.save()
+                data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
             if 'video' in meta_response.get_content_type():
                 temp_video = tempfile.NamedTemporaryFile()
                 write_file(temp_video, response)
@@ -165,7 +175,10 @@ class GetScoreView(View):
     def post(self, request):
         video_path = request.POST.get('video_path')
         weights_path = request.POST.get('weights_path')
-        x, scores = get_score(video_path, weights_path)
+        no_segment = request.POST.get('no_segment')
+        print(video_path)
+
+        x, scores = get_score(video_path, weights_path, int(no_segment))
         scores = scores.tolist()
         data = {'is_valid': True, 'scores': scores}
         return JsonResponse(data)

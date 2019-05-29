@@ -1,6 +1,7 @@
 $(function(){
 
     google.charts.load('current', {packages: ['corechart', 'line']});
+    google.setOnLoadCallback(drawChart);
 
     const thresold = 0.5;
 
@@ -126,13 +127,14 @@ $(function(){
                     color: '#00D717',
                     type: 'area'
                 }
-            }
+            },
         };
         function selectHanlder() {
             var selectedItem =  chart.getSelection()[0];
             if (selectedItem) {
                 var frame = data.getValue(selectedItem.row, 0);
-                // console.log(selectedItem);
+                console.log(frame);
+                console.log($('#video-player')[0].currentTime);
                 $('#video-player')[0].currentTime = frame/frameRate;
             }
         }
@@ -163,6 +165,9 @@ $(function(){
         drawChart(nFrame);
     });
 
+    // console.log(nFrame);
+    // drawChart(nFrame);
+
     // let nFrame = scores.length;
     // drawChart(nFrame);
 
@@ -181,5 +186,26 @@ $(function(){
             $("#play-pause").html('Play');
         }
     }
+
+    $('input[type=radio][name=weightName]').change(function () {
+        $("#modal-progress").modal("show");
+        $.ajax({
+            type: 'POST',
+            url: '/catalog/get-score',
+            data: {
+                no_segment: $(this).attr('data-segment'),
+                weights_path: this.value,
+                video_path: video_path,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (data) {
+                scores = data.scores;
+                drawChart(nFrame);
+            },
+            complete: function () {
+                $("#modal-progress").modal("hide");
+            }
+        })
+    })
 
 })

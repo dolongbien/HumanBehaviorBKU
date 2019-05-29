@@ -12,7 +12,7 @@ from keras import backend as K # to clear session each time reloading
 import cv2
 
 from c3d.classifier import conv_dict, load_weights
-from c3d.configuration import * # all config variables (weight, segment, other options, ...)
+from c3d.configuration import weight_default_path, feature32_alias, no_segment, feature64_alias, feature32_alias # all config variables (weight, segment, other options, ...)
 
 import scipy.io
 from math import factorial
@@ -31,17 +31,17 @@ def classifier_model():
     model.add(Dense(1, kernel_initializer='glorot_normal', kernel_regularizer=l2(0.001), activation='sigmoid'))
     return model
 
-def load_model(json_path):
+def load_model():
     model = classifier_model()
     return model
 
 # Load Video
 
-def get_score(video_path, weights_path = weight_default_path):
+def get_score(video_path, weights_path = weight_default_path, no_segment = no_segment):
 
     # K.clear_session()
-    model_path = model_dir + model_name
-    model = load_model(model_path)
+    # model_path = model_dir + model_name
+    model = load_model()
     load_weights(model, weights_path)
 
     cap = cv2.VideoCapture(video_path)
@@ -49,6 +49,11 @@ def get_score(video_path, weights_path = weight_default_path):
     Total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     total_segments = np.linspace(1, Total_frames, num=(no_segment+1))
     total_segments = total_segments.round()
+
+    if no_segment == 64:
+        feature_alias = feature64_alias
+    else:
+        feature_alias = feature32_alias
 
     FeaturePath=(video_path)
     FeaturePath = FeaturePath[0:-4]

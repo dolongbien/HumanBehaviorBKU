@@ -57,9 +57,6 @@ $(function () {
   $('.js-url-upload').click(async function () {
     var url = $('.input-url').val();
     var filename = $('.input-filename').val();
-    if (filename === '') {
-      filename = url.split('/').pop();
-    }
     $.ajax({
       type: 'POST',
       url: '/catalog/video-upload',

@@ -1,5 +1,6 @@
 ﻿body{
-	/* background: url("/static/images/gradient.jpg") repeat-x top left #fff; */
+	background: url("/static/images/gradient.jpg") repeat-x top left #fff;
+	background-size: 300px 120px;
 	line-height: 20px;
 }
 
@@ -7,4 +8,21 @@
 	text-align: center;
 	margin-top: 20px;
 	margin-bottom: 10px;
+}
+@media (min-width: 768px) {
+	.navbar-nav {
+	  width: 100%;
+	  text-align: center;
+	}
+	.navbar-nav > li {
+	  float: none;
+	  display: inline-block;
+	}
+	.navbar-nav > li.navbar-right {
+	  float: right !important;
+	}
+}
+
+.nav-pills>li.active>a {
+	background-color: #1488db;
 }

@@ -11,14 +11,14 @@
       <li role="presentation" class="{% if action == 'normal' %} active {% endif %}"><a href="/catalog/videos/normal">Normal Video</a></li>
       <!-- <li role="presentation"><a href="#">Orther</a></li> -->
     </ul>
-    <div class='video-list'>
+    <div class='video-list' style="padding-top: 15px">
       {% if gifs %}
         {% for video in gifs %}
 
         <div class="col-lg-3 col-md-4 col-sm-6">
           <a href="{{ video.url }}" class = "thumbnail">
-            <img src="/media/gifs/{{action}}/{{ video.title }}.gif" alt= {{video.title}}>
-            {{ video.title }}
+            <img src="/media/gifs/{{action}}/{{ video.title }}.gif" style="padding: 5px" alt= {{video.title}}>
+            <p class="text-center">{{ video.title }}</p>
           </a>
         </div>
         {% endfor %}

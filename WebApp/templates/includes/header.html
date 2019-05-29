@@ -2,16 +2,16 @@
 
 
 <div class="container">
-  <!-- <div class="header">
+  <div class="header" style="margin-top:10px">
     <a href="http://www.hcmut.edu.vn/vi"><img class='img-fluid' src="{% static 'images/topbar_logo.png' %}"
-        alt="Center for Research in Comptuer Vision" style="max-height: 120px;"></a>
+        alt="Center for Research in Comptuer Vision" style="max-height: 80px;"></a>
     <br>
-  </div> -->
+  </div>
 </div>
 
-<nav class="navbar navbar-default" style="background-color: transparent;">
+<nav class="navbar navbar-light" style="background-color: #e8f5fe;">
   <div class="container">
-    <div class="navbar-header  {% if request.path == '/catalog/' %} active{% endif %}">
+    <!-- <div class="navbar-header  {% if request.path == '/catalog/' %} active{% endif %}">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu"
         aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -19,24 +19,26 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{% url 'catalog:index' %}"
-        class="list-group-item">Anomaly Detection in Traffic</a>
-    </div>
+    </div> -->
     <div class="collapse navbar-collapse" id="main-menu">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-center  nav-pills">
+        <li class="{% if request.path == '/catalog/' %} active{% endif %}">
+          <a class="nav-link " href="{% url 'catalog:index' %}"
+          class="list-group-item">Home</a>
+        </li>
         <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
-          <a class="navigation" href="/catalog/videos/abnormal"
+          <a class="nav-link " href="/catalog/videos/abnormal"
             class="list-group-item">Videos Demo</a>
         </li>
         <li class="{% if request.path == '/catalog/video-upload' %} active{% endif %}">
-          <a class="navigation" href="{% url 'catalog:video-upload' %}"
+          <a class="nav-link " href="{% url 'catalog:video-upload' %}"
             class="list-group-item">Upload Videos</a>
         </li>
         <li>
-          <a class="navigation" href="#">About</a>
+          <a class="nav-link " href="#">About</a>
         </li>
         <li>
-          <a class="navigation" href="#">Contact</a>
+          <a class="nav-link " href="#">Contact</a>
         </li>
       </ul>
     </div>
