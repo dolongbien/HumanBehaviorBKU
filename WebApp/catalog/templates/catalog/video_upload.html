@@ -86,22 +86,22 @@
         <div class="modal-header">
           <h5 class="modal-title">
             <span class="glyphicon glyphicon-link"></span>
-            <i class="fab fa-youtube"></i>
              Upload with URLs
           </h5>
         </div>
         <div class="modal-body">
-          <form>
             <div class="form-group">
-              <input type="url" class="form-control left-inner-addon input-url" placeholder="url link or youtube..." aria-describedby="basic-addon1">
-              <input type="url" class="form-control left-inner-addon input-filename" placeholder="filename..." aria-describedby="basic-addon1">
+              <input type="url" class="form-control form-check-input left-inner-addon input-url" placeholder="url media or youtube..." aria-describedby="basic-addon1" required>
+              <div class="help-block with-errors" style="display: none;color: red;">Invalid URL!</div>
             </div>
-          </form>
+            <div class="form-group">
+              <input type="text" class="form-control form-check-input left-inner-addon input-filename" placeholder="filename..." aria-describedby="basic-addon1">
+            </div>
         </div>
         <div class="modal-footer">
+          <i class="fa fa-spinner fa-spin processing" style="display: none"></i>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary js-url-upload">
-              <i class="fa fa-spinner fa-spin" style="display: none"></i>
             <span class="glyphicon glyphicon-cloud-upload"></span> Upload
           </button>
         </div>
@@ -120,5 +120,4 @@
 
 {# VIDEO PAGE SCRIPTS #}
 <script src="{% static 'js/upload.js' %}"></script>
-<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
 {% endblock %}

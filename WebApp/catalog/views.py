@@ -4,6 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.views import View
 from django.conf import settings
 from django.core import files
+from django.utils.text import slugify
 import time
 # A view function, or view for short, 
 # is simply a Python function that takes a Web request and returns a Web response. 
@@ -12,6 +13,7 @@ import time
 from django.views import generic
 from .models import Video
 from .forms import VideoForm
+from .tasks import extract_feature
 
 import os
 import json
@@ -23,7 +25,7 @@ from pytube import YouTube
 from c3d.extract_feature import load_npy, extract_feature_video
 from c3d.plot_controller import get_score
 from c3d.configuration import weight_default_path, weight32_path, weight64_path
-from catalog.utils.utils import load_annotation, format_filesize, url_downloadable, write_file
+from catalog.utils.utils import load_annotation, format_filesize, url_downloadable, write_file, get_basename
 
 def index(request):
     """View function for home page of site."""
@@ -96,27 +98,32 @@ class C3dNewView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         title = context['video_title']
-        context['video'] = {'url': '/media/videos/upload/{}.mp4'.format(title), 'title': title}
+        video = Video.objects.get(title = title)
+        context['video'] = {'url': video.file.url, 'title': title, 'id': video.id, 'video_path': video.file.url[1:]}
         annotation_path = 'media/videos/abnormal/{}.mat'.format(title)
         context['annotation'] = json.dumps(load_annotation(annotation_path).tolist())
+        context['c3dnew'] = True
 
-        filename_npy = 'media/features/{}.npy'.format(title)
-        filename_mp4 = 'media/videos/upload/{}.mp4'.format(title)
+        filename_npy = settings.MEDIA_ROOT + video.file_score32.name
+        print(filename_npy)
         
         if os.path.exists(filename_npy):
-            predictions = load_npy(filename_npy)
-            scores = json.dumps(predictions.tolist())
+            scores = load_npy(filename_npy)
+            scores = scores.tolist()
             
             context['scores'] = scores
-        else:
-            if os.path.exists(filename_mp4):
-                extract_feature_video(filename_mp4)
-                predictions = load_npy(filename_npy)
-                scores = json.dumps(predictions.tolist())
-                context['scores'] = scores
-            else:
-                context['message'] = 'File {}.mp4 not found!'.format(title)
+
         return context
+    
+    def post(self, request):
+        video_path = request.POST.get('video_path')
+        no_segment = request.POST.get('no_segment')
+
+        x, scores = get_score(video_path, weights_path, int(no_segment))
+        scores = scores.tolist()
+        data = {'is_valid': True, 'scores': scores}
+        return JsonResponse(data)
+
 
 class VideoUploadView(View):
     def get(self, request):
@@ -128,63 +135,77 @@ class VideoUploadView(View):
         """
         Post from form blue-upload or url.
         """
-        time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
+        #time.sleep(1)  # You don't need this line. This is just to delay the process so you can see the progress bar testing locally.
         url = request.POST.get('url')
         filename = request.POST.get('filename')
+
+        response = {'is_valid': False}
 
         form = VideoForm(self.request.POST, self.request.FILES)
         if form.is_valid():
             video = form.save()
             video.filesize = format_filesize(video.file.size)
-            video.title = os.path.splitext(os.path.basename(video.file.name))[0]
+            video.title = get_basename(video.file.name)
             video.save()
-            data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
-            # if os.path.splitext(video.file.name)[1] == '.mp4':
-            #     extract_feature_video('media/' + video.file.name)
+            response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
         elif url:
-            response = urllib.request.urlopen(url)
-            meta_response = response.info()
+            url_response = urllib.request.urlopen(url)
+            url_info = url_response.info()
             if 'youtube.com' in url:
                 yt = YouTube(url)
                 if filename == '':
-                    filename = yt.title 
-                print
-                print(yt.title )
+                    filename = slugify(yt.title)
                 video = Video()
+                video.title = yt.title
                 video.file.name = 'videos/upload/'+ filename + '.mp4'
-                yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download('media/videos/upload/', filename)
+                yt.streams.filter(progressive=True, file_extension='mp4', fps= 30).order_by('resolution').desc().first().download('media/videos/upload/', filename)
                 video.filesize = format_filesize(video.file.size)
-                video.title = os.path.splitext(os.path.basename(video.file.name))[0]
                 video.save()
-                data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
-            if 'video' in meta_response.get_content_type():
+                response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
+            if 'video' in url_info.get_content_type():
                 temp_video = tempfile.NamedTemporaryFile()
-                write_file(temp_video, response)
+                write_file(temp_video, url_response)
 
                 video = Video()
                 video.file.save(filename, files.File(temp_video))
                 video.filesize = format_filesize(video.file.size)
-                video.title = os.path.splitext(os.path.basename(video.file.name))[0]
+                video.title = get_basename(video.file.name)
                 video.save()
-                data = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
-        else:
-            data = {'is_valid': False}
-        return JsonResponse(data)
+                response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
+
+
+        # Extract Feature in Celery
+        if response['is_valid'] == True:
+            extract_feature.delay(video.id)
+
+        return JsonResponse(response)
 
 class GetScoreView(View):
     def post(self, request):
+        isC3Dnew = request.POST.get('isC3Dnew')
         video_path = request.POST.get('video_path')
         weights_path = request.POST.get('weights_path')
         no_segment = request.POST.get('no_segment')
         print(video_path)
+        print(isC3Dnew)
 
-        x, scores = get_score(video_path, weights_path, int(no_segment))
+        if (isC3Dnew):
+            id = request.POST.get('id')
+            print(request.POST)
+            video = Video.objects.get(id = id)
+            # scores = extract_feature_video(video_path, int(no_segment))
+            if int(no_segment) == 32:
+                filename_npy = video.file_score32.url[1:]
+            elif int(no_segment) == 64:
+                filename_npy = video.file_score64.url[1:]
+
+            print(filename_npy)
+            scores = load_npy(filename_npy)
+        else:
+            x, scores = get_score(video_path, weights_path, int(no_segment))
         scores = scores.tolist()
         data = {'is_valid': True, 'scores': scores}
         return JsonResponse(data)
-
-class SettingsView(View):
-    pass
 
 class DeleteVideoView(View):
     def post(self, request):
@@ -196,36 +217,9 @@ class DeleteVideoView(View):
             for id in ids:
                 video = Video.objects.get(id = id)
                 video.file.delete()
+                video.file_score32.delete()
+                video.file_score64.delete()
                 video.delete()
             
         return JsonResponse({'success': True})
 
-
-def get_progress(request, task_id):
-    result = AsyncResult(task_id)
-    response_data = {
-        'state': result.state,
-        'details': result.info,
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
-
-from celery import shared_task, current_task, task, Celery
-from celery.result import AsyncResult
-from celery_progress.backend import Progress
-import time
-
-
-app = Celery('catalog', broker='redis:///0')
-
-@app.task
-def my_task(seconds):
-    print('SEF', seconds)
-    """ Get some rest, asynchronously, and update the state all the time """
-    for i in range(100):
-        time.sleep(0.1)
-        current_task.update_state(state='PROGRESS',
-            meta={'current': i, 'total': 100})
-
-def progress_view(request):
-    result = my_task.delay(10)
-    return render(request, 'catalog/progress.html', context={'task_id': result.task_id})

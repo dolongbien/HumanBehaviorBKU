@@ -53,10 +53,31 @@ $(function () {
   $('.js-url-modal').click(function () {
     $('#model-urls').modal('show');
   });
+  
+  function isURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return pattern.test(str);
+  }
 
-  $('.js-url-upload').click(async function () {
+  $('.js-url-upload').click(async function (e) {
     var url = $('.input-url').val();
     var filename = $('.input-filename').val();
+
+    // Validation form 
+    if (!isURL(url)){
+      $('.with-errors').css({'display':'block'});
+      $('.input-url').css({'border-color': 'red'});
+    }
+    else {
+      $('.with-errors').css({'display':'none'});
+      $('.input-url').css({'border-color': '#ccc'});
+    }
+    $('.processing').css({'display': 'inline-block'});
     $.ajax({
       type: 'POST',
       url: '/catalog/video-upload',
@@ -68,6 +89,9 @@ $(function () {
       success: function (data) {
         $('#model-urls').modal('hide');
         updateAfterUpload(data);
+      },
+      complete: function() {
+        $('.processing').css({'display': 'none'});
       }
     });
     // var xhr = new XMLHttpRequest();
@@ -102,7 +126,7 @@ $(function () {
     $("#modal-progress").modal("hide");
   });
 
-  $('.js-delete-videos').click(function () {
+  $(document).on('click','.js-delete-videos' ,function () {
     console.log($(this).attr('data-type'));
     let closest_tr = $(this).closest('tr');
     $.ajax({

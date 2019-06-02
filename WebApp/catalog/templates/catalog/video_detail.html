@@ -73,9 +73,11 @@
 
 {% block javascript %}
 <script>
-    let scores = {{ scores }};
+    let scores = {% if scores %} {{ scores }} {% else %} null {% endif %};
     const annotation = {{ annotation }};
     const video_path = '{{video.video_path}}';
+    const isC3Dnew = {% if c3dnew %} true {% else %} false {% endif %};
+    const video_id = {% if video.id %} {{ video.id }} {% else %} null {% endif%};
 </script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{% static 'js/VideoFrame.min.js' %}"></script>

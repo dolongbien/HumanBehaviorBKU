@@ -66,7 +66,6 @@ $(function(){
             {type: 'string', role: 'annotation'},
             {type: 'string', role: 'annotationText'}]); // push header to the begining of array 
         var data = google.visualization.arrayToDataTable(arrData);
-        console.log(data);
         var options = {
             title: 'Anormaly Score',
             curveType: 'function',
@@ -135,7 +134,7 @@ $(function(){
                 var frame = data.getValue(selectedItem.row, 0);
                 console.log(frame);
                 console.log($('#video-player')[0].currentTime);
-                $('#video-player')[0].currentTime = frame/frameRate;
+                $('#video-player')[0].currentTime = frame/video.frameRate;
             }
         }
         var chartDiv = document.getElementById('curve_chart');
@@ -144,17 +143,15 @@ $(function(){
         chart.draw(data, options);
     }
 
-    let frameRate = 29.97;
-    let nFrame = scores.length;
     const video = VideoFrame({
         id : 'video-player',
-        frameRate,
+        frameRate: 29.97,
         callback : function(numberFrame) {
-            if (numberFrame % 25 == 1){
+            if (numberFrame % 10 == 1){
                 drawChart(numberFrame);
             }
-            else if(numberFrame == nFrame){
-                drawChart(nFrame);
+            if(scores.length - numberFrame < 10){
+                drawChart(scores.length);
             }
         }
     });
@@ -165,18 +162,14 @@ $(function(){
         drawChart(nFrame);
     });
 
-    // console.log(nFrame);
-    // drawChart(nFrame);
-
-    // let nFrame = scores.length;
-    // drawChart(nFrame);
-
     $('#play-pause').click(function(){
+        video.frameRate = scores.length/ $('#video-player')[0].duration;
+        console.log(video.frameRate);
         ChangeButtonText();
     });
 
     function ChangeButtonText(){
-    if(video.video.paused){
+        if(video.video.paused){
             video.video.play();
             video.listen('frame');
             $("#play-pause").html('Pause');
@@ -186,26 +179,49 @@ $(function(){
             $("#play-pause").html('Play');
         }
     }
+    // if(isC3Dnew) {
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/catalog/get-score',
+    //         data: {
+    //             no_segment: $(this).attr('data-segment'),
+    //             isC3Dnew,
+    //             video_path: video_path,
+    //             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+    //         },
+    //         success: function (data){
+    //             scores = data.scores;
+    //             nFrame = scores.length;
+    //             drawChart(nFrame);
+    //         }
+    //     })
+    // }
 
     $('input[type=radio][name=weightName]').change(function () {
         $("#modal-progress").modal("show");
+        let data = {
+            no_segment: $(this).attr('data-segment'),
+            weights_path: this.value,
+            isC3Dnew,
+            video_path: video_path,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        }
+        if (isC3Dnew){
+            data['id'] = video_id;
+        }
+        console.log(data)
         $.ajax({
             type: 'POST',
             url: '/catalog/get-score',
-            data: {
-                no_segment: $(this).attr('data-segment'),
-                weights_path: this.value,
-                video_path: video_path,
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            },
+            data,
             success: function (data) {
                 scores = data.scores;
-                drawChart(nFrame);
+                video.frameRate = scores.length/ $('.video-player').duration;
+                drawChart(scores.length);
             },
             complete: function () {
                 $("#modal-progress").modal("hide");
             }
         })
     })
-
 })

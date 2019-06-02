@@ -57,6 +57,9 @@ def write_file(temp_file, response):
         print(status)
     return temp_file
 
+def get_basename(filename):
+    return os.path.splitext(os.path.basename(filename))[0]
+
 def main():
     anno = load_annotation('media/videos/RoadAccidents002_x264.mat')
     print(anno)

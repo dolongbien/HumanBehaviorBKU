@@ -22,7 +22,6 @@ urlpatterns = [
     # path('home', TemplateView.as_view(template_name='home.html'), name='home'),
     path('catalog/', include('catalog.urls', namespace='catalog')),
     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
-    path('celery-progress/', include('celery_progress.urls', namespace='celery_progress')),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

@@ -2,14 +2,12 @@ import os
 from .c3d import *
 from .classifier import *
 from .utils.visualization_util import *
-from celery import task
 from keras import backend as K 
 
-@task
-def extract_feature_video(video_path):
+def extract_feature_video(video_path, features_per_bag = params.features_per_bag):
 
-    # K.clear_session()
-    video_name = os.path.basename(video_path).split('.')[0]
+    if keras.backend.backend() == 'tensorflow':
+        K.clear_session()
 
     # read video
     video_clips, num_frames = get_video_clips(video_path)
@@ -36,10 +34,9 @@ def extract_feature_video(video_path):
         print("Processed clip : ", i)
 
     rgb_features = np.array(rgb_features)
-    print(rgb_features)
     
     # bag features
-    rgb_feature_bag = interpolate(rgb_features, params.features_per_bag)
+    rgb_feature_bag = interpolate(rgb_features, features_per_bag)
 
     # classify using the trained classifier model
     predictions = classifier_model.predict(rgb_feature_bag)
@@ -48,7 +45,9 @@ def extract_feature_video(video_path):
 
     predictions = extrapolate(predictions, num_frames)
 
-    np.save('media/features/{}'.format(video_name), predictions)
+    return predictions
+
+    # np.save('media/features/{}'.format(video_name), predictions)
 
     # save_path = os.path.join(cfg.output_folder, video_name + '.gif')
     # visualize predictions
@@ -58,4 +57,4 @@ def extract_feature_video(video_path):
 def load_npy(file_path):
     return np.load(file_path)
 
-# extract_feature_video('media/RoadAccidents310_x264.mp4')
+# extract_feature_video('media/RoadAccidents310_x264.mp4', 32)
