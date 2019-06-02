@@ -11,9 +11,9 @@ The main features that have currently been implemented are:
 * Users can upload a video, the system will score for this video and plot the result.
 * Users can change between segment 32 with segment 64.
 ### Video Demo Use-Case
-![USER CASE](https://raw.githubusercontent.com/mdn/django-locallibrary-tutorial/master/catalog/static/images/DemoVideo.pdf)
+![USER CASE](./staticfiles/images/DemoVideo.pdf)
 ### Upload Use-Case
-![USER CASE](https://raw.githubusercontent.com/mdn/django-locallibrary-tutorial/master/catalog/static/images/LinkYoutube.pdf)
+![USER CASE](./staticfiles/images/LinkYoutube.pdf)
 
 ## Quick Start
 
@@ -32,7 +32,7 @@ To get this project up and running locally on your computer:
 ```
    pip3 install -r requirements.txt
 ```
-1. Open new terminal and run in virtualen had created and run celery worker server. The celery will worker like the queue, extract feature video.
+1. Open new terminal and run in virtualen had created and run celery worker server. The celery will worker like the queue, extract feature video. More information in [celery](http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#tut-celery)
 ```
     celery -A locallibrary worker -l info
 ```
