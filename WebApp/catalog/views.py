@@ -156,7 +156,7 @@ class VideoUploadView(View):
                 if filename == '':
                     filename = slugify(yt.title)
                 video = Video()
-                video.title = yt.title
+                video.title = filename
                 video.file.name = 'videos/upload/'+ filename + '.mp4'
                 yt.streams.filter(progressive=True, file_extension='mp4', fps= 30).order_by('resolution').desc().first().download('media/videos/upload/', filename)
                 video.filesize = format_filesize(video.file.size)
@@ -209,8 +209,17 @@ class GetScoreView(View):
 
 class DeleteVideoView(View):
     def post(self, request):
+        response = {'success': False}
+        print(request.POST)
         if request.POST.get('delete_all'):
-            Video.objects.all().delete()
+            videos = Video.objects.all()
+            for video in videos:
+                video.file.delete()
+                video.file_score32.delete()
+                video.file_score64.delete()
+                video.delete()
+            videos.delete()
+            response = {'success': True}
         else:
             # file_names = request.POST.getlist('files[]')
             ids = request.POST.getlist('ids[]')
@@ -220,8 +229,9 @@ class DeleteVideoView(View):
                 video.file_score32.delete()
                 video.file_score64.delete()
                 video.delete()
+            response = {'success': True}
             
-        return JsonResponse({'success': True})
+        return JsonResponse(response)
 
 
 class AboutView(View):
@@ -231,3 +241,11 @@ class AboutView(View):
 class ContactView(View):
     def get(self, request):
         return render(self.request, 'catalog/contact.html')
+
+class DatasetView(View):
+    def get(self, request):
+        return render(self.request, 'catalog/dataset.html')
+
+class ResultView(View):
+    def get(self, request):
+        return render(self.request, 'catalog/result.html')

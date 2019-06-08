@@ -1,4 +1,5 @@
 ﻿body{
+	font-family: Bookman, Tahoma, Verdana,sans-serif;
 	background: url("/static/images/gradient.jpg") repeat-x top left #fff;
 	background-size: 300px 120px;
 	line-height: 20px;

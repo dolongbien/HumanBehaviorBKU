@@ -16,4 +16,6 @@ urlpatterns = [
     path('delete-videos', views.DeleteVideoView.as_view(), name='delete-videos'),
     path('contact', views.ContactView.as_view(), name='contact'),
     path('about', views.AboutView.as_view(), name='about'),
+    path('dataset', views.DatasetView.as_view(), name='dataset'),
+    path('result', views.ResultView.as_view(), name='result'),
 ]

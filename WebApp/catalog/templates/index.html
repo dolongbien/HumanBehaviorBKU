@@ -30,26 +30,6 @@
             trình training. Mỗi phân đoạn gọi là một túi. Bằng việc sử dụng cả phân đoan dương (có tai nạn giao thông)
             với phân đoạn âm (bình thường), ta có thể train model với hàm MIL Ranking Loss.</p>
         <img src="{% static 'images/BlockDiagram.png' %}" style="max-height: 330px;margin: 0 auto; margin: 0 auto;display: block;"></img>
-        <h3>Dataset</h3>
-        <p>Nhóm tự xây dựng tập dữ liệu "tai nạn giao thông" sử dụng hai công cụ tìm kiếm youtube và liveleak.</p>
-        <p>Quá trình thu thập dữ liệu gồm 346 video bao gồm video tai nạn giao thông và video bình thường. Kết hợp với
-            tập dữ liệu UFC-Crime có sẵn, tập dữ liệu giao thông có tổng cộng 796 video với kích thước 31.1 GB. Tập dữ
-            liệu huấn luyện và kiểm thử được lấy theo tỉ lệ 87.43% video huấn luyện và 12.57% video kiểm thử. Thống kê
-            cụ thể về số lượng video được thể hiện trong dưới đây.</p>
-        <img src="{% static 'images/thongke.png' %}" style=" margin: 0 auto;display: block;"></img>
-        <p>Phân phối số lượng khung hình trong tập kiểm thử của bộ dữ liệu tai nạn giaothông</p>
-        <img src="{% static 'images/thongkeframe.png' %}" style="max-height: 400px; margin: 0 auto;display: block;"></img>
-
-        <p>Hình ảnh một số rút ra từ tập dataset.</p>
-        <img src="{% static 'images/Dataset_Normal.png' %}" style="max-height: 400px; margin: 0 auto;display: block;"></img>
-        <h3>Kết quả</h3>
-        <p>Quá trình huấn luyện trên mô hình 32 phân đoạn kết thúc ở vòng lặp thứ 10000, khi giá trị hàm mục tiêu đã hội
-            tụ. Tại ngưỡng điểm số phân loại bất thường (thresold) T= 0.5, các thông số có được như hình bên dưới</p>
-        <img src="{% static 'images/Result.png' %}" style="max-height: 200px; margin: 0 auto;display: block;"></img>
-        <p>
-            Hình ảnh hững trường hợp dự đoán chính xác trên video kiểm thử.
-        </p>
-        <img src="{% static 'images/Qualitative_Testing_Pass-cropped.png' %}" style="max-height: 400px; margin: 0 auto;display: block;"></img>
     </div>
 </div>
 {% endblock %}

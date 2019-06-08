@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block videos_content %}
+
+<div class="container" style="max-width: 1000px">
+    <div class="tab-content">
+        <h3>Kết quả</h3>
+        <p>Quá trình huấn luyện trên mô hình 32 phân đoạn kết thúc ở vòng lặp thứ 10000, khi giá trị hàm mục tiêu đã hội
+            tụ. Tại ngưỡng điểm số phân loại bất thường (thresold) T= 0.5, các thông số có được như hình bên dưới</p>
+        <img src="{% static 'images/Result.png' %}" style="max-height: 200px; margin: 0 auto;display: block;"></img>
+        <p>
+            Hình ảnh hững trường hợp dự đoán chính xác trên video kiểm thử.
+        </p>
+        <img src="{% static 'images/Qualitative_Testing_Pass-cropped.png' %}" style="max-height: 400px; margin: 0 auto;display: block;"></img>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

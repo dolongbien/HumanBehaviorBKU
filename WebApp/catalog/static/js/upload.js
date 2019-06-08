@@ -12,7 +12,7 @@ $(function () {
             </td>
             <td>
               <button type="submit" class="btn btn-danger js-delete-videos pull-right" data-type='DELETE' data-id='${data.id}'>
-                <span class="glyphicon glyphicon-trash"></span> Delete
+                <span class="glyphicon glyphicon-trash"></span> Xóa
               </button>
             </td>
           </tr>`
@@ -141,6 +141,26 @@ $(function () {
       success: function (data) {
         if (data.success) {
           closest_tr.remove();
+        }
+        else
+          console.log('delete error');
+      }
+    })
+  });
+
+  // Delete all videos
+  $('.js-delete-all-video').click(function () {
+    $.ajax({
+      type: 'POST',
+      url: '/catalog/delete-videos',
+      data: {
+        type: $(this).attr('data-type'),
+        delete_all: true,
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function (data) {
+        if (data.success) {
+          $('#gallery > tbody').empty();
         }
         else
           console.log('delete error');
