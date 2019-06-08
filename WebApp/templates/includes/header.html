@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<nav class="navbar navbar-light" style="background-color: #e8f5fe;">
+<nav class="navbar navbar-light" style="background-color: transparent;border-bottom: solid 1px #ddd;">
   <div class="container">
     <!-- <div class="navbar-header  {% if request.path == '/catalog/' %} active{% endif %}">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu"
@@ -24,21 +24,21 @@
       <ul class="nav navbar-nav navbar-center  nav-pills">
         <li class="{% if request.path == '/catalog/' %} active{% endif %}">
           <a class="nav-link " href="{% url 'catalog:index' %}"
-          class="list-group-item">Home</a>
+          class="list-group-item"><b>TRANG CHỦ</b></a>
         </li>
         <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
           <a class="nav-link " href="/catalog/videos/abnormal"
-            class="list-group-item">Videos Demo</a>
+            class="list-group-item"><b>VIDEOS DEMO</b></a>
         </li>
         <li class="{% if request.path == '/catalog/video-upload' %} active{% endif %}">
           <a class="nav-link " href="{% url 'catalog:video-upload' %}"
-            class="list-group-item">Upload Videos</a>
+            class="list-group-item"><b>TẢI LÊN VIDEOS</b></a>
         </li>
-        <li>
-          <a class="nav-link " href="#">About</a>
+        <li class="{% if request.path == '/catalog/about' %} active{% endif %}">
+          <a class="nav-link " href="{% url 'catalog:about' %}"><b>CHI TIẾT</b></a>
         </li>
-        <li>
-          <a class="nav-link " href="#">Contact</a>
+        <li class="{% if request.path == '/catalog/contact' %} active{% endif %}">
+          <a class="nav-link " href="{% url 'catalog:contact' %}"><b>LIÊN HỆ</b></a>
         </li>
       </ul>
     </div>

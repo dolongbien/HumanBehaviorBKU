@@ -223,3 +223,11 @@ class DeleteVideoView(View):
             
         return JsonResponse({'success': True})
 
+
+class AboutView(View):
+    def get(self, request):
+        return render(self.request, 'catalog/about.html')
+
+class ContactView(View):
+    def get(self, request):
+        return render(self.request, 'catalog/contact.html')

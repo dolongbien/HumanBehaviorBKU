@@ -14,4 +14,6 @@ urlpatterns = [
     path('video-upload', views.VideoUploadView.as_view(), name='video-upload'),
     path('get-score', views.GetScoreView.as_view(), name='video-get-score'),
     path('delete-videos', views.DeleteVideoView.as_view(), name='delete-videos'),
+    path('contact', views.ContactView.as_view(), name='contact'),
+    path('about', views.AboutView.as_view(), name='about'),
 ]
