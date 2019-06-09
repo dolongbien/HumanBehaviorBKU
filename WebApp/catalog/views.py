@@ -189,7 +189,9 @@ class GetScoreView(View):
         print(video_path)
         print(isC3Dnew)
 
-        if (isC3Dnew):
+        # isC3Dnew js 'true' 
+        if isC3Dnew == 'true':
+            print(type(isC3Dnew))
             id = request.POST.get('id')
             print(request.POST)
             video = Video.objects.get(id = id)
