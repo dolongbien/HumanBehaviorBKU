@@ -40,10 +40,9 @@ def index(request):
     return render(
         request,
         'index.html',
-        context={'num_books': '/num_books', 'num_instances': 'num_instances',
-                 'num_instances_available': 'num_instances_available', 'num_authors': 'num_authors',
-                 'num_visits': num_visits,
-                 }
+        context={
+            'num_visits': num_visits,
+            }
     )
 
 class VideoListView(generic.TemplateView):
@@ -57,7 +56,7 @@ class VideoListView(generic.TemplateView):
         gifs = sorted(glob.glob('media/gifs/{}/*.gif'.format(action)))
         for i, value in enumerate(gifs):
             title = os.path.basename(value)[:-4]
-            video = {'url': '/catalog/video/{}/'.format(action) + title, 'title': title}
+            video = {'url': '/catalog/video/{}/'.format(action) + title, 'basename': title, 'title': title[:-5]}
             gifs[i] = video
 
         # update context
@@ -186,14 +185,10 @@ class GetScoreView(View):
         video_path = request.POST.get('video_path')
         weights_path = request.POST.get('weights_path')
         no_segment = request.POST.get('no_segment')
-        print(video_path)
-        print(isC3Dnew)
-
+ 
         # isC3Dnew js 'true' 
         if isC3Dnew == 'true':
-            print(type(isC3Dnew))
             id = request.POST.get('id')
-            print(request.POST)
             video = Video.objects.get(id = id)
             # scores = extract_feature_video(video_path, int(no_segment))
             if int(no_segment) == 32:
@@ -201,7 +196,6 @@ class GetScoreView(View):
             elif int(no_segment) == 64:
                 filename_npy = video.file_score64.url[1:]
 
-            print(filename_npy)
             scores = load_npy(filename_npy)
         else:
             x, scores = get_score(video_path, weights_path, int(no_segment))
