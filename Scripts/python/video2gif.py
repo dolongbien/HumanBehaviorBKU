@@ -11,8 +11,8 @@ import glob
 import sys
 import os.path
 
-video_path = sys.argv[1] # video file input folder
-gif_folder = sys.argv[2] # gif output folder
+video_path = 'input' # video file input folder
+gif_folder = 'output' # gif output folder
 all_videos = glob.glob(video_path + '/*.mp4')
 print(video_path,gif_folder, sep="\n")
 

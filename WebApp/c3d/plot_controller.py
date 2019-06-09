@@ -39,6 +39,9 @@ def load_model():
 
 def get_score(video_path, weights_path = weight_default_path, no_segment = no_segment):
 
+    if K.backend() == 'tensorflow':
+        K.clear_session()
+
     # K.clear_session()
     # model_path = model_dir + model_name
     model = load_model()

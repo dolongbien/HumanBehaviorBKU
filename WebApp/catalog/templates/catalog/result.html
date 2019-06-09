@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Settings{% endblock %}
+{% block title %}Result{% endblock %}
 
 {% block videos_content %}
 
@@ -10,13 +10,22 @@
     <div class="tab-content">
         <h3>Kết quả</h3>
         <p>Quá trình huấn luyện trên mô hình 32 phân đoạn kết thúc ở vòng lặp thứ 10000, khi giá trị hàm mục tiêu đã hội
-            tụ. Tại ngưỡng điểm số phân loại bất thường (thresold) T= 0.5, các thông số có được như hình bên dưới</p>
-        <img src="{% static 'images/Result.png' %}" style="max-height: 200px; margin: 0 auto;display: block;"></img>
-        <p>
-            Hình ảnh hững trường hợp dự đoán chính xác trên video kiểm thử.
-        </p>
-        <img src="{% static 'images/Qualitative_Testing_Pass-cropped.png' %}" style="max-height: 400px; margin: 0 auto;display: block;"></img>
+            tụ. Tại ngưỡng điểm số phân loại bất thường (thresold) T= 0.5, các kết quả mà nhóm thu được được thể hiện trong bảng thống kê bên dưới.</p>
+        <figure>    
+            <img src="{% static 'images/Result.png' %}" style="max-height: 130px; margin: 0 auto;display: block;"></img>
+            <figcaption style="text-align: center; margin-top: 10px"><i>Bảng thống kê kết quả các thử nghiệm.</i></figcaption>
+        </figure>
 
+        <p style="margin-top: 20px"><b>Giá trị AUC:</b> Trong cả ba thử nghiệm, kết quả đo AUC đều khá khả quan, tất cả đều ở ngưỡng giá trị 90% cho thấy hiệu quả mà phương pháp học đa cá thể đem lại trong đề tài này.
+
+        <p><b>Tỉ lệ False alarm:</b> Trên thực tế, phần lớn các sự kiện trong video là sự kiện bình thường. Do đó một hệ thống phát hiện bất thường phải có tỉ lệ báo động sai thấp ở những video bình thường. Phương pháp mà chúng tôi tiếp cận có tỉ lệ báo động sai khá thấp, cho thấy được khả năng ứng dụng cao trên thực tiễn. Đặc biệt, tỉ lệ báo động sai 3.30% khi sử dụng 64 phân đoạn video rất đáng chú ý. Khi càng chia nhỏ số lượng phân đoạn trong video thì khả năng báo động sai có xu hướng giảm bớt. </p>
+
+        <p><b>Tỉ lệ Miss rate:</b> Nếu sử dụng cùng phương pháp hiện thực này cho các bất thường khác, các ứng dụng an ninh như phát hiện trộm cắp, cướp giật hay nổ súng,... thì tỉ lệ miss rate thấp là thông số nên quan tâm và hướng tới. Vì tính chất quan trọng và ý nghĩa thực tiễn của một ứng dụng giám sát bất thường trong an ninh là sẵn sàng chấp nhận phát hiện sai để không bị bỏ sót các nghi vấn nào trong video giám sát. Các kết quả Miss rate của chúng tôi đều cho ra tỉ lệ này dưới 50%, tỉ lệ này cần được giảm xuống hơn nữa nếu sử dụng trong giám sát an ninh. Ở thử nghiệm thay đổi hàm tổn thất, mục đích giảm Miss rate của chúng tôi có cải thiện nhưng không đáng kể.</p>
+        
+        <figure> 
+            <img src="{% static 'images/Qualitative_Testing_Pass-cropped.png' %}" style="max-height: 300px; margin: 0 auto;display: block;"></img>
+            <figcaption style="text-align: center; margin-top: 10px"><i>Minh họa những trường hợp dự đoán chính xác trên video kiểm thử.</i></figcaption>
+        </figure> 
     </div>
 </div>
 {% endblock %}

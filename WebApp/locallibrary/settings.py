@@ -16,7 +16,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Celery settings
 
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_BROKER_URL = 'redis://localhost:6379'
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
@@ -26,6 +26,8 @@ CELERY_RESULT_BACKEND = 'django-cache'
 
 # Django settings for proj project.
 import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproj.settings')
+os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -85,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },

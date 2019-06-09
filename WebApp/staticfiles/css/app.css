@@ -36,6 +36,10 @@ p {
 	background-color: transparent;
 	color: #1488db;
 }
+.nav-pills>li.active>a:hover {
+	background-color: transparent;
+	color: #1488db;
+}
 .nav-pills>li>a {
 	color: #333;
 }
@@ -68,8 +72,10 @@ p {
 	color: #FFF;
 	border-radius: 0px;
 }
-.jumbotron-sm { padding-top: 5px;
-padding-bottom: 5px; }
+.jumbotron-sm { 
+	padding-top: 0px;
+	padding-bottom: 8px; 
+}
 .jumbotron small {
 color: #FFF;
 }
