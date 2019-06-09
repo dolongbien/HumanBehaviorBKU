@@ -2,26 +2,63 @@
 
 {% load static %}
 
-{% block title %}Settings{% endblock %}
+{% block title %}Dataset{% endblock %}
 
 {% block videos_content %}
 
 <div class="container" style="max-width: 1000px">
     <div class="tab-content">
-        <h3>Dataset</h3>
-        <p>Nhóm tự xây dựng tập dữ liệu "tai nạn giao thông" sử dụng hai công cụ tìm kiếm youtube và liveleak.</p>
-        <p>Quá trình thu thập dữ liệu gồm 346 video bao gồm video tai nạn giao thông và video bình thường. Kết hợp với
-            tập dữ liệu UFC-Crime có sẵn, tập dữ liệu giao thông có tổng cộng 796 video với kích thước 31.1 GB. Tập dữ
-            liệu huấn luyện và kiểm thử được lấy theo tỉ lệ 87.43% video huấn luyện và 12.57% video kiểm thử. Thống kê
-            cụ thể về số lượng video được thể hiện trong dưới đây.</p>
-        <img src="{% static 'images/thongke.png' %}" style=" margin: 0 auto;display: block;"></img>
-        <p>Phân phối số lượng khung hình trong tập kiểm thử của bộ dữ liệu tai nạn giaothông</p>
-        <img src="{% static 'images/thongkeframe.png' %}"
-            style="max-height: 400px; margin: 0 auto;display: block;"></img>
+        <h3>Tập dữ liệu mẫu</h3>
+        <p>Nhóm đã khảo sát một số tập dữ liệu mẫu có liên quan đến bài toán phát hiện bất thường. Điển hình như tập dữ liệu UMN bao gồm năm trạng thái video khác nhau thể hiện mọi người đang đi bộ và sau một khoảng thời gian họ chạy theo những hướng khác nhau. Bất thường trong trường hợp này là hành động chạy của mọi người trong video. Ngoài ra còn có tập dữ liệu UCSD Ped1 và Ped2 chứa 70 và 28 video giám sát. Những video này được quay tại một địa điểm duy nhất. Sự bất thường trong các video rất đơn giản và không phản ánh được hành vi bất thường trong thực tế giám sát video. Tập dữ liệu Avenue bao gồm 37 video. Mặc dù tập dữ liệu này chứa nhiều bất thường nhưng chúng lại được dàn dựng và chụp tại một địa điểm. Tương tự như tập dữ liệu, video trong bộ dữ liệu này ngắn và một số hành vi bất thường là không thực tế (ví dụ: hành vi có tên gọi "throwing paper").</p>
 
-        <p>Hình ảnh một số rút ra từ tập dataset.</p>
-        <img src="{% static 'images/Dataset_Normal.png' %}"
+        <p>Nhìn chung, các tập dữ liệu trên dùng để phát hiện sự bất thường trong video thường có số lượng video rất ít hoặc độ dài của video rất ngắn. Các biến thể trong hành vi bất thường cũng hạn chế. Ngoài ra, một số hành vi bất thường là không thực tế. Do những hạn chế của những tập dữ liệu trên, nếu sử dụng những tập dữ liệu này vào huấn luyện thì mô hình sau khi huấn luyện không thể sử dụng trong thực tế (với các sự kiện, hành vi vô cùng phức tạp và đa dạng).</p>
+
+        <p>Bên cạnh những tập dữ liệu đã trình bày, chúng tôi cũng đã tìm được một tập dữ liệu khác là UFC-Crime bao gồm 1900 video với 13 nhóm hành vi bất thường khác nhau (13 hành vi khác nhau) và một bộ những video không chứa hành vi bất thường để phục vụ cho việc huấn luyện và kiểm thử. Có thể thấy, đây là tập dữ liệu rất đồ sộ, phức tạp về số lượng hành vi bất thường cũng như ngữ cảnh của mỗi hành vi. Đây cũng là tập dữ liệu mà nhóm dùng để tham khảo và sử dụng một phần tập dữ liệu (kết hợp với tập dữ liệu do nhóm tự thu thập) để huấn luyện và kiểm thử. Chi tiết về tập dữ liệu cũng như các phân phối trong tập dữ liệu được thể hiện phía dưới.</p>
+
+        <figure>
+            <img src="{% static 'images/thongke_datasets.png' %}"
+            style="max-height: 300px; margin: 0 auto;display: block;"></img> 
+            <figcaption style="text-align: center; margin-top: 10px"><i>Bảng so sánh giữa các tập dữ liệu liên quan đến hành vi bất thường.</i></figcaption>
+        </figure>
+
+        <figure style="margin-top: 25px">
+            <img src="{% static 'images/thongke_olddataset.png' %}"
+            style="max-height: 300px; margin: 0 auto;display: block;"></img> 
+            <figcaption style="text-align: center; margin-top: 10px"><i>Bảng phân phối video theo độ dài (phút) trong tập huấn luyện.</i></figcaption>
+        </figure>
+
+        <h3>Tập dữ liệu tai nạn giao thông</h3>
+        <p><b>Phương pháp thu thập:</b> Quá trình tìm kiếm dữ liệu, nhóm sử dụng hai công cụ tìm kiếm chính đó là YouTube và LiveLeak. Để có thể thu thập được nhiều video, nhóm sử dụng nhiều ngôn ngữ khác nhau trong quá trình tìm kiếm như tiếng Việt, tiếng Anh. Sử dụng một số từ khóa phục vụ cho quá trình tìm kiếm như "car crash", "road accident", "tai nạn giao thông", đồng thời sử dụng các video tự động đề xuất trên YouTube.</p>
+
+        <p><b>Phương pháp chọn lọc:</b> Việc lựa chọn video cần có những tiêu chuẩn chung để đảm bảo tính thống nhất về mặt nội dung, phục vụ tốt cho việc huấn luyện. Chúng tôi chủ động loại bỏ những video vi phạm những điều sau đây: video được chỉnh sửa, dàn dựng thủ công, video được quay bằng máy quay cầm tay hay bất cứ video nào không phải được quay bằng camera giám sát (CCTV cameras). Những video chứa thông tin gây nhiễu cần được loại bỏ phần nhiễu. Bên cạnh đó, chúng tôi cũng loại bỏ những video chứa bất thường nhưng phần bất thường lại không rõ ràng, bao gồm những video quá tối, mắt thường không thể phát hiện rõ bất thường, cự ly quá xa khiến bất thường không thể nhìn thấy rõ, những video trùng với video có sẵn trong tập dữ liệu mẫu của tác giả cũng bị loại bỏ.</p>
+
+        <p>Sau quá trình lọc bỏ trên, chúng tôi thu thập được <b>346</b> video bao gồm video bất thường là tai nạn giao thông và video bình thường. Kết hợp với tập dữ liệu có sẵn, tập dữ liệu giao thông có tổng cộng <b>796</b> video với kích thước <b>31.1 GB</b>. Tập dữ liệu huấn luyện và kiểm thử được lấy theo tỉ lệ 87.43% video huấn luyện và 12.57% video kiểm thử.</p>
+
+        <figure>
+            <img src="{% static 'images/thongkesolieu.png' %}"
+            style="max-height: 120px; margin: 0 auto;display: block;"></img>
+            <figcaption style="text-align: center; margin-top: 10px"><i>Bảng thống kê tập dữ liệu tai nạn giao thông. Giá trị trong dấu ngoặc thể hiện số lượng video do nhóm tự thu thập.</i></figcaption>
+        </figure>
+
+        <p style="margin-top: 20px"><b>Tiền xử lý dữ liệu:</b> Sau khi đã thu thập bộ dữ liệu bất thường và bình thường về tai nạn giao thông, chúng tôi tiến hành tiền xử lý dữ liệu. Tất cả khung hình trong video được đưa về kích thước <b>240 x 320</b> điểm ảnh và cố định tốc độ khung hình của video là <b>30</b> khung hình/giây.</p>
+
+        <figure>
+            <img src="{% static 'images/thongke.png' %}"
+            style="max-height: 350px; margin: 0 auto;display: block;"></img>
+            <figcaption style="text-align: center; margin-top: 10px"><i>Phân phối video theo độ dài trong tập huấn luyện của bộ dữ liệu tai nạn giao thông.</i></figcaption>
+        </figure>
+
+        <figure style="margin-top: 25px">
+            <img src="{% static 'images/thongkeframe.png' %}"
+            style="max-height: 350px; margin: 0 auto;display: block;"></img>
+            <figcaption style="text-align: center; margin-top: 10px"><i>Phân phối số lượng khung hình trong tập kiểm thử của bộ dữ liệu tai nạn giao thông.</i></figcaption>
+        </figure>
+
+        <figure style="margin-top: 25px">
+            <img src="{% static 'images/Dataset_Normal.png' %}"
             style="max-height: 400px; margin: 0 auto;display: block;"></img>
+            <figcaption style="text-align: center; margin-top: 10px"><i>Một số khung cảnh trong video bình thường trích từ tập tai nạn giao thông.</i></figcaption>
+        </figure>
     </div>
 </div>
 {% endblock %}

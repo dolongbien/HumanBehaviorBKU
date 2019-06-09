@@ -4,7 +4,7 @@
 <div class="container">
   <div class="header" style="margin-top:10px">
     <a href="http://www.hcmut.edu.vn/vi"><img class='img-fluid' src="{% static 'images/topbar_logo.png' %}"
-        alt="Center for Research in Comptuer Vision" style="max-height: 80px;"></a>
+        alt="Center for Research in Comptuer Vision" style="max-height: 100px;"></a>
     <br>
   </div>
 </div>
@@ -26,14 +26,6 @@
           <a class="nav-link " href="{% url 'catalog:index' %}"
           class="list-group-item"><b>TRANG CHỦ</b></a>
         </li>
-        <li class="{% if request.path == '/catalog/dataset'%} active{% endif %}">
-          <a class="nav-link " href="{% url 'catalog:dataset' %}"
-            class="list-group-item"><b>DATASET</b></a>
-        </li>
-        <li class="{% if request.path == '/catalog/result'%} active{% endif %}">
-          <a class="nav-link " href="{% url 'catalog:result' %}"
-            class="list-group-item"><b>KẾT QUẢ</b></a>
-        </li>
         <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
           <a class="nav-link " href="/catalog/videos/abnormal"
             class="list-group-item"><b>VIDEOS DEMO</b></a>
@@ -41,6 +33,14 @@
         <li class="{% if request.path == '/catalog/video-upload' %} active{% endif %}">
           <a class="nav-link " href="{% url 'catalog:video-upload' %}"
             class="list-group-item"><b>TẢI LÊN VIDEOS</b></a>
+        </li>
+        <li class="{% if request.path == '/catalog/dataset'%} active{% endif %}">
+          <a class="nav-link " href="{% url 'catalog:dataset' %}"
+            class="list-group-item"><b>TẬP DỮ LIỆU</b></a>
+        </li>
+        <li class="{% if request.path == '/catalog/result'%} active{% endif %}">
+          <a class="nav-link " href="{% url 'catalog:result' %}"
+            class="list-group-item"><b>KẾT QUẢ</b></a>
         </li>
         <li class="{% if request.path == '/catalog/about' %} active{% endif %}">
           <a class="nav-link " href="{% url 'catalog:about' %}"><b>CHI TIẾT</b></a>

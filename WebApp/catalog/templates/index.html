@@ -3,7 +3,8 @@
 {% load static %}
 {% block videos_content %}
 <div class="container" style="max-width: 1000px">
-    <h1 style="text-align: center;">HỆ THỐNG PHÁT HIỆN TAI NẠN GIAO THÔNG TỪ VIDEO GIÁM SÁT</h1>
+    <h1 style="text-align: center;">HỆ THỐNG PHÁT HIỆN TAI NẠN GIAO THÔNG</h1>
+    <h1 style="text-align: center;">TỪ VIDEO GIÁM SÁT</h1>
 
     <div class="tab-content">
         <h3>Giới thiệu</h3>
@@ -21,15 +22,19 @@
         <p>Do đó mục tiêu của đề tài nhằm khảo sát, tìm hiểu, áp dụng và xem xét hiệu quả của các kỹ thuật học máy và học
             sâu trong việc phát hiện các hành vi bất thường xảy ra trong chuỗi video quan sát. Mục tiêu hướng đến ứng
             dụng giám sát an ninh tại những địa điểm mà việc giám sát là cần thiết, tập trung vào thiết kế và xây dựng
-            một ứng dụng giám sát, phát hiện và cảnh báo khi có tai nạn giao thông xảy ra trên các tuyến đường phố ở
+            một ứng dụng giám sát, phát hiện và cảnh báo khi có <b>tai nạn giao thông</b> xảy ra trên các tuyến đường phố ở
             Việt Nam nói riêng và các quốc gia trên thế giới nói chung. Đặc biệt ở những tuyến đường có ít người qua
             lại, hoặc các tai nạn xảy ra lúc đêm khuya.</p>
 
         <h3>Mô hình</h3>
-        <p>Mô hình được sử dụng là mô hình học đa cá thể, chia các video thành một số cố định các phân đoạn trong quá
-            trình training. Mỗi phân đoạn gọi là một túi. Bằng việc sử dụng cả phân đoan dương (có tai nạn giao thông)
-            với phân đoạn âm (bình thường), ta có thể train model với hàm MIL Ranking Loss.</p>
+        <p>Dựa trên những công trình nghiên cứu đã tìm hiểu phù hợp với định hướng đề tài, chúng tôi thiết kế hệ thống với kiến trúc tổng quan như sơ đồ dưới đây.</p>
+        <figure>
         <img src="{% static 'images/BlockDiagram.png' %}" style="max-height: 330px;margin: 0 auto; margin: 0 auto;display: block;"></img>
+        <figcaption style="text-align: center; margin-top: 10px"><i>Minh họa kiến trúc tổng quan của hệ thống.</i></figcaption>
+        </figure>
+        <p style="margin-top: 20px">Với hướng tiếp cận này, sử dụng mô hình học đa cá thể, một video được xem là “video dương” khi video đó có chứa ít nhất một bất thường đâu đó trong video, ngược lại, một “video âm” là video không chứa bất cứ bất thường nào. Mỗi video được chia thành 32 phân đoạn <b>bằng nhau</b> và <b>không chồng lấp</b>. Số lượng phân đoạn được thiết lập bằng thực nghiệm.</p>
+
+        <p>Sau đó, mỗi phân đoạn được trích đặc trưng bởi mô hình C3D pre-trained bằng bộ trọng số Sports-1M ở vòng lặp thứ 1900000. Tiếp theo, từ đặc trưng của các phân đoạn trong video, một mạng nơron kết nối đầy đủ ba lớp cho ra điểm số của mỗi phân đoạn, và thực hiện tối ưu hàm tổn thất bằng việc so hạng điểm số giữa hai phân đoạn có điểm số cao nhất trong “video âm” và “video dương”.</p>
     </div>
 </div>
 {% endblock %}
