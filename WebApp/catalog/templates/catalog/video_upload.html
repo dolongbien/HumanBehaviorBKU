@@ -48,10 +48,15 @@
         <td>
           <span>{{ video.filesize }}</span>
         </td>
-        <!-- <td>
-              <p class="size">Processing...</p>
-              <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
-          </td> -->
+        <td style="max-width: 147px">
+          <!-- <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-bar progress-bar-success" style="width:0%;">
+            </div>
+          </div> -->
+          <div class='progress-wrapper'>
+            <div class='progress-bar progress-bar-js' role="progressbar" data-task-url="{% url 'celery_progress:task_status' video.task_id %}" data-task-id='{{video.task_id}}' aria-valuemin="0" aria-valuemax="100" style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+          </div>
+        </td>
         <td>
           <button type="submit" class="btn btn-danger js-delete-videos pull-right" data-type='DELETE' data-url="{{video.file}}" data-id='{{video.id}}'>
             <span class="glyphicon glyphicon-trash"></span> Xóa
@@ -118,6 +123,8 @@
 <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
 <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
 <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+
+<script src="{% static 'js/celery_progress.js' %}"></script>
 
 {# VIDEO PAGE SCRIPTS #}
 <script src="{% static 'js/upload.js' %}"></script>

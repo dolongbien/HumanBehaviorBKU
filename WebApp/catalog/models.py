@@ -9,3 +9,4 @@ class Video(models.Model):
     file_score32 = models.FileField(upload_to='features/', default="")
     file_score64 = models.FileField(upload_to='features/', default="")
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    task_id = models.CharField(max_length=50, default='')

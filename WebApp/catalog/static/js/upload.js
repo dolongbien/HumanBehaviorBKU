@@ -10,6 +10,11 @@ $(function () {
             <td>
               <span> ${data.filesize}</span>
             </td>
+            <td style="max-width: 147px">
+            <div class='progress-wrapper progress-js'>
+              <div class='progress-bar progress-base-js' role="progressbar" data-task-url="/celery-progress/${data.task_id}" data-task-id='${data.task_id}' aria-valuemin="0" aria-valuemax="100" style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+            </div>
+            </td>
             <td>
               <button type="submit" class="btn btn-danger js-delete-videos pull-right" data-type='DELETE' data-id='${data.id}'>
                 <span class="glyphicon glyphicon-trash"></span> Xóa
@@ -17,6 +22,14 @@ $(function () {
             </td>
           </tr>`
       )
+
+      var progressUrl = `/celery-progress/${data.task_id}`;
+      var celeryProgressBar = new CeleryProgressBar;
+      // Get added tr and init progress bar
+      var progressBarJs = $('.progress-base-js')[0];
+      console.log(progressBarJs)
+      celeryProgressBar.initProgressBar(progressUrl, {progressBarElement: progressBarJs});
+
     }
   }
 
@@ -165,6 +178,17 @@ $(function () {
         else
           console.log('delete error');
       }
+    })
+  });
+
+  $('.progress-bar-js').ready(function () {
+    var listProcess = $('.progress-bar-js');
+    Array.from(listProcess).forEach(function(element) {
+      var progressUrl = $(element).attr('data-task-url');
+      console.log(progressUrl);
+      console.log($(element).closest('.progress-bar-message'))
+      var celeryProgressBar = new CeleryProgressBar;
+      celeryProgressBar.initProgressBar(progressUrl, {progressBarElement: element, progressBarMessageElement: $(element).closest('.progress-bar-message')});
     })
   });
 });

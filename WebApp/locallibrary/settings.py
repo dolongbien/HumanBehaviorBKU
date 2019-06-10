@@ -16,13 +16,15 @@ from __future__ import absolute_import, unicode_literals
 
 # Celery settings
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'amqp://catalog:catalog@localhost:5672/catalog_vhost'
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
 CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND = 'django-cache'
-# CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 # Django settings for proj project.
 import os
@@ -59,7 +61,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Add our new application 
-    'django_celery_results',
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
 ]
 

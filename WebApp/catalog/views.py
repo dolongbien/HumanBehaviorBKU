@@ -13,7 +13,7 @@ import time
 from django.views import generic
 from .models import Video
 from .forms import VideoForm
-from .tasks import extract_feature
+from .tasks import extract_feature, my_task
 
 import os
 import json
@@ -175,7 +175,11 @@ class VideoUploadView(View):
 
         # Extract Feature in Celery
         if response['is_valid'] == True:
-            extract_feature.delay(video.id)
+            print(video.id)
+            task = extract_feature.delay(video.id)
+            video.task_id = task.task_id
+            video.save()
+            response['task_id'] = task.task_id
 
         return JsonResponse(response)
 
@@ -245,3 +249,10 @@ class DatasetView(View):
 class ResultView(View):
     def get(self, request):
         return render(self.request, 'catalog/result.html')
+
+
+from celery.result import AsyncResult
+from .tasks import add 
+def progress_view(request):
+    result = my_task.delay(100)
+    return render(request, 'catalog/progress.html', context={'task_id': result.task_id})

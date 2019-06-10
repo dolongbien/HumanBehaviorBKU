@@ -18,4 +18,5 @@ urlpatterns = [
     path('about', views.AboutView.as_view(), name='about'),
     path('dataset', views.DatasetView.as_view(), name='dataset'),
     path('result', views.ResultView.as_view(), name='result'),
+    path('progress', views.progress_view, name='progress'),
 ]

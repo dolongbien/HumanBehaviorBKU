@@ -4,7 +4,7 @@ from .classifier import *
 from .utils.visualization_util import *
 from keras import backend as K 
 
-def extract_feature_video(video_path, features_per_bag = params.features_per_bag):
+def extract_feature_video(video_path, progress_recorder, features_per_bag = params.features_per_bag):
 
     if keras.backend.backend() == 'tensorflow':
         K.clear_session()
@@ -27,6 +27,7 @@ def extract_feature_video(video_path, features_per_bag = params.features_per_bag
         if len(clip) < params.frame_count:
             continue
 
+        progress_recorder.set_progress(i, len(video_clips))
         clip = preprocess_input(clip)
         rgb_feature = feature_extractor.predict(clip)[0]
         rgb_features.append(rgb_feature)
