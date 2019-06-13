@@ -2,11 +2,12 @@ var CeleryProgressBar = (function () {
     function onSuccessDefault(progressBarElement, progressBarMessageElement) {
         progressBarElement.style.backgroundColor = '#76ce60';
         progressBarElement.style.display = 'none';
+        $(progressBarElement).closest('tr').find('a').attr('class', '');
     }
 
     function onErrorDefault(progressBarElement, progressBarMessageElement) {
         progressBarElement.style.backgroundColor = '#dc4f63';
-        progressBarElement.innerHTML = 'error';
+        progressBarElement.innerHTML = 'Error';
     }
 
     function onProgressDefault(progressBarElement, progressBarMessageElement, progress) {
@@ -27,7 +28,6 @@ var CeleryProgressBar = (function () {
         var pollInterval = options.pollInterval || 500;
 
         fetch(progressUrl).then(function(response) {
-            console.log(response);
             response.json().then(function(data) {
                 if (data.progress) {
                     onProgress(progressBarElement, progressBarMessageElement, data.progress);

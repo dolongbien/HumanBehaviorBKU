@@ -180,6 +180,11 @@ class VideoUploadView(View):
             video.task_id = task.task_id
             video.save()
             response['task_id'] = task.task_id
+        else:
+            video.file.delete()
+            video.file_score32.delete()
+            video.file_score64.delete()
+            video.delete()
 
         return JsonResponse(response)
 

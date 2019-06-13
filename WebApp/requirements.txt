@@ -20,9 +20,6 @@ django-mptt==0.10.0
 django-polymorphic==2.0.3
 django-sekizai==1.0.0
 django-treebeard==4.3
-djangocms-admin-style==1.4.0
-djangocms-attributes-field==1.1.0
-djangocms-video==2.1.1
 easy-thumbnails==2.6
 gast==0.2.2
 grpcio==1.20.0
@@ -37,8 +34,6 @@ kiwisolver==1.0.1
 kombu==4.5.0
 Markdown==3.1
 matplotlib==3.0.3
-mkl-fft==1.0.10
-mkl-random==1.0.2
 networkx==2.3
 numpy==1.16.2
 opencv-python==4.1.0.25

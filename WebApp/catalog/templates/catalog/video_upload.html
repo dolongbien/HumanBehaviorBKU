@@ -43,7 +43,7 @@
       {% for video in videos %}
       <tr>
         <td>
-          <a href="/catalog/c3d-new/{{video.title}}">{{ video.title }}</a>
+          <a class='btn disabled' href="/catalog/c3d-new/{{video.title}}" style="padding: 0">{{ video.title }}</a>
         </td>
         <td>
           <span>{{ video.filesize }}</span>

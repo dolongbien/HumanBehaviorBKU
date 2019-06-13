@@ -5,7 +5,7 @@ $(function () {
       $("#gallery tbody").prepend(
         `<tr>
             <td>
-              <a href='/catalog/c3d-new/${data.title}'> ${data.title} </a>
+              <a class='btn disabled' href='/catalog/c3d-new/${data.title}' style="padding: 0"> ${data.title} </a>
             </td>
             <td>
               <span> ${data.filesize}</span>
@@ -183,12 +183,14 @@ $(function () {
 
   $('.progress-bar-js').ready(function () {
     var listProcess = $('.progress-bar-js');
+    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     Array.from(listProcess).forEach(function(element) {
       var progressUrl = $(element).attr('data-task-url');
-      console.log(progressUrl);
-      console.log($(element).closest('.progress-bar-message'))
-      var celeryProgressBar = new CeleryProgressBar;
-      celeryProgressBar.initProgressBar(progressUrl, {progressBarElement: element, progressBarMessageElement: $(element).closest('.progress-bar-message')});
+      var task_id = $(element).attr('data-task-id');
+      if (pattern.test(task_id)){
+        var celeryProgressBar = new CeleryProgressBar;
+        celeryProgressBar.initProgressBar(progressUrl, {progressBarElement: element, progressBarMessageElement: $(element).closest('.progress-bar-message')});
+      }
     })
   });
 });
