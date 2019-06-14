@@ -132,8 +132,6 @@ $(function(){
             var selectedItem =  chart.getSelection()[0];
             if (selectedItem) {
                 var frame = data.getValue(selectedItem.row, 0);
-                console.log(frame);
-                console.log($('#video-player')[0].currentTime);
                 $('#video-player')[0].currentTime = frame/video.frameRate;
             }
         }
@@ -164,7 +162,6 @@ $(function(){
 
     $('#play-pause').click(function(){
         video.frameRate = scores.length/ $('#video-player')[0].duration;
-        console.log(video.frameRate);
         ChangeButtonText();
     });
 
@@ -216,7 +213,7 @@ $(function(){
             data,
             success: function (data) {
                 scores = data.scores;
-                video.frameRate = scores.length/ $('.video-player').duration;
+                video.frameRate = scores.length/ $('#video-player')[0].duration;
                 drawChart(scores.length);
             },
             complete: function () {
