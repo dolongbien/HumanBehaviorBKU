@@ -1,2 +1,2 @@
-# HumanBehaviorBKU
-Luận văn tốt nghiệp 2018
+# Road Accident Detection From Surveillance Videos
+BKU Team 2018
