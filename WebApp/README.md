@@ -3,6 +3,7 @@
 ## Overview
 
 Django web application for demonstration purpose.
+![plotscore](staticfiles/images/plot.png)
 
 ## Setup
 # UBUNTU
