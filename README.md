@@ -1,9 +1,9 @@
 # Road Accident Detection From Surveillance Videos 
 BKU Team 2018
 
-An implementation and a modified version of **Real-world Anomaly Detection in Surveillance Videos** ([Sultani, Waqas and Chen][realworld]) on Road_Accident dataset.
-
-# Dataset
+An implementation and a modified version of **Real-world Anomaly Detection in Surveillance Videos** ([Sultani, Waqas and Chen][realworld]) on **Road_Accident dataset**.
+![videos](/WebApp/staticfiles/images/roadaccident.png)
+## Dataset
 
 Road accident dataset consists of 796 videos under *.mp4 format (330 normal, 366 abnormal, 100 testing). 
   - Dataset link: updating
@@ -12,14 +12,14 @@ Road accident dataset consists of 796 videos under *.mp4 format (330 normal, 366
 
 Follow the instruction in the notebook to extract video feature. 
 
-# Training
+## Training
 
 Check this notebook [Train_Test_Code](https://github.com/dolongbien/HumanBehaviorBKU/blob/master/TrainTest_Code.ipynb) to see the documentation as well as training/testing process.
 * Keras 1.1.0
 * Theano 0.9.0
 * Python 3
 
-# Visualize the results
+## Visualize the results
 
 Django web application. See [WebApp](https://github.com/dolongbien/HumanBehaviorBKU/tree/master/WebApp) directory for more details.
 
@@ -33,9 +33,9 @@ Django web application. See [WebApp](https://github.com/dolongbien/HumanBehavior
 | [Makefile.config][makefile] |Configuration file to build C3D Caffe model|
 | [Train/Test Code][traintestcode] | Jupyter notebook for Traning/Testing process |
 
-If you find any bug, or have some questions, please contact Bien Do: dolongbien1205@gmail.com
+If you find any bug, or have some questions, feel free to contact any of these: Bien Do (dolongbien1205@gmail.com), Hoai Do (1511093@hcmut.edu.vn), Dat Nguyen (1510700@hcmut.edu.vn).
 
-# Refrences
+## References
 
 [1] W. Sultani, C. Chen, and M. Shah, “Real-world anomaly detection in surveillance videos,” in The IEEE Conference on
 Computer Vision and Pattern Recognition (CVPR), Jun. 2018.
