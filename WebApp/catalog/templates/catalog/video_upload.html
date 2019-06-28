@@ -53,8 +53,8 @@
             <div class="progress-bar progress-bar-success" style="width:0%;">
             </div>
           </div> -->
-          <div class='progress-wrapper'>
-            <div class='progress-bar progress-bar-js' role="progressbar" data-task-url="{% url 'celery_progress:task_status' video.task_id %}" data-task-id='{{video.task_id}}' aria-valuemin="0" aria-valuemax="100" style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+          <div class='progress-wrapper' style="width: 90px;">
+            <div class='progress-bar progress-bar-js progress-bar-striped' role="progressbar" data-task-url="{% url 'celery_progress:task_status' video.task_id %}" data-task-id='{{video.task_id}}' aria-valuemin="0" aria-valuemax="100" style="background-color: #68a9ef;">&nbsp;</div>
           </div>
         </td>
         <td>

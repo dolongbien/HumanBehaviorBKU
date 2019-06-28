@@ -38,12 +38,14 @@
     </div>
 
     <div class='col-sm-5 border-right text-center'>
-        <video controls id='video-player' height="320">
+        <video controls id='video-player' width="100%" height="320" onended="FunctionEnded()" onpause="FunctionPause()" onplay="FunctionPlay()">
             <source src="{{ video.url }}" type="video/mp4">
         </video>
         <div class='text-center'>
-            <button type="button" class="btn btn-primary" id="play-pause" style="width: 100px; background-color: #1488db;">Play</button>
-            <button type="button" class="btn btn-primary" id="plot-score" style="width: 100px; background-color: #1488db;">Plot</button>
+            <button type="button" class="button2" id="play-pause">
+                <img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/play-icon-18-256.png" style="height:23px;margin-bottom:2px"> Play
+            </button>
+            <button type="button" class="button2 gray" id="plot-score"><img src="https://iconsplace.com/wp-content/uploads/_icons/fff/256/png/ball-point-pen-icon-256.png" style="height:23px;margin-bottom:2px"> Plot</button>
         </div>
     </div>
     <div class='col-sm-7' style="display: relative">
@@ -82,4 +84,15 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{% static 'js/VideoFrame.min.js' %}"></script>
 <script src="{% static 'js/video_interactive.js' %}"></script>
+<script>
+function FunctionPlay(){
+    $("#play-pause").html('<img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/pause-icon-18-256.png" style="height:23px;margin-bottom:2px"/> Pause');
+}    
+function FunctionPause(){
+    $("#play-pause").html('<img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/play-icon-18-256.png" style="height:23px;margin-bottom:2px"/> Play');
+}
+function FunctionEnded(){
+    $("#play-pause").html('<img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/play-icon-18-256.png" style="height:23px;margin-bottom:2px"/> Play');
+}
+</script>
 {% endblock %}

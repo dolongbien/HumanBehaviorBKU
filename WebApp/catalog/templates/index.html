@@ -6,7 +6,7 @@
     <h1 style="text-align: center;">HỆ THỐNG PHÁT HIỆN TAI NẠN GIAO THÔNG</h1>
     <h1 style="text-align: center;">TỪ VIDEO GIÁM SÁT</h1>
 
-    <div class="tab-content">
+    <div class="tab-content" style="text-align: justify;">
         <h3>Giới thiệu</h3>
         <p>
             Tai nạn giao thông đường bộ là một trong những nguyên nhân gây tử vong hàng đầu cho con người, trung bình
@@ -29,7 +29,7 @@
         <h3>Mô hình</h3>
         <p>Dựa trên những công trình nghiên cứu đã tìm hiểu phù hợp với định hướng đề tài, chúng tôi thiết kế hệ thống với kiến trúc tổng quan như sơ đồ dưới đây.</p>
         <figure>
-        <img src="{% static 'images/BlockDiagram.png' %}" style="max-height: 330px;margin: 0 auto; margin: 0 auto;display: block;"></img>
+        <img src="{% static 'images/BlockDiagram.png' %}" style="max-height: 323px;margin: 0 auto; margin: 0 auto;display: block;"></img>
         <figcaption style="text-align: center; margin-top: 10px"><i>Minh họa kiến trúc tổng quan của hệ thống.</i></figcaption>
         </figure>
         <p style="margin-top: 20px">Với hướng tiếp cận này, sử dụng mô hình học đa cá thể, một video được xem là “video dương” khi video đó có chứa ít nhất một bất thường đâu đó trong video, ngược lại, một “video âm” là video không chứa bất cứ bất thường nào. Mỗi video được chia thành 32 phân đoạn <b>bằng nhau</b> và <b>không chồng lấp</b>. Số lượng phân đoạn được thiết lập bằng thực nghiệm.</p>

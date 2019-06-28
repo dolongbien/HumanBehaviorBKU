@@ -158,6 +158,7 @@ $(function(){
         video.video.pause();
         let nFrame = scores.length;
         drawChart(nFrame);
+        $("#play-pause").html('<img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/play-icon-18-256.png" style="height:23px;margin-bottom:2px"/> Play');
     });
 
     $('#play-pause').click(function(){
@@ -168,12 +169,12 @@ $(function(){
     function ChangeButtonText(){
         if(video.video.paused){
             video.video.play();
-            video.listen('frame');
-            $("#play-pause").html('Pause');
+            video.listen('frame');   
+            $("#play-pause").html('<img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/pause-icon-18-256.png" style="height:23px;margin-bottom:2px"/> Pause');
         }else{
             video.video.pause();
             video.stopListen();
-            $("#play-pause").html('Play');
+            $("#play-pause").html('<img src="https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/play-icon-18-256.png" style="height:23px;margin-bottom:2px"/> Play');
         }
     }
     // if(isC3Dnew) {

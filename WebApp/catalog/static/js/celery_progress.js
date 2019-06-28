@@ -12,6 +12,7 @@ var CeleryProgressBar = (function () {
 
     function onProgressDefault(progressBarElement, progressBarMessageElement, progress) {
         progressBarElement.style.backgroundColor = '#68a9ef';
+        progressBarElement.style.color = '#fff';
         progressBarElement.style.width = progress.percent + "%";
         progressBarElement.innerHTML = progress.percent + "%";
     }
@@ -28,6 +29,7 @@ var CeleryProgressBar = (function () {
         var pollInterval = options.pollInterval || 500;
 
         fetch(progressUrl).then(function(response) {
+ 
             response.json().then(function(data) {
                 if (data.progress) {
                     onProgress(progressBarElement, progressBarMessageElement, data.progress);
