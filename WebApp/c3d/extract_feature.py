@@ -46,7 +46,7 @@ def extract_feature_video(video_path, progress_recorder, features_per_bag = para
 
     predictions = extrapolate(predictions, num_frames)
     # print(predictions)
-    predictions = savitzky_golay(predictions, 101, 3)
+    # predictions = savitzky_golay(predictions, 101, 3)
     # print(predictions)
 
     return predictions
