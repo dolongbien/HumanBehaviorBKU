@@ -29,7 +29,7 @@ for ivideo=1:nVideos
     VideoPath=[Testing_VideoPath,'/', All_Videos_scores(ivideo).name(1:end-4),'.mp4'];
     ScorePath=[Model_Score_Folder,'/', All_Videos_scores(ivideo).name(1:end-4),'.mat'];
 
-  %% Load Video
+	%% Load Video
     %xyloObj = VideoReader(VideoPath);
     
     try
@@ -49,7 +49,7 @@ for ivideo=1:nVideos
     nFrames_C3D=nFileNumbers*16;  % As the features were computed for every 16 frames
 
 
-%% 32 Shots
+	%% 32 Shots
     Detection_score_32shots=zeros(1,nFrames_C3D);
     Thirty2_shots= round(linspace(1,length(AllFiles),33));
     Shots_Features=[];
@@ -89,9 +89,9 @@ for ivideo=1:nVideos
     end
 
 
-     Final_score= ones(1,length(Final_score));
-     subplot(2,1,1); bar(Final_score)
-     subplot(2,1,2); bar(GT)
+    % Final_score= ones(1,length(Final_score));
+    % subplot(2,1,1); bar(Final_score)
+    % subplot(2,1,2); bar(GT)
 
     All_Detect(frm_counter:frm_counter+length(Final_score)-1)=Final_score;
     All_GT(frm_counter:frm_counter+length(Final_score)-1)=GT;
