@@ -1,9 +1,11 @@
-### Scripts
-
-Những script nhỏ` *.py` , `*.m` thuận tiện cho những việc như đọc ghi file, generate các file trong quá trình h.
+### Utility scripts
 
 | Script name | Description                    |
 | ------------- | ------------------------------ |
-| `generate_inout_file.py`      | Sinh 2 file `*.txt` input/output video của C3D  |
-| `read_featureFC_file.py`   | Convert feature file `*.fc` từ struct về dạng numpy  readable   |
-|`c3d_sport1m_feature_extraction_video.sh`| Bash file để trích C3D feature (`*.fc`, `*.prob`) từ video với 2 setting file `*.txt`  trên |
+| `generate_inout_file.py`      | Generate `*.txt` input/output file from mp4 video |
+| `read_featureFC_file.py`   | Convert feature file `*.fc6` to numpy readable  |
+|`c3d_sport1m_feature_extraction_video.sh`| Shell script to extract video feature|
+|`Temporal_RoadAccidents_Annotation.txt`| Groundtruth temporal annotation of mp4 video|
+|`create_temporal_annotations.m`| Generate temporal annotation .mat of video from txt input|
+|`Evaluate_Anomaly_Detector_RoadAccident.m`| Evaluate the entire detection model|
+
