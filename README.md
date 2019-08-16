@@ -3,6 +3,8 @@ BKU Team 2018
 
 An implementation and a modified version of **Real-world Anomaly Detection in Surveillance Videos** ([Sultani, Waqas and Chen][realworld]) on **Road_Accident dataset**.
 ![videos](/WebApp/staticfiles/images/roadaccident.png)
+
+![demo](/WebApp/media/gifs/demo.gif)
 ## Dataset
 
 Road accident dataset consists of 796 videos under *.mp4 format (330 normal, 366 abnormal, 100 testing). 
