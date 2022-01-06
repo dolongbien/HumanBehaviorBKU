@@ -2,7 +2,7 @@ absl-py==0.7.1
 amqp==2.4.2
 astor==0.7.1
 billiard==3.6.0.0
-celery==4.3.0
+celery==5.2.2
 celery-progress==0.0.3
 certifi==2019.3.9
 chardet==3.0.4
